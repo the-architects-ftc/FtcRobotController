@@ -99,6 +99,11 @@ public class SampleBasicLinearOpMode extends LinearOpMode {
             double rightPower = 0.5;
 
 
+            if (yaw >= 80) {
+                leftPower = 0.25;
+                rightPower = 0.5;
+            }
+
             if (yaw >= 90) {
                 leftPower = 0;
                 rightPower = 0;
