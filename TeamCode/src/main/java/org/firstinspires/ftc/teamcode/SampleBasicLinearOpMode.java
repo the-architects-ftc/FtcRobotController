@@ -90,7 +90,7 @@ public class SampleBasicLinearOpMode extends LinearOpMode {
         waitForStart();
         runtime.reset();
         double yaw;
-
+        imu.resetYaw();
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             yaw = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
