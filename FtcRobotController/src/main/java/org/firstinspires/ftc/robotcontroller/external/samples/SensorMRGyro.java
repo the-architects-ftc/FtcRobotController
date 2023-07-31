@@ -70,7 +70,7 @@ public class SensorMRGyro extends LinearOpMode {
 
   @Override
   public void runOpMode() {
-
+  
     boolean lastResetState = false;
     boolean curResetState  = false;
 

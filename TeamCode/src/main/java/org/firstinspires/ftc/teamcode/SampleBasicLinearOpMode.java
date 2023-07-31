@@ -95,8 +95,8 @@ public class SampleBasicLinearOpMode extends LinearOpMode {
         while (opModeIsActive()) {
             yaw = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
 
-            double leftPower = 0.5;
-            double rightPower = 1;
+            double leftPower = 0.25;
+            double rightPower = 0.5;
 
 
             if (yaw >= 90) {
