@@ -103,32 +103,65 @@ public class SampleBasicLinearOpMode extends LinearOpMode {
             double turn = gamepad1.right_stick_x;
             // leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
             // rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
-
+// Moving left:
             if (runtime.seconds() > 0) {
                 leftPower = 1;
                 rightPower = -1;
                 backleftPower = -1;
                 backrightpower = 1;
             }
+            //Stopping
             if (runtime.seconds() > 2) {
                 leftPower = 0;
                 rightPower = 0;
                 backleftPower = 0;
                 backrightpower = 0;
             }
+            //Moving right
             if (runtime.seconds() > 3) {
                 leftPower = -1;
                 rightPower = 1;
                 backleftPower = 1;
                 backrightpower = -1;
             }
-             if (runtime.seconds() > 5){
-                 leftPower = 0;
+            //Stopping
+            if (runtime.seconds() > 5) {
+                leftPower = 0;
                 rightPower = 0;
                 backleftPower = 0;
                 backrightpower = 0;
-    }
+            }
 
+            // going fowards
+            if (runtime.seconds() > 6) {
+                leftPower = 1;
+                rightPower = 1;
+                backleftPower = 1;
+                backrightpower = 1;
+            }
+
+            // stopping
+            if (runtime.seconds() > 8) {
+                leftPower = 0;
+                rightPower = 0;
+                backleftPower = 0;
+                backrightpower = 0;
+            }
+
+            // going backwards
+            if (runtime.seconds() > 9) {
+                leftPower = -1;
+                rightPower = -1;
+                backleftPower = -1;
+                backrightpower = -1;
+            }
+            //stopping
+            if (runtime.seconds() > 11) {
+                leftPower = 0;
+                rightPower = 0;
+                backleftPower = 0;
+                backrightpower = 0;
+            }
 
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
