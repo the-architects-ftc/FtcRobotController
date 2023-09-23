@@ -68,9 +68,9 @@ public class SampleBasicLinearOpMode extends LinearOpMode {
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        bl  = hardwareMap.get(DcMotor.class, "bl");
+        bl = hardwareMap.get(DcMotor.class, "bl");
         fl = hardwareMap.get(DcMotor.class, "fl");
-        fr  = hardwareMap.get(DcMotor.class, "fr");
+        fr = hardwareMap.get(DcMotor.class, "fr");
         br = hardwareMap.get(DcMotor.class, "br");
 
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
@@ -91,6 +91,8 @@ public class SampleBasicLinearOpMode extends LinearOpMode {
             // Setup a variable for each drive wheel to save power level for telemetry
             double leftPower = 0;
             double rightPower = 0;
+            double backleftPower = 0;
+            double backrightpower = 0;
 
             // Choose to drive using either Tank Mode, or POV Mode
             // Comment out the method that's not used.  The default below is POV.
@@ -98,23 +100,35 @@ public class SampleBasicLinearOpMode extends LinearOpMode {
             // POV Mode uses left stick to go forward, and right stick to turn.
             // - This uses basic math to combine motions and is easier to drive straight.
             double drive = -gamepad1.left_stick_y;
-            double turn  =  gamepad1.right_stick_x;
+            double turn = gamepad1.right_stick_x;
             // leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
             // rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
 
-            if (runtime.seconds() < 1) {
-                leftPower = 0.5;
-                rightPower = 0.5;
-            } else if (runtime.seconds() >= 1 && runtime.seconds() < 2) {
-                leftPower = 0.0;
-                rightPower = 0.0;
-            } else if (runtime.seconds() >= 2 && runtime.seconds() < 3) {
-                leftPower = -0.5;
-                rightPower = -0.5;
-            } else if (runtime.seconds() >= 3) {
-                leftPower = 0.0;
-                rightPower = 0.0;
+            if (runtime.seconds() > 0) {
+                leftPower = 1;
+                rightPower = -1;
+                backleftPower = -1;
+                backrightpower = 1;
             }
+            if (runtime.seconds() > 2) {
+                leftPower = 0;
+                rightPower = 0;
+                backleftPower = 0;
+                backrightpower = 0;
+            }
+            if (runtime.seconds() > 3) {
+                leftPower = -1;
+                rightPower = 1;
+                backleftPower = 1;
+                backrightpower = -1;
+            }
+             if (runtime.seconds() > 5){
+                 leftPower = 0;
+                rightPower = 0;
+                backleftPower = 0;
+                backrightpower = 0;
+    }
+
 
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
@@ -122,14 +136,14 @@ public class SampleBasicLinearOpMode extends LinearOpMode {
             // rightPower = -gamepad1.right_stick_y ;
 
             // Send calculated power to wheels
-            bl.setPower(leftPower);
+            bl.setPower(backleftPower);
             fl.setPower(leftPower);
             fr.setPower(rightPower);
-            br.setPower(rightPower);
+            br.setPower(backrightpower);
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+            telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower,backleftPower,backrightpower);
             telemetry.update();
         }
     }
