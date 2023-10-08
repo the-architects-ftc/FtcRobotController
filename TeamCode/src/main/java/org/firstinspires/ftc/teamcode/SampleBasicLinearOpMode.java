@@ -29,12 +29,11 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 
 /**
@@ -42,36 +41,49 @@ import com.qualcomm.robotcore.util.Range;
  * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
  * of the FTC Driver Station. When a selection is made from the menu, the corresponding OpMode
  * class is instantiated on the Robot Controller and executed.
- *
+
  * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
  * It includes all the skeletal structure that all linear OpModes contain.
- *
+
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Basic Movement", group="Linear Opmode")
+
+@TeleOp(name="Basic Movement1", group="Linear Opmode1")
 public class SampleBasicLinearOpMode extends LinearOpMode {
 
+
     // Declare OpMode members.
-    private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor bl = null;
-    private DcMotor fl = null;
-    private DcMotor fr = null;
-    private DcMotor br = null;
+    //private ElapsedTime runtime = new ElapsedTime();
+    //private DcMotor bl = null;
+    //private DcMotor fl = null;
+    //private DcMotor fr = null;
+    //private DcMotor br = null;
+
+    ElapsedTime runtime = new ElapsedTime();
+    DcMotor bl = null;
+    DcMotor fl = null;
+    DcMotor fr = null;
+    DcMotor br = null;
+
+
+
 
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
+
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        bl = hardwareMap.get(DcMotor.class, "bl");
-        fl = hardwareMap.get(DcMotor.class, "fl");
-        fr = hardwareMap.get(DcMotor.class, "fr");
-        br = hardwareMap.get(DcMotor.class, "br");
+        bl = hardwareMap.get(DcMotor.class, "LB");
+        fl = hardwareMap.get(DcMotor.class, "LF");
+        fr = hardwareMap.get(DcMotor.class, "RF");
+        br = hardwareMap.get(DcMotor.class, "RB");
+
 
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive.
@@ -81,103 +93,125 @@ public class SampleBasicLinearOpMode extends LinearOpMode {
         fr.setDirection(DcMotor.Direction.FORWARD);
         br.setDirection(DcMotor.Direction.FORWARD);
 
+
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
 
+
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
+
             // Setup a variable for each drive wheel to save power level for telemetry
-            double leftPower = 0;
-            double rightPower = 0;
-            double backleftPower = 0;
-            double backrightpower = 0;
+            double LF = 0;
+            double RF = 0;
+            double LB = 0;
+            double RB = 0;
+
 
             // Choose to drive using either Tank Mode, or POV Mode
             // Comment out the method that's not used.  The default below is POV.
+
 
             // POV Mode uses left stick to go forward, and right stick to turn.
             // - This uses basic math to combine motions and is easier to drive straight.
             double drive = -gamepad1.left_stick_y;
             double turn = gamepad1.right_stick_x;
-            // leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
-            // rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
-// Moving left:
+            // LF    = Range.clip(drive + turn, -1.0, 1.0) ;
+            // RF   = Range.clip(drive - turn, -1.0, 1.0) ;
+
+// Moving right:
             if (runtime.seconds() > 0) {
-                leftPower = 1;
-                rightPower = -1;
-                backleftPower = -1;
-                backrightpower = 1;
+                LF = 0.5;
+                RF = -0.5;
+                LB = -0.5;
+                RB = 0.5;
             }
+
+
+
             //Stopping
             if (runtime.seconds() > 2) {
-                leftPower = 0;
-                rightPower = 0;
-                backleftPower = 0;
-                backrightpower = 0;
-            }
-            //Moving right
-            if (runtime.seconds() > 3) {
-                leftPower = -1;
-                rightPower = 1;
-                backleftPower = 1;
-                backrightpower = -1;
-            }
-            //Stopping
-            if (runtime.seconds() > 5) {
-                leftPower = 0;
-                rightPower = 0;
-                backleftPower = 0;
-                backrightpower = 0;
+                LF = 0;
+                RF = 0;
+                LB = 0;
+                RB = 0;
             }
 
-            // going fowards
-            if (runtime.seconds() > 6) {
-                leftPower = 1;
-                rightPower = 1;
-                backleftPower = 1;
-                backrightpower = 1;
+            //Moving left
+            if (runtime.seconds() > 2.25) {
+                LF = -0.5;
+                RF = 0.5;
+                LB = 0.5;
+                RB = -0.5;
             }
 
-            // stopping
-            if (runtime.seconds() > 8) {
-                leftPower = 0;
-                rightPower = 0;
-                backleftPower = 0;
-                backrightpower = 0;
-            }
 
-            // going backwards
-            if (runtime.seconds() > 9) {
-                leftPower = -1;
-                rightPower = -1;
-                backleftPower = -1;
-                backrightpower = -1;
-            }
+
+
+
+
             //stopping
-            if (runtime.seconds() > 11) {
-                leftPower = 0;
-                rightPower = 0;
-                backleftPower = 0;
-                backrightpower = 0;
+            if (runtime.seconds() > 9) {
+                LF = 0;
+                RF = 0;
+                LB = 0;
+                RB = 0;
             }
+
+            if (runtime.seconds() > 9.25) {
+                LF = 0.5;
+                RF = 0.5;
+                LB = 0.5;
+                RB = 0.5;
+            }
+
+            //stopping
+            if (runtime.seconds() > 10.25) {
+                LF = 0;
+                RF = 0;
+                LB = 0;
+                RB = 0;
+            }
+
+            if (runtime.seconds() > 10.5) {
+                LF = -0.5;
+                RF = -0.5;
+                LB = -0.5;
+                RB = -0.5;
+            }
+
+            //stopping
+            if (runtime.seconds() > 11.5) {
+                LF = 0;
+                RF = 0;
+                LB = 0;
+                RB = 0;
+            }
+
+
+
+
 
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
-            // leftPower  = -gamepad1.left_stick_y ;
-            // rightPower = -gamepad1.right_stick_y ;
+            // LF  = -gamepad1.left_stick_y ;
+            // RF = -gamepad1.right_stick_y ;
+
 
             // Send calculated power to wheels
-            bl.setPower(backleftPower);
-            fl.setPower(leftPower);
-            fr.setPower(rightPower);
-            br.setPower(backrightpower);
+            bl.setPower(LB);
+            fl.setPower(LF);
+            fr.setPower(RF);
+            br.setPower(RB);
+
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower,backleftPower,backrightpower);
+            telemetry.addData("Motors", "left (%.2f), right (%.2f)", LF, RF,LB,RB);
             telemetry.update();
         }
     }
 }
+

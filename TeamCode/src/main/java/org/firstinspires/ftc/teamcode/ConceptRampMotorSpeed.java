@@ -29,86 +29,122 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
 
 /**
- * This OpMode ramps a single motor speed up and down repeatedly until Stop is pressed.
- * The code is structured as a LinearOpMode
- *
- * This code assumes a DC motor configured with the name "left_drive" as is found on a Robot.
- *
- * INCREMENT sets how much to increase/decrease the power each cycle
- * CYCLE_MS sets the update period.
- *
+ * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
+ * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
+ * of the FTC Driver Station. When a selection is made from the menu, the corresponding OpMode
+ * class is instantiated on the Robot Controller and executed.
+
+ * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
+ * It includes all the skeletal structure that all linear OpModes contain.
+
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
-@TeleOp(name = "Concept: Ramp Motor Speed", group = "Concept")
-//@Disabled
+
+
+@TeleOp(name="ServoTEST", group="Linear Opmode1")
 public class ConceptRampMotorSpeed extends LinearOpMode {
 
-    static final double INCREMENT   = 0.01;     // amount to ramp motor each CYCLE_MS cycle
-    static final int    CYCLE_MS    =   50;     // period of each cycle
-    static final double MAX_FWD     =  1.0;     // Maximum FWD power applied to motor
-    static final double MAX_REV     = -1.0;     // Maximum REV power applied to motor
 
-    // Define class members
-    DcMotor motor;
-    double  power   = 0;
-    boolean rampUp  = true;
+    // Declare OpMode members.
+    //private ElapsedTime runtime = new ElapsedTime();
+    //private DcMotor = null;
+    //private DcMotor fl = null;
+    //private DcMotor fr = null;
+    //private DcMotor br = null;
+
+    ElapsedTime runtime = new ElapsedTime();
+   Servo bl = null;
+
+
+
 
 
     @Override
     public void runOpMode() {
-
-        // Connect to motor (Assume standard left wheel)
-        // Change the text in quotes to match any motor name on your robot.
-        motor = hardwareMap.get(DcMotor.class, "left_drive");
-
-        // Wait for the start button
-        telemetry.addData(">", "Press Start to run Motors." );
+        telemetry.addData("Status", "Initialized");
         telemetry.update();
+
+
+        // Initialize the hardware variables. Note that the strings used here as parameters
+        // to 'get' must correspond to the names assigned during the robot configuration
+        // step (using the FTC Robot Controller app on the phone).
+        bl = hardwareMap.get(Servo.class, "Servo1");
+
+
+
+        // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
+        // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive.
+        // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
+
+        bl.setDirection(Servo.Direction.FORWARD);
+
+
+        // Wait for the game to start (driver presses PLAY)
         waitForStart();
+        runtime.reset();
 
-        // Ramp motor speeds till stop pressed.
-        while(opModeIsActive()) {
 
-            // Ramp the motors, according to the rampUp variable.
-            if (rampUp) {
-                // Keep stepping up until we hit the max value.
-                power += INCREMENT ;
-                if (power >= MAX_FWD ) {
-                    power = MAX_FWD;
-                    rampUp = !rampUp;   // Switch ramp direction
-                }
+        // run until the end of the match (driver presses STOP)
+        while (opModeIsActive()) {
+
+
+            // Setup a variable for each drive wheel to save power level for telemetry
+            double Servo1 = 0;
+
+
+
+            // Choose to drive using either Tank Mode, or POV Mode
+            // Comment out the method that's not used.  The default below is POV.
+
+
+            // POV Mode uses left stick to go forward, and right stick to turn.
+            // - This uses basic math to combine motions and is easier to drive straight.
+            double drive = -gamepad1.left_stick_y;
+            double turn = gamepad1.right_stick_x;
+            // LF    = Range.clip(drive + turn, -1.0, 1.0) ;
+            // RF   = Range.clip(drive - turn, -1.0, 1.0) ;
+
+// Moving right:
+            if (runtime.seconds() > 0) {
+                Servo1 = 1;
+
             }
-            else {
-                // Keep stepping down until we hit the min value.
-                power -= INCREMENT ;
-                if (power <= MAX_REV ) {
-                    power = MAX_REV;
-                    rampUp = !rampUp;  // Switch ramp direction
-                }
+
+
+
+            //Stopping
+            if (runtime.seconds() > 5) {
+                Servo1 = 0;
+
             }
 
-            // Display the current value
-            telemetry.addData("Motor Power", "%5.2f", power);
-            telemetry.addData(">", "Press Stop to end test." );
-            telemetry.update();
 
-            // Set the motor to the new power and pause;
-            motor.setPower(power);
-            sleep(CYCLE_MS);
-            idle();
+            // Tank Mode uses one stick to control each wheel.
+            // - This requires no math, but it is hard to drive forward slowly and keep straight.
+            // LF  = -gamepad1.left_stick_y ;
+            // RF = -gamepad1.right_stick_y ;
+
+
+            // Send calculated power to wheels
+            bl.setPosition(Servo1);
+
+
+
+            // Show the elapsed game time and wheel power.
+            //telemetry.addData("Status", "Run Time: " + runtime.toString());
+            //telemetry.addData("Servo", "left (%.2f), right (%.2f)", Servo1);
+            //telemetry.update();
         }
-
-        // Turn off motor and signal done;
-        motor.setPower(0);
-        telemetry.addData(">", "Done");
-        telemetry.update();
-
     }
 }
+
