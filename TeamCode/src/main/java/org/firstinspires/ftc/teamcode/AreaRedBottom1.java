@@ -30,8 +30,8 @@
 package org.firstinspires.ftc.teamcode;
 
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -50,8 +50,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 
-@TeleOp(name="AreaRedBottom3", group="Linear Opmode1")
-public class AreaRedBottom3 extends LinearOpMode {
+@Autonomous(name="AreaRedBottom1", group="Linear Opmode1")
+public class AreaRedBottom1 extends LinearOpMode {
 
 
     // Declare OpMode members.
@@ -121,51 +121,57 @@ public class AreaRedBottom3 extends LinearOpMode {
             // LF    = Range.clip(drive + turn, -1.0, 1.0) ;
             // RF   = Range.clip(drive - turn, -1.0, 1.0) ;
 
-// Moving back:
+
             //Move Forward
             if (runtime.seconds() < 1.5) {
                 LF = 0.5;
                 RF = 0.5;
                 LB = 0.5;
                 RB = 0.5;
+            //stop
             } else if (runtime.seconds() < 2.5) {
                 LF = 0;
                 RF = 0;
                 LB = 0;
                 RB = 0;
-                
+             //counter clockwise turn
             } else if (runtime.seconds() < 3) {
                 LF = -0.5;
                 RF = 0.5;
                 LB = -0.5;
                 RB = 0.5;
 
+            //drift right
             } else if (runtime.seconds() < 3.5) {
                 LF = 0.5;
                 RF = -0.5;
                 LB = -0.5;
                 RB = 0.5;
+            //move forward
             } else if (runtime.seconds() < 4) {
                 LF = 0.5;
                 RF = 0.5;
                 LB = 0.5;
                 RB = 0.5;
+            //stop
             } else if (runtime.seconds() < 5) {
                 LF = 0;
                 RF = 0;
                 LB = 0;
                 RB = 0;
+            //move backward
             } else if (runtime.seconds() < 7.5) {
                 LF = -0.5;
                 RF = -0.5;
                 LB = -0.5;
                 RB = -0.5;
-                
+            //drift left
             } else if (runtime.seconds() < 8) {
                 LF = -0.5;
                 RF = 0.5;
                 LB = 0.5;
                 RB = -0.5;
+            //stop
             } else if (runtime.seconds() < 8.5) {
                 LF = 0;
                 RF = 0;
