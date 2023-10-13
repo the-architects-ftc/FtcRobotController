@@ -128,44 +128,50 @@ public class AreaRedBottom1 extends LinearOpMode {
                 RF = 0.5;
                 LB = 0.5;
                 RB = 0.5;
+            //stop
             } else if (runtime.seconds() < 2.5) {
                 LF = 0;
                 RF = 0;
                 LB = 0;
                 RB = 0;
-                
+             //counter clockwise turn
             } else if (runtime.seconds() < 3) {
                 LF = -0.5;
                 RF = 0.5;
                 LB = -0.5;
                 RB = 0.5;
 
+            //drift right
             } else if (runtime.seconds() < 3.5) {
                 LF = 0.5;
                 RF = -0.5;
                 LB = -0.5;
                 RB = 0.5;
+            //move forward
             } else if (runtime.seconds() < 4) {
                 LF = 0.5;
                 RF = 0.5;
                 LB = 0.5;
                 RB = 0.5;
+            //stop
             } else if (runtime.seconds() < 5) {
                 LF = 0;
                 RF = 0;
                 LB = 0;
                 RB = 0;
+            //move backward
             } else if (runtime.seconds() < 7.5) {
                 LF = -0.5;
                 RF = -0.5;
                 LB = -0.5;
                 RB = -0.5;
-                
+            //drift left
             } else if (runtime.seconds() < 8) {
                 LF = -0.5;
                 RF = 0.5;
                 LB = 0.5;
                 RB = -0.5;
+            //stop
             } else if (runtime.seconds() < 8.5) {
                 LF = 0;
                 RF = 0;
