@@ -50,8 +50,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 
-@TeleOp(name="Basic Movement1", group="Linear Opmode1")
-public class SampleBasicLinearOpMode extends LinearOpMode {
+@TeleOp(name="AreaBlueBottom3", group="Linear Opmode1")
+public class AreaBlueBottom3 extends LinearOpMode {
 
 
     // Declare OpMode members.
