@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -50,7 +51,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 
-@TeleOp(name="AreaTopRed3", group="Linear Opmode1")
+@Autonomous(name="AreaTopRed3", group="Linear Opmode1")
 public class AreaTopRed3 extends LinearOpMode {
 
 
@@ -139,16 +140,24 @@ public class AreaTopRed3 extends LinearOpMode {
 
             if (runtime.seconds() > 2.5) {
                 LF = -0.5;
-                RF = -0.5;
-                LB = -0.5;
+                RF = 0.5;
+                LB = 0.5;
                 RB = -0.5;
+
             }
 
-            if (runtime.seconds() > 3.1) {
-                LF = -0.5;
+            if (runtime.seconds() > 3) {
+                LF = 0.5;
                 RF = -0.5;
                 LB = 0.5;
-                RB = 0.5;
+                RB = -0.5;
+
+            }
+            if (runtime.seconds() > 3.1) {
+                LF = 0;
+                RF = 0;
+                LB = 0;
+                RB = 0;
             }
 
             // Tank Mode uses one stick to control each wheel.

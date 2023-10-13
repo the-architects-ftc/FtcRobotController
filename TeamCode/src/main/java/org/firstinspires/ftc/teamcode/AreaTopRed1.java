@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -50,7 +51,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 
-@TeleOp(name="AreaTopRed1", group="Linear Opmode1")
+@Autonomous(name="AreaTopRed1", group="Linear Opmode1")
 public class AreaTopRed1 extends LinearOpMode {
 
 
@@ -138,44 +139,27 @@ public class AreaTopRed1 extends LinearOpMode {
                 RB = 0;
             }
 
-            if (runtime.seconds() > 1.1) {
-                LF = 0.5;
-                RF = 0.5;
-                LB = 0.5;
-                RB = 0.5;
 
-            }
-                // goes forward
-
-            if (runtime.seconds() > 1.4) {
-                LF = 0.5;
-                RF = 0.5;
-                LB = 0.5;
-                RB = 0.5;
-            }
-
-
-            if (runtime.seconds() > 2.4) {
+            if (runtime.seconds() > 1.4){
                 LF = 0.5;
                 RF = -0.5;
                 LB = -0.5;
                 RB = 0.5;
             }
+            // moving backwards on the left position
 
-            // ^ moving left
-
-
-
-            //Moving foward
-           if (runtime.seconds() > 3.1) {
+            if (runtime.seconds() > 2){
                 LF = -0.5;
-                RF = -0.5;
+                RF = 0.5;
                 LB = -0.5;
-                RB = -0.5;
+                RB = 0.5;
+
             }
-
-           // moving backwards^
-
+            if (runtime.seconds() > 2.4) {
+                LF = 0;
+                RF = 0;
+                LB = 0;
+                RB = 0;
 
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
@@ -197,6 +181,3 @@ public class AreaTopRed1 extends LinearOpMode {
         }
     }
 }
-
-// Aashna program
-

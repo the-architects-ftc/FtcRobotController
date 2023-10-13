@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -50,7 +51,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 
-@TeleOp(name="AreaTopRed2", group="Linear Opmode1")
+@Autonomous(name="AreaTopRed2", group="Linear Opmode1")
 public class AreaTopRed2 extends LinearOpMode {
 
 
@@ -139,13 +140,7 @@ public class AreaTopRed2 extends LinearOpMode {
                 RB = 0;
             }
 
-            // stoping to put the pixel
-            if (runtime.seconds() > 1.5) {
-                LF = -0.5;
-                RF = 0.5;
-                LB = 0.5;
-                RB = -0.5;
-            }
+        // stoping to put pixel
 
             // going left more
             if (runtime.seconds() > 2) {
@@ -157,18 +152,18 @@ public class AreaTopRed2 extends LinearOpMode {
 
             // going foward
 
-            if (runtime.seconds() > 2.6) {
+            if (runtime.seconds() > 2.5 {
                 LF = -0.5;
-                RF = -0.5;
-                LB = 0.5;
+                RF = 0.5;
+                LB = -0.5;
                 RB = 0.5;
             }
             // turning  to face the backboard backwards
 
-            if (runtime.seconds() > 2.8) {
+            if (runtime.seconds() > 2.6) {
                 LF = -0.5;
-                RF = 0.5;
-                LB = 0.5;
+                RF = -0.5;
+                LB = -0.5;
                 RB = -0.5;
             }
 
