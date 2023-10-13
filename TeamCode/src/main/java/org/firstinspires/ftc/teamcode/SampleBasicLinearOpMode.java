@@ -26,7 +26,7 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
+//MINE ( AARUSH )
 package org.firstinspires.ftc.teamcode;
 
 
@@ -121,46 +121,51 @@ public class SampleBasicLinearOpMode extends LinearOpMode {
             // LF    = Range.clip(drive + turn, -1.0, 1.0) ;
             // RF   = Range.clip(drive - turn, -1.0, 1.0) ;
 
-// Moving right:
+// Moving back:
             if (runtime.seconds() > 0) {
-                LF = 0.5;
+                LF = -0.5;
                 RF = -0.5;
                 LB = -0.5;
-                RB = 0.5;
+                RB = -0.5;
             }
 
 
 
             //Stopping
-            if (runtime.seconds() > 2) {
+            if (runtime.seconds() > 1) {
                 LF = 0;
                 RF = 0;
                 LB = 0;
                 RB = 0;
             }
 
-            //Moving left
-            if (runtime.seconds() > 2.25) {
+            //Moving back
+            if (runtime.seconds() > 2) {
                 LF = -0.5;
-                RF = 0.5;
-                LB = 0.5;
+                RF = -0.5;
+                LB = -0.5;
                 RB = -0.5;
             }
 
-
-
-
-
-
-            //stopping
-            if (runtime.seconds() > 9) {
+            //stop
+            if (runtime.seconds() > 3) {
                 LF = 0;
                 RF = 0;
                 LB = 0;
                 RB = 0;
             }
 
-            if (runtime.seconds() > 9.25) {
+
+            //TURN
+            if (runtime.seconds() > 3.1) {
+                LF = -1;
+                RF = 1;
+                LB = -1;
+                RB = 1;
+            }
+
+           //fORWARD
+            if (runtime.seconds() > 5.3) {
                 LF = 0.5;
                 RF = 0.5;
                 LB = 0.5;
@@ -168,14 +173,14 @@ public class SampleBasicLinearOpMode extends LinearOpMode {
             }
 
             //stopping
-            if (runtime.seconds() > 10.25) {
+            if (runtime.seconds() > 6) {
                 LF = 0;
                 RF = 0;
                 LB = 0;
                 RB = 0;
             }
-
-            if (runtime.seconds() > 10.5) {
+//BACK
+            if (runtime.seconds() > 7) {
                 LF = -0.5;
                 RF = -0.5;
                 LB = -0.5;
@@ -183,12 +188,28 @@ public class SampleBasicLinearOpMode extends LinearOpMode {
             }
 
             //stopping
-            if (runtime.seconds() > 11.5) {
+            if (runtime.seconds() > 8) {
                 LF = 0;
                 RF = 0;
                 LB = 0;
                 RB = 0;
             }
+//RIGHT
+            if (runtime.seconds() > 6.1) {
+                LF = -0.5;
+                RF = 0.5;
+                LB = 0.5;
+                RB = -0.5;
+            }
+//STOP
+            if (runtime.seconds() > 6.6) {
+                LF = 0;
+                RF = 0;
+                LB = 0;
+                RB = 0;
+            }
+
+
 
 
 
