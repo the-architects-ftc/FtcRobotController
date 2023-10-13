@@ -30,8 +30,8 @@
 package org.firstinspires.ftc.teamcode;
 
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -50,8 +50,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 
-@TeleOp(name="AreaRedBottom3", group="Linear Opmode1")
-public class AreaRedBottom3 extends LinearOpMode {
+@Autonomous(name="AreaRedBottom1", group="Linear Opmode1")
+public class AreaRedBottom1 extends LinearOpMode {
 
 
     // Declare OpMode members.
@@ -121,7 +121,7 @@ public class AreaRedBottom3 extends LinearOpMode {
             // LF    = Range.clip(drive + turn, -1.0, 1.0) ;
             // RF   = Range.clip(drive - turn, -1.0, 1.0) ;
 
-// Moving back:
+
             //Move Forward
             if (runtime.seconds() < 1.5) {
                 LF = 0.5;
