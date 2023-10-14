@@ -123,16 +123,14 @@ public class AreaBlueTop1 extends LinearOpMode {
             // RF   = Range.clip(drive - turn, -1.0, 1.0) ;
 
 // Moving back:
-            if (runtime.seconds() > 0) {
+            if (runtime.seconds() > 0.5) {
                 LF = 0.5;
                 RF = 0.5;
                 LB = 0.5;
                 RB = 0.5;
             }
 
-
-
-            //Stopping
+            //stopping
             if (runtime.seconds() > 1) {
                 LF = 0;
                 RF = 0;
@@ -140,74 +138,12 @@ public class AreaBlueTop1 extends LinearOpMode {
                 RB = 0;
             }
 
-            //Moving back
+        //Moving Back//
             if (runtime.seconds() > 2) {
                 LF = -0.5;
                 RF = -0.5;
                 LB = -0.5;
                 RB = -0.5;
-            }
-
-            //stop
-            if (runtime.seconds() > 3) {
-                LF = 0;
-                RF = 0;
-                LB = 0;
-                RB = 0;
-            }
-
-
-            //TURN
-            if (runtime.seconds() > 4) {
-                LF = -0.5;
-                RF = 0.5;
-                LB = -0.5;
-                RB = 0.5;
-            }
-
-            //fORWARD
-            if (runtime.seconds() > 5) {
-                LF = 0.5;
-                RF = 0.5;
-                LB = 0.5;
-                RB = 0.5;
-            }
-
-            //stopping
-            if (runtime.seconds() > 6) {
-                LF = 0;
-                RF = 0;
-                LB = 0;
-                RB = 0;
-            }
-//BACK
-            if (runtime.seconds() > 7) {
-                LF = -0.5;
-                RF = -0.5;
-                LB = -0.5;
-                RB = -0.5;
-            }
-
-            //stopping
-            if (runtime.seconds() > 8) {
-                LF = 0;
-                RF = 0;
-                LB = 0;
-                RB = 0;
-            }
-//RIGHT
-            if (runtime.seconds() > 9) {
-                LF = -0.5;
-                RF = 0.5;
-                LB = 0.5;
-                RB = -0.5;
-            }
-//STOP
-            if (runtime.seconds() > 10) {
-                LF = 0;
-                RF = 0;
-                LB = 0;
-                RB = 0;
             }
 
 
