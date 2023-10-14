@@ -51,8 +51,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 
-@Autonomous(name="AreaBlueBottom3", group="Linear Opmode2")
-public class AreaBlueBottom3 extends LinearOpMode {
+@Autonomous(name="AreaBlueTop1", group="Linear Opmode1")
+public class AreaBlueTop1 extends LinearOpMode {
 
 
     // Declare OpMode members.
@@ -124,10 +124,10 @@ public class AreaBlueBottom3 extends LinearOpMode {
 
 // Moving back:
             if (runtime.seconds() > 0) {
-                LF = -0.5;
-                RF = -0.5;
-                LB = -0.5;
-                RB = -0.5;
+                LF = 0.5;
+                RF = 0.5;
+                LB = 0.5;
+                RB = 0.5;
             }
 
 
@@ -141,7 +141,7 @@ public class AreaBlueBottom3 extends LinearOpMode {
             }
 
             //Moving back
-            if (runtime.seconds() > 1.5) {
+            if (runtime.seconds() > 2) {
                 LF = -0.5;
                 RF = -0.5;
                 LB = -0.5;
@@ -149,7 +149,7 @@ public class AreaBlueBottom3 extends LinearOpMode {
             }
 
             //stop
-            if (runtime.seconds() >2.2) {
+            if (runtime.seconds() > 3) {
                 LF = 0;
                 RF = 0;
                 LB = 0;
@@ -158,22 +158,15 @@ public class AreaBlueBottom3 extends LinearOpMode {
 
 
             //TURN
-            if (runtime.seconds() > 2.6) {
+            if (runtime.seconds() > 4) {
                 LF = -0.5;
                 RF = 0.5;
                 LB = -0.5;
                 RB = 0.5;
             }
 
-            //stopping
-            if (runtime.seconds() > 3.1) {
-                LF = 0;
-                RF = 0;
-                LB = 0;
-                RB = 0;
-            }
-           //fORWARD
-            if (runtime.seconds() > 3.6) {
+            //fORWARD
+            if (runtime.seconds() > 5) {
                 LF = 0.5;
                 RF = 0.5;
                 LB = 0.5;
@@ -181,14 +174,14 @@ public class AreaBlueBottom3 extends LinearOpMode {
             }
 
             //stopping
-            if (runtime.seconds() > 4) {
+            if (runtime.seconds() > 6) {
                 LF = 0;
                 RF = 0;
                 LB = 0;
                 RB = 0;
             }
 //BACK
-            if (runtime.seconds() > 4.1) {
+            if (runtime.seconds() > 7) {
                 LF = -0.5;
                 RF = -0.5;
                 LB = -0.5;
@@ -196,21 +189,21 @@ public class AreaBlueBottom3 extends LinearOpMode {
             }
 
             //stopping
-            if (runtime.seconds() > 4.1) {
+            if (runtime.seconds() > 8) {
                 LF = 0;
                 RF = 0;
                 LB = 0;
                 RB = 0;
             }
 //RIGHT
-            if (runtime.seconds() > 4.5) {
+            if (runtime.seconds() > 9) {
                 LF = -0.5;
                 RF = 0.5;
                 LB = 0.5;
                 RB = -0.5;
             }
 //STOP
-            if (runtime.seconds() > 5) {
+            if (runtime.seconds() > 10) {
                 LF = 0;
                 RF = 0;
                 LB = 0;
