@@ -51,8 +51,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 
-@Autonomous(name="AreaBlueBottom3", group="Linear Opmode2")
-public class AreaBlueBottom3 extends LinearOpMode {
+@Autonomous(name="AreaBlueTop1", group="Linear Opmode1")
+public class AreaBlueTop1 extends LinearOpMode {
 
 
     // Declare OpMode members.
@@ -123,57 +123,7 @@ public class AreaBlueBottom3 extends LinearOpMode {
             // RF   = Range.clip(drive - turn, -1.0, 1.0) ;
 
 // Moving back:
-            if (runtime.seconds() > 0) {
-                LF = -0.5;
-                RF = -0.5;
-                LB = -0.5;
-                RB = -0.5;
-            }
-
-
-
-            //Stopping
-            if (runtime.seconds() > 1) {
-                LF = 0;
-                RF = 0;
-                LB = 0;
-                RB = 0;
-            }
-
-            //Moving back
-            if (runtime.seconds() > 1.5) {
-                LF = -0.5;
-                RF = -0.5;
-                LB = -0.5;
-                RB = -0.5;
-            }
-
-            //stop
-            if (runtime.seconds() >2.2) {
-                LF = 0;
-                RF = 0;
-                LB = 0;
-                RB = 0;
-            }
-
-
-            //TURN
-            if (runtime.seconds() > 2.6) {
-                LF = -0.5;
-                RF = 0.5;
-                LB = -0.5;
-                RB = 0.5;
-            }
-
-            //stopping
-            if (runtime.seconds() > 3.1) {
-                LF = 0;
-                RF = 0;
-                LB = 0;
-                RB = 0;
-            }
-           //fORWARD
-            if (runtime.seconds() > 3.6) {
+            if (runtime.seconds() > 0.5) {
                 LF = 0.5;
                 RF = 0.5;
                 LB = 0.5;
@@ -181,40 +131,19 @@ public class AreaBlueBottom3 extends LinearOpMode {
             }
 
             //stopping
-            if (runtime.seconds() > 4) {
+            if (runtime.seconds() > 1) {
                 LF = 0;
                 RF = 0;
                 LB = 0;
                 RB = 0;
             }
-//BACK
-            if (runtime.seconds() > 4.1) {
+
+        //Moving Back//
+            if (runtime.seconds() > 2) {
                 LF = -0.5;
                 RF = -0.5;
                 LB = -0.5;
                 RB = -0.5;
-            }
-
-            //stopping
-            if (runtime.seconds() > 4.1) {
-                LF = 0;
-                RF = 0;
-                LB = 0;
-                RB = 0;
-            }
-//RIGHT
-            if (runtime.seconds() > 4.5) {
-                LF = -0.5;
-                RF = 0.5;
-                LB = 0.5;
-                RB = -0.5;
-            }
-//STOP
-            if (runtime.seconds() > 5) {
-                LF = 0;
-                RF = 0;
-                LB = 0;
-                RB = 0;
             }
 
 

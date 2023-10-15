@@ -1,31 +1,8 @@
-/* Copyright (c) 2017 FIRST. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted (subject to the limitations in the disclaimer below) provided that
- * the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice, this list
- * of conditions and the following disclaimer.
- *
- * Redistributions in binary form must reproduce the above copyright notice, this
- * list of conditions and the following disclaimer in the documentation and/or
- * other materials provided with the distribution.
- *
- * Neither the name of FIRST nor the names of its contributors may be used to endorse or
- * promote products derived from this software without specific prior written permission.
- *
- * NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS
- * LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+//Bottom Blue section --> Right line
+// Robot starts facing Front
+// Its moves forwards place the purple pixel and then gets a white pixel
+// After getting the white pixel the robot goes through the stage door and goes to the backdrop and places the pixel
+//Finally, it parks in the parking area
 //MINE ( AARUSH )
 package org.firstinspires.ftc.teamcode;
 
@@ -51,8 +28,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 
-@Autonomous(name="AreaBlueBottom3", group="Linear Opmode2")
-public class AreaBlueBottom3 extends LinearOpMode {
+@Autonomous(name="AreaBlueBottom1", group="Linear Opmode1")
+public class AreaBlueBottom1 extends LinearOpMode {
 
 
     // Declare OpMode members.
@@ -122,17 +99,17 @@ public class AreaBlueBottom3 extends LinearOpMode {
             // LF    = Range.clip(drive + turn, -1.0, 1.0) ;
             // RF   = Range.clip(drive - turn, -1.0, 1.0) ;
 
-// Moving back:
+// Moving left:
             if (runtime.seconds() > 0) {
-                LF = -0.5;
-                RF = -0.5;
-                LB = -0.5;
-                RB = -0.5;
+                LF = 0.5;
+                RF = 0.5;
+                LB = 0.5;
+                RB = 0.5;
             }
 
 
 
-            //Stopping
+            //Stopping ( placing )
             if (runtime.seconds() > 1) {
                 LF = 0;
                 RF = 0;
@@ -140,55 +117,33 @@ public class AreaBlueBottom3 extends LinearOpMode {
                 RB = 0;
             }
 
-            //Moving back
-            if (runtime.seconds() > 1.5) {
-                LF = -0.5;
-                RF = -0.5;
-                LB = -0.5;
-                RB = -0.5;
-            }
-
-            //stop
-            if (runtime.seconds() >2.2) {
-                LF = 0;
-                RF = 0;
-                LB = 0;
-                RB = 0;
-            }
-
-
-            //TURN
-            if (runtime.seconds() > 2.6) {
-                LF = -0.5;
-                RF = 0.5;
-                LB = -0.5;
-                RB = 0.5;
-            }
-
-            //stopping
-            if (runtime.seconds() > 3.1) {
-                LF = 0;
-                RF = 0;
-                LB = 0;
-                RB = 0;
-            }
-           //fORWARD
-            if (runtime.seconds() > 3.6) {
+            //Forwards
+            if (runtime.seconds() > 2) {
                 LF = 0.5;
                 RF = 0.5;
                 LB = 0.5;
                 RB = 0.5;
             }
 
-            //stopping
-            if (runtime.seconds() > 4) {
+            //stop
+            if (runtime.seconds() > 3) {
                 LF = 0;
                 RF = 0;
                 LB = 0;
                 RB = 0;
             }
-//BACK
-            if (runtime.seconds() > 4.1) {
+
+
+            // Moving left:
+            if (runtime.seconds() > 4) {
+                LF = -0.5;
+                RF = 0.5;
+                LB = 0.5;
+                RB = -0.5;
+            }
+
+            //Backwards
+            if (runtime.seconds() > 5) {
                 LF = -0.5;
                 RF = -0.5;
                 LB = -0.5;
@@ -196,21 +151,36 @@ public class AreaBlueBottom3 extends LinearOpMode {
             }
 
             //stopping
-            if (runtime.seconds() > 4.1) {
+            if (runtime.seconds() > 6) {
                 LF = 0;
                 RF = 0;
                 LB = 0;
                 RB = 0;
             }
-//RIGHT
-            if (runtime.seconds() > 4.5) {
+// Moving RIGHT:
+            if (runtime.seconds() > 7) {
+                LF = 0.5;
+                RF = -0.5;
+                LB = -0.5;
+                RB = 0.5;
+            }
+
+            //stopping
+            if (runtime.seconds() > 8) {
+                LF = 0;
+                RF = 0;
+                LB = 0;
+                RB = 0;
+            }
+//BACK
+            if (runtime.seconds() > 9) {
                 LF = -0.5;
-                RF = 0.5;
-                LB = 0.5;
+                RF = -0.5;
+                LB = -0.5;
                 RB = -0.5;
             }
 //STOP
-            if (runtime.seconds() > 5) {
+            if (runtime.seconds() > 10) {
                 LF = 0;
                 RF = 0;
                 LB = 0;

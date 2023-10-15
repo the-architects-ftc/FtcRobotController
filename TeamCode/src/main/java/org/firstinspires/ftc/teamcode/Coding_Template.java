@@ -32,7 +32,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -51,8 +50,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 
-@Autonomous(name="AreaBlueBottom3", group="Linear Opmode2")
-public class AreaBlueBottom3 extends LinearOpMode {
+@Autonomous(name="Coding_Template", group="Linear Opmode2")
+public class Coding_Template extends LinearOpMode {
 
 
     // Declare OpMode members.
@@ -109,6 +108,7 @@ public class AreaBlueBottom3 extends LinearOpMode {
             double RF = 0;
             double LB = 0;
             double RB = 0;
+            double currTime = 0;
 
 
             // Choose to drive using either Tank Mode, or POV Mode
@@ -123,104 +123,9 @@ public class AreaBlueBottom3 extends LinearOpMode {
             // RF   = Range.clip(drive - turn, -1.0, 1.0) ;
 
 // Moving back:
-            if (runtime.seconds() > 0) {
-                LF = -0.5;
-                RF = -0.5;
-                LB = -0.5;
-                RB = -0.5;
-            }
 
-
-
-            //Stopping
-            if (runtime.seconds() > 1) {
-                LF = 0;
-                RF = 0;
-                LB = 0;
-                RB = 0;
-            }
-
-            //Moving back
-            if (runtime.seconds() > 1.5) {
-                LF = -0.5;
-                RF = -0.5;
-                LB = -0.5;
-                RB = -0.5;
-            }
-
-            //stop
-            if (runtime.seconds() >2.2) {
-                LF = 0;
-                RF = 0;
-                LB = 0;
-                RB = 0;
-            }
-
-
-            //TURN
-            if (runtime.seconds() > 2.6) {
-                LF = -0.5;
-                RF = 0.5;
-                LB = -0.5;
-                RB = 0.5;
-            }
-
-            //stopping
-            if (runtime.seconds() > 3.1) {
-                LF = 0;
-                RF = 0;
-                LB = 0;
-                RB = 0;
-            }
-           //fORWARD
-            if (runtime.seconds() > 3.6) {
-                LF = 0.5;
-                RF = 0.5;
-                LB = 0.5;
-                RB = 0.5;
-            }
-
-            //stopping
-            if (runtime.seconds() > 4) {
-                LF = 0;
-                RF = 0;
-                LB = 0;
-                RB = 0;
-            }
-//BACK
-            if (runtime.seconds() > 4.1) {
-                LF = -0.5;
-                RF = -0.5;
-                LB = -0.5;
-                RB = -0.5;
-            }
-
-            //stopping
-            if (runtime.seconds() > 4.1) {
-                LF = 0;
-                RF = 0;
-                LB = 0;
-                RB = 0;
-            }
-//RIGHT
-            if (runtime.seconds() > 4.5) {
-                LF = -0.5;
-                RF = 0.5;
-                LB = 0.5;
-                RB = -0.5;
-            }
-//STOP
-            if (runtime.seconds() > 5) {
-                LF = 0;
-                RF = 0;
-                LB = 0;
-                RB = 0;
-            }
-
-
-
-
-
+           moveRight_dist(500);
+            stayPut(70000);
 
 
             // Tank Mode uses one stick to control each wheel.
@@ -230,10 +135,10 @@ public class AreaBlueBottom3 extends LinearOpMode {
 
 
             // Send calculated power to wheels
-            bl.setPower(LB);
-            fl.setPower(LF);
-            fr.setPower(RF);
-            br.setPower(RB);
+            //bl.setPower(LB);
+            //fl.setPower(LF);
+            //fr.setPower(RF);
+            //br.setPower(RB);
 
 
             // Show the elapsed game time and wheel power.
@@ -242,5 +147,152 @@ public class AreaBlueBottom3 extends LinearOpMode {
             telemetry.update();
         }
     }
-}
+
+    // Turn 90 degree Right
+    private void turn90Right()
+    {
+        bl.setPower(-0.5);
+        fl.setPower(-0.5);
+        fr.setPower(0.5);
+        br.setPower(0.5);
+        sleep(650);
+
+    }
+
+    // Turn 90 degree Left
+    private void turn90Left()
+    {
+        bl.setPower(0.5);
+        fl.setPower(0.5);
+        fr.setPower(-0.5);
+        br.setPower(-0.5);
+        sleep(650);
+
+    }
+
+    //STOP ROBOT
+    private void stayPut(int t_msec)
+    {
+        bl.setPower(-0);
+        fl.setPower(-0);
+        fr.setPower(0);
+        br.setPower(0);
+        sleep(t_msec);
+
+    }
+
+    //FORWARDS
+    private void moveForward_time (int t_msec)
+    {
+        bl.setPower(0.5);
+        fl.setPower(0.5);
+        fr.setPower(0.5);
+        br.setPower(0.5);
+        sleep(t_msec);
+
+    }
+
+    private void moveForward_dist(double d_inch)
+    {
+        long t_msec = 0;
+        double temp = 0;
+        // 500 msec moves the robot 24 inches
+        temp = (500.0/24.0)*d_inch;
+        t_msec = (long) temp;
+        // Set powers
+        bl.setPower(0.5);
+        fl.setPower(0.5);
+        fr.setPower(0.5);
+        br.setPower(0.5);
+        sleep(t_msec);
+        stayPut(500);
+    }
+
+    //BACKWARD
+    private void moveBackward_time (int t_msec)
+    {
+        bl.setPower(-0.5);
+        fl.setPower(-0.5);
+        fr.setPower(-0.5);
+        br.setPower(-0.5);
+        sleep(t_msec);
+
+    }
+
+
+    private void moveBackward_dist(double d_inch)
+    {
+        long t_msec = 0;
+        double temp = 0;
+        // 500 msec moves the robot 24 inches
+        temp = (500.0/24.0)*d_inch;
+        t_msec = (long) temp;
+        // Set powers
+        bl.setPower(-0.5);
+        fl.setPower(-0.5);
+        fr.setPower(-0.5);
+        br.setPower(-0.5);
+        sleep(t_msec);
+        stayPut(500);
+    }
+
+    private void moveRight_time (int t_msec)
+    {
+        bl.setPower(-0.5);
+        fl.setPower(0.5);
+        fr.setPower(-0.5);
+        br.setPower(0.5);
+        sleep(t_msec);
+
+    }
+
+    private void moveLeft_time (int t_msec)
+    {
+        bl.setPower(0.5);
+        fl.setPower(-0.5);
+        fr.setPower(0.5);
+        br.setPower(-0.5);
+        sleep(t_msec);
+
+    }
+
+    private void moveRight_dist(double d_inch)
+    {
+        long t_msec = 0;
+        double temp = 0;
+        // 500 msec moves the robot 24 inches
+        temp = (500.0/13.5)*d_inch;
+        t_msec = (long) temp;
+        // Set powers
+        bl.setPower(0.5);
+        fl.setPower(-0.5);
+        fr.setPower(0.5);
+        br.setPower(-0.5);
+        sleep(t_msec);
+        stayPut(500);
+    }
+
+
+    private void moveLeft_dist(double d_inch)
+    {
+        long t_msec = 0;
+        double temp = 0;
+        // 500 msec moves the robot 24 inches
+        temp = (500.0/13.5)*d_inch;
+        t_msec = (long) temp;
+        // Set powers
+        bl.setPower(-0.5);
+        fl.setPower(0.5);
+        fr.setPower(-0.5);
+        br.setPower(0.5);
+        sleep(t_msec);
+        stayPut(500);
+    }
+
+
+
+    }
+
+
+
 
