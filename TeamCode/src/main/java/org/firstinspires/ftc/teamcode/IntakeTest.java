@@ -50,8 +50,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 
-@Autonomous(name="Coding_Template", group="Linear Opmode2")
-public class Coding_Template extends LinearOpMode {
+@Autonomous(name="IntakeTest", group="Linear Opmode2")
+public class IntakeTest extends LinearOpMode {
 
 
     // Declare OpMode members.
@@ -124,8 +124,10 @@ public class Coding_Template extends LinearOpMode {
 
 
 
-         //GUYS CODE GHOES HERE JUST SAYING THO
+            //GUYS CODE GHOES HERE JUST SAYING THO
             //LISTEN :)
+
+            moveBackward_time(100000);
 
 
 
@@ -185,10 +187,10 @@ public class Coding_Template extends LinearOpMode {
     //FORWARDS
     private void moveForward_time (int t_msec)
     {
-        bl.setPower(0.5);
-        fl.setPower(0.5);
-        fr.setPower(0.5);
-        br.setPower(0.5);
+        bl.setPower(1.5);
+        fl.setPower(1.5);
+        fr.setPower(1.5);
+        br.setPower(1.5);
         sleep(t_msec);
 
     }
@@ -212,10 +214,10 @@ public class Coding_Template extends LinearOpMode {
     //BACKWARD
     private void moveBackward_time (int t_msec)
     {
-        bl.setPower(-0.5);
-        fl.setPower(-0.5);
-        fr.setPower(-0.5);
-        br.setPower(-0.5);
+        bl.setPower(-1.5);
+        fl.setPower(-1.5);
+        fr.setPower(-1.5);
+        br.setPower(-1.5);
         sleep(t_msec);
 
     }
@@ -292,7 +294,7 @@ public class Coding_Template extends LinearOpMode {
 
 
 
-    }
+}
 
 
 
