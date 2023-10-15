@@ -122,10 +122,11 @@ public class Coding_Template extends LinearOpMode {
             // LF    = Range.clip(drive + turn, -1.0, 1.0) ;
             // RF   = Range.clip(drive - turn, -1.0, 1.0) ;
 
-// Moving back:
 
-           moveRight_dist(500);
-            stayPut(70000);
+
+         //GUYS CODE GHOES HERE JUST SAYING THO
+            //LISTEN :)
+
 
 
             // Tank Mode uses one stick to control each wheel.
@@ -155,7 +156,7 @@ public class Coding_Template extends LinearOpMode {
         fl.setPower(-0.5);
         fr.setPower(0.5);
         br.setPower(0.5);
-        sleep(650);
+        sleep(700);
 
     }
 
@@ -166,7 +167,7 @@ public class Coding_Template extends LinearOpMode {
         fl.setPower(0.5);
         fr.setPower(-0.5);
         br.setPower(-0.5);
-        sleep(650);
+        sleep(700);
 
     }
 
