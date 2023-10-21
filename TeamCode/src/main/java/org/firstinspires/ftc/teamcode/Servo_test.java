@@ -88,9 +88,10 @@ public class Servo_test extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-        runtime.reset();
+
 
         Servo1.setPosition(0.75);
+        telemetry.addData("Servo1", "position=" + "  actual=" + Servo1.getPosition());
 
 
 
