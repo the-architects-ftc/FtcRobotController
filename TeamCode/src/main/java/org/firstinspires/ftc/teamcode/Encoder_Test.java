@@ -33,7 +33,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
  * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
@@ -42,8 +41,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
-
-
 @Autonomous(name="Encoder_Test", group="Linear Opmode2")
 public class Encoder_Test extends LinearOpMode
 {
@@ -56,7 +53,7 @@ public class Encoder_Test extends LinearOpMode
     public void runOpMode()
     {
         // Variable
-        int currEncoderCount= 0;
+        int currEncoderCount = 0;
 
         // adding telemetry
         telemetry.setAutoClear(false);
@@ -82,31 +79,14 @@ public class Encoder_Test extends LinearOpMode
         telemetry.addData("Mode", "waiting");  // telemetry: Mode Waiting
         telemetry.update();
 
-        // reset runtime
-        //runtime.reset(); // reset run time
-
-        // run until the end of the match (driver presses STOP)
-        currEncoderCount = moveForward_wEncoder_counts( 500, 0.2);
-        telemetry.addData("currEncoderCount",currEncoderCount);
-        telemetry.addData("fl encoder count",fl.getCurrentPosition());
-        telemetry.addData("bl encoder count",bl.getCurrentPosition());
-        telemetry.addData("fr encoder count",fr.getCurrentPosition());
-        telemetry.addData("br encoder count",br.getCurrentPosition());
-        telemetry.update();
-
+      // CODE STARTS HERE
+        moveForward_wDistance(12, 0.5);
         sleep(2000);
+        moveBackward_wDistance(12,0.5);
 
-        currEncoderCount = moveForward_wEncoder_counts(-500, 0.2);
-        telemetry.addData("currEncoderCount",currEncoderCount);
-        telemetry.addData("fl encoder count",fl.getCurrentPosition());
-        telemetry.addData("bl encoder count",bl.getCurrentPosition());
-        telemetry.addData("fr encoder count",fr.getCurrentPosition());
-        telemetry.addData("br encoder count",br.getCurrentPosition());
+        sleep(1000000);
+    }
 
-        telemetry.update();
-
-        sleep(7000);
-     }
 
     // Set motor directions
     private void setMotorOrientation()
@@ -121,7 +101,6 @@ public class Encoder_Test extends LinearOpMode
     }
 
     // Reset motor encoder counts
-
     private void resetMotorEncoderCounts()
     {
         // Reset encoder counts kept by motors
@@ -133,6 +112,7 @@ public class Encoder_Test extends LinearOpMode
         telemetry.update();
     }
 
+    // Set motor to zero power
     private void setMotorToZeroPower()
     {
         bl.setPower(0);
@@ -140,55 +120,121 @@ public class Encoder_Test extends LinearOpMode
         fr.setPower(0);
         br.setPower(0);
     }
-    // Move forward by encoder counts
-    private int moveForward_wEncoder_counts(int encoder_counts, double motor_power)
-    {
-        int currEncoderCount= 0;
-        double moveDirection = 1; // 1 means forward and -1 means backward
 
-        // Set encoder counts
-        //bl.setTargetPosition(encoder_counts);
-        //fl.setTargetPosition(encoder_counts);
-        //fr.setTargetPosition(encoder_counts);
-        //br.setTargetPosition(encoder_counts);
-        //telemetry.addData("Encoder","Counts Set");
-        //telemetry.update();
+    // Move forward by encoder counts
+    private int moveForward_wEncoder_counts(int encoderAbsCounts, double motorAbsPower)
+    {
+        int currEncoderCount = 0;
+        // Resetting encoder counts
+        resetMotorEncoderCounts();
 
         // Setting motor to run in runToPosition
-        if (false)
-        {
-            bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            telemetry.addData("Status","Encoder RunToPosition");
-            telemetry.update();
-        }
-        else
-        {
-            bl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            fr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            telemetry.addData("Status","RUN_WITHOUT_ENCODER");
-            telemetry.update();
-        }
-
-        // Get direction of movement
-        if (fl.getCurrentPosition() > encoder_counts)
-        {
-            moveDirection = -1.0;
-        }
+        bl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        fr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        telemetry.addData("Status", "RUN_WITHOUT_ENCODER");
+        telemetry.update();
 
         // Set motor power
         // NOTE: sign of power is ignored as sign of target encoder position controls direction when running to position
-        bl.setPower( moveDirection*motor_power);
-        fl.setPower(moveDirection*motor_power);
-        fr.setPower(moveDirection*motor_power);
-        br.setPower(moveDirection*motor_power);
+        bl.setPower(motorAbsPower);
+        fl.setPower(motorAbsPower);
+        fr.setPower(motorAbsPower);
+        br.setPower(motorAbsPower);
 
         // Wait for robot to finish this movement
-        while (opModeIsActive() && ((moveDirection*fl.getCurrentPosition())<(moveDirection*encoder_counts))) // instead of fl.isbusy()
+        while (opModeIsActive() && (fl.getCurrentPosition() < encoderAbsCounts)) {
+            //telemetry.addData("enc-bl",fl.getCurrentPosition());
+            //telemetry.update();
+            idle();
+        }
+
+        telemetry.addData("bl power:", bl.getPower());
+        telemetry.addData("fl power:", fl.getPower());
+        telemetry.addData("fr power:", fr.getPower());
+        telemetry.addData("br power:", br.getPower());
+        telemetry.update();
+
+        // apply zero power to avoid continuous power to the wheels
+        setMotorToZeroPower();
+
+        // return current encoder count
+        currEncoderCount = fl.getCurrentPosition();
+        telemetry.addData("currEncoderCount", currEncoderCount);
+        telemetry.update();
+        return (currEncoderCount);
+    }
+
+    private int moveForward_wDistance(int DistanceAbsIn, double motorAbsPower)
+    {
+        int currEncoderCount = 0;
+        double encoderAbsCounts = (DistanceAbsIn/12.5)*500.0;
+        // Resetting encoder counts
+        resetMotorEncoderCounts();
+
+        // Setting motor to run in runToPosition\
+        bl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        fr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        telemetry.addData("Status", "RUN_WITHOUT_ENCODER");
+        telemetry.update();
+
+        // Set motor power
+        // NOTE: sign of power is ignored as sign of target encoder position controls direction when running to position
+        bl.setPower(motorAbsPower);
+        fl.setPower(motorAbsPower);
+        fr.setPower(motorAbsPower);
+        br.setPower(motorAbsPower);
+
+        // Wait for robot to finish this movement
+        while (opModeIsActive() && (fl.getCurrentPosition() < encoderAbsCounts)) {
+            //telemetry.addData("enc-bl",fl.getCurrentPosition());
+            //telemetry.update();
+            idle();
+        }
+
+        telemetry.addData("bl power:", bl.getPower());
+        telemetry.addData("fl power:", fl.getPower());
+        telemetry.addData("fr power:", fr.getPower());
+        telemetry.addData("br power:", br.getPower());
+        telemetry.update();
+
+        // apply zero power to avoid continuous power to the wheels
+        setMotorToZeroPower();
+
+        // return current encoder count
+        currEncoderCount = fl.getCurrentPosition();
+        telemetry.addData("currEncoderCount", currEncoderCount);
+        telemetry.update();
+        return (currEncoderCount);
+    }
+    // Moving Backwards
+    private int moveBackward_wEncoder_counts(int encoderAbsCounts, double motorAbsPower)
+    {
+        int currEncoderCount = 0;
+
+        // Resetting encoder counts
+        resetMotorEncoderCounts();
+
+        // Setting motor to run in runToPosition
+        bl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        fr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        telemetry.addData("Status","RUN_WITHOUT_ENCODER");
+        telemetry.update();
+
+        // Set motor power
+        // NOTE: sign of power is ignored as sign of target encoder position controls direction when running to position
+        bl.setPower(-motorAbsPower);
+        fl.setPower(-motorAbsPower);
+        fr.setPower(-motorAbsPower);
+        br.setPower(-motorAbsPower);
+
+        // Wait for robot to finish this movement
+        while (opModeIsActive() && (fl.getCurrentPosition()>-encoderAbsCounts))
         {
             //telemetry.addData("enc-bl",fl.getCurrentPosition());
             //telemetry.update();
@@ -212,25 +258,147 @@ public class Encoder_Test extends LinearOpMode
 
     }
 
-    // Turn 90 degree Right
-    private void turn90Right()
+
+    private int moveBackward_wDistance(int DistanceAbsIn, double motorAbsPower)
     {
-        bl.setPower(-0.5);
-        fl.setPower(-0.5);
-        fr.setPower(0.5);
-        br.setPower(0.5);
-        sleep(700);
+        int currEncoderCount = 0;
+        double encoderAbsCounts = (DistanceAbsIn/12.5)*500.1;
+
+        // Resetting encoder counts
+        resetMotorEncoderCounts();
+
+        // Setting motor to run in runToPosition
+        bl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        fr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        telemetry.addData("Status","RUN_WITHOUT_ENCODER");
+        telemetry.update();
+
+        // Set motor power
+        // NOTE: sign of power is ignored as sign of target encoder position controls direction when running to position
+        bl.setPower(-motorAbsPower);
+        fl.setPower(-motorAbsPower);
+        fr.setPower(-motorAbsPower);
+        br.setPower(-motorAbsPower);
+
+        // Wait for robot to finish this movement
+        while (opModeIsActive() && (fl.getCurrentPosition()>-encoderAbsCounts))
+        {
+            //telemetry.addData("enc-bl",fl.getCurrentPosition());
+            //telemetry.update();
+            idle();
+        }
+
+        telemetry.addData("bl power:",bl.getPower());
+        telemetry.addData("fl power:",fl.getPower());
+        telemetry.addData("fr power:",fr.getPower());
+        telemetry.addData("br power:",br.getPower());
+        telemetry.update();
+
+        // apply zero power to avoid continuous power to the wheels
+        setMotorToZeroPower();
+
+        // return current encoder count
+        currEncoderCount = fl.getCurrentPosition();
+        telemetry.addData("currEncoderCount",currEncoderCount);
+        telemetry.update();
+        return(currEncoderCount);
 
     }
 
-    // Turn 90 degree Left
-    private void turn90Left()
+    //Moving left
+    private int moveLeft_wEncoder_counts(int encoderAbsCounts, double motorAbsPower)
     {
-        bl.setPower(0.5);
-        fl.setPower(0.5);
-        fr.setPower(-0.5);
-        br.setPower(-0.5);
-        sleep(700);
+        int currEncoderCount = 0;
+
+        // Resetting encoder counts
+        resetMotorEncoderCounts();
+
+        // Setting motor to run in runToPosition
+        bl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        fr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        telemetry.addData("Status", "RUN_WITHOUT_ENCODER");
+        telemetry.update();
+
+        // Set motor power
+        // NOTE: sign of power is ignored as sign of target encoder position controls direction when running to position
+        bl.setPower(motorAbsPower);
+        fl.setPower(-motorAbsPower);
+        fr.setPower(motorAbsPower);
+        br.setPower(-motorAbsPower);
+
+        // Wait for robot to finish this movement
+        while (opModeIsActive() && (fl.getCurrentPosition() > -encoderAbsCounts)) {
+            //telemetry.addData("enc-bl",fl.getCurrentPosition());
+            //telemetry.update();
+            idle();
+        }
+
+        telemetry.addData("bl power:", bl.getPower());
+        telemetry.addData("fl power:", fl.getPower());
+        telemetry.addData("fr power:", fr.getPower());
+        telemetry.addData("br power:", br.getPower());
+        telemetry.update();
+
+        // apply zero power to avoid continuous power to the wheels
+        setMotorToZeroPower();
+
+        // return current encoder count
+        currEncoderCount = fl.getCurrentPosition();
+        telemetry.addData("currEncoderCount", currEncoderCount);
+        telemetry.update();
+        return (currEncoderCount);
+
+    }
+
+    //Moving Right
+    private int moveRight_wEncoder_counts(int encoderAbsCounts, double motorAbsPower)
+    {
+        int currEncoderCount = 0;
+
+        // Resetting encoder counts
+        resetMotorEncoderCounts();
+
+        // Setting motor to run in runToPosition
+        bl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        fr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        telemetry.addData("Status","RUN_WITHOUT_ENCODER");
+        telemetry.update();
+
+        // Set motor power
+        // NOTE: sign of power is ignored as sign of target encoder position controls direction when running to position
+        bl.setPower(-motorAbsPower);
+        fl.setPower(motorAbsPower);
+        fr.setPower(-motorAbsPower);
+        br.setPower(motorAbsPower);
+
+        // Wait for robot to finish this movement
+        while (opModeIsActive() && (fl.getCurrentPosition()<encoderAbsCounts))
+        {
+            telemetry.addData("enc-bl",fl.getCurrentPosition());
+            telemetry.update();
+            idle();
+        }
+
+        telemetry.addData("bl power:",bl.getPower());
+        telemetry.addData("fl power:",fl.getPower());
+        telemetry.addData("fr power:",fr.getPower());
+        telemetry.addData("br power:",br.getPower());
+        telemetry.update();
+
+        // apply zero power to avoid continuous power to the wheels
+        setMotorToZeroPower();
+
+        // return current encoder count
+        currEncoderCount = fl.getCurrentPosition();
+        telemetry.addData("currEncoderCount",currEncoderCount);
+        telemetry.update();
+        return(currEncoderCount);
 
     }
 
@@ -239,119 +407,11 @@ public class Encoder_Test extends LinearOpMode
     {
         bl.setPower(0);
         fl.setPower(0);
-       fr.setPower(0);
+        fr.setPower(0);
         br.setPower(0);
         sleep(t_msec);
 
     }
-
-    //FORWARDS
-    private void moveForward_time (int t_msec)
-    {
-        bl.setPower(0.5);
-        fl.setPower(0.5);
-        fr.setPower(0.5);
-        br.setPower(0.5);
-        sleep(t_msec);
-    }
-
-    private void moveForward_dist(double d_inch)
-    {
-        long t_msec = 0;
-        double temp = 0;
-        // 500 msec moves the robot 24 inches
-        temp = (500.0/24.0)*d_inch;
-        t_msec = (long) temp;
-        // Set powers
-        bl.setPower(0.5);
-        fl.setPower(0.5);
-        fr.setPower(0.5);
-        br.setPower(0.5);
-        sleep(t_msec);
-        stayPut(500);
-    }
-
-    //BACKWARD
-    private void moveBackward_time (int t_msec)
-    {
-        bl.setPower(-0.5);
-        fl.setPower(-0.5);
-        fr.setPower(-0.5);
-        br.setPower(-0.5);
-        sleep(t_msec);
-
-    }
-
-
-    private void moveBackward_dist(double d_inch)
-    {
-        long t_msec = 0;
-        double temp = 0;
-        // 500 msec moves the robot 24 inches
-        temp = (500.0/24.0)*d_inch;
-        t_msec = (long) temp;
-        // Set powers
-        bl.setPower(-0.5);
-        fl.setPower(-0.5);
-        fr.setPower(-0.5);
-        br.setPower(-0.5);
-        sleep(t_msec);
-        stayPut(500);
-    }
-
-    private void moveRight_time (int t_msec)
-    {
-        bl.setPower(-0.5);
-        fl.setPower(0.5);
-        fr.setPower(-0.5);
-        br.setPower(0.5);
-        sleep(t_msec);
-
-    }
-
-    private void moveLeft_time (int t_msec)
-    {
-        bl.setPower(0.5);
-        fl.setPower(-0.5);
-        fr.setPower(0.5);
-        br.setPower(-0.5);
-        sleep(t_msec);
-
-    }
-
-    private void moveRight_dist(double d_inch)
-    {
-        long t_msec = 0;
-        double temp = 0;
-        // 500 msec moves the robot 24 inches
-        temp = (500.0/13.5)*d_inch;
-        t_msec = (long) temp;
-        // Set powers
-        bl.setPower(0.5);
-        fl.setPower(-0.5);
-        fr.setPower(0.5);
-        br.setPower(-0.5);
-        sleep(t_msec);
-        stayPut(500);
-    }
-
-
-    private void moveLeft_dist(double d_inch)
-    {
-        long t_msec = 0;
-        double temp = 0;
-        // 500 msec moves the robot 24 inches
-        temp = (500.0/13.5)*d_inch;
-        t_msec = (long) temp;
-        // Set powers
-        bl.setPower(-0.5);
-        fl.setPower(0.5);
-        fr.setPower(-0.5);
-        br.setPower(0.5);
-        sleep(t_msec);
-        stayPut(500);
-    }
-
 
 
 }
