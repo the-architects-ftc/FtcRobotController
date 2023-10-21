@@ -97,8 +97,8 @@ public class Gyro_Test extends LinearOpMode
 
         sleep(1000);
         // Get robot orientation
-        imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        telemetry.addData("angles",imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES));
+       // imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+       // telemetry.addData("angles",imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES));
         Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         telemetry.addData("first angle", angles.firstAngle);
         telemetry.addData("second angle", angles.secondAngle);
