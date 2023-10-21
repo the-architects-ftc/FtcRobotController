@@ -152,12 +152,13 @@ public class AreaTopRed2 extends LinearOpMode {
 
             // going foward
 
-            if (runtime.seconds() > 2.5 {
+            if (runtime.seconds() > 2.5) {
                 LF = -0.5;
                 RF = 0.5;
                 LB = -0.5;
                 RB = 0.5;
             }
+
             // turning  to face the backboard backwards
 
             if (runtime.seconds() > 2.6) {

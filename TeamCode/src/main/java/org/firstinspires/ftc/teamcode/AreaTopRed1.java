@@ -69,8 +69,6 @@ public class AreaTopRed1 extends LinearOpMode {
     DcMotor br = null;
 
 
-
-
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -130,7 +128,7 @@ public class AreaTopRed1 extends LinearOpMode {
                 LB = 0.5;
                 RB = 0.5;
             }
-                // places the pixel down
+            // places the pixel down
 
             if (runtime.seconds() > 0.9) {
                 LF = 0;
@@ -140,7 +138,7 @@ public class AreaTopRed1 extends LinearOpMode {
             }
 
 
-            if (runtime.seconds() > 1.4){
+            if (runtime.seconds() > 1.4) {
                 LF = 0.5;
                 RF = -0.5;
                 LB = -0.5;
@@ -148,7 +146,7 @@ public class AreaTopRed1 extends LinearOpMode {
             }
             // moving backwards on the left position
 
-            if (runtime.seconds() > 2){
+            if (runtime.seconds() > 2) {
                 LF = -0.5;
                 RF = 0.5;
                 LB = -0.5;
@@ -161,23 +159,25 @@ public class AreaTopRed1 extends LinearOpMode {
                 LB = 0;
                 RB = 0;
 
-            // Tank Mode uses one stick to control each wheel.
-            // - This requires no math, but it is hard to drive forward slowly and keep straight.
-            // LF  = -gamepad1.left_stick_y ;
-            // RF = -gamepad1.right_stick_y ;
+                // Tank Mode uses one stick to control each wheel.
+                // - This requires no math, but it is hard to drive forward slowly and keep straight.
+                // LF  = -gamepad1.left_stick_y ;
+                // RF = -gamepad1.right_stick_y ;
 
 
-            // Send calculated power to wheels
-            bl.setPower(LB);
-            fl.setPower(LF);
-            fr.setPower(RF);
-            br.setPower(RB);
+                // Send calculated power to wheels
+                bl.setPower(LB);
+                fl.setPower(LF);
+                fr.setPower(RF);
+                br.setPower(RB);
 
 
-            // Show the elapsed game time and wheel power.
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "left (%.2f), right (%.2f)", LF, RF,LB,RB);
-            telemetry.update();
+                // Show the elapsed game time and wheel power.
+                telemetry.addData("Status", "Run Time: " + runtime.toString());
+                telemetry.addData("Motors", "left (%.2f), right (%.2f)", LF, RF, LB, RB);
+                telemetry.update();
+            }
         }
     }
 }
+

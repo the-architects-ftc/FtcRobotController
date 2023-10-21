@@ -42,11 +42,11 @@ public class joystick_driving extends LinearOpMode
             leftY = gamepad1.left_stick_y * -1;
             rightY = gamepad1.right_stick_y * -1;
 
-            fl.setPower(Range.clip(leftY, -1.0, 1.0));
-            bl.setPower(Range.clip(leftY, -1.0, 1.0));
+            fl.setPower(Range.clip(leftY, -0.5, 0.5));
+            bl.setPower(Range.clip(leftY, -0.5, 0.5));
 
-            fr.setPower(Range.clip(rightY, -1.0, 1.0));
-            br.setPower(Range.clip(rightY, -1.0, 1.0));
+            fr.setPower(Range.clip(rightY, -0.5, 0.5));
+            br.setPower(Range.clip(rightY, -0.5, 0.5));
 
 
 
