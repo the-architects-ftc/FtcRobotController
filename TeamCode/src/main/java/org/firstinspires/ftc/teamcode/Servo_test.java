@@ -35,6 +35,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.checkerframework.checker.units.qual.A;
+
 
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
@@ -55,7 +57,6 @@ public class Servo_test extends LinearOpMode {
 
 
     // Declare OpMode members.
-    private ElapsedTime runtime = new ElapsedTime();
     //private DcMotor bl = null;
     //private DcMotor fl = null;
     //private DcMotor fr = null;
@@ -63,6 +64,13 @@ public class Servo_test extends LinearOpMode {
 
 
     Servo Servo1 = null;
+    public final static double ARM_HOME = 0.0;
+    public final static double ARM_MIN_RANGE = 0.0;
+    public final static double ARM_MAX_RANGE = 0.5;
+
+    private ElapsedTime runtime = new ElapsedTime();
+
+
 
 
 
@@ -79,6 +87,7 @@ public class Servo_test extends LinearOpMode {
         // step (using the FTC Robot Controller app on the phone).
 
         Servo1 = hardwareMap.servo.get("Servo1");
+        Servo1.setPosition(ARM_HOME);
 
 
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
@@ -92,6 +101,9 @@ public class Servo_test extends LinearOpMode {
 
         Servo1.setPosition(0.75);
         telemetry.addData("Servo1", "position=" + "  actual=" + Servo1.getPosition());
+
+
+
 
 
 
