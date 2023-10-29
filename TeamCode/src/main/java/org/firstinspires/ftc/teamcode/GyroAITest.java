@@ -32,9 +32,30 @@ public class GyroAITest extends LinearOpMode {
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 
-        imu.isGyroCalibrated();
 
-        waitForStart();
+
+
+
+        while (!imu.isGyroCalibrated())
+        {
+            telemetry.addData("not calibrated e",imu.getCalibrationStatus());
+
+            telemetry.update();
+
+        }
+
+        telemetry.addData("Im here");
+        telemetry.update();
+
+        while (imu.isGyroCalibrated())
+        {
+            telemetry.addData("calibrated",imu.getCalibrationStatus());
+
+            telemetry.update();
+
+        }
+
+
 
         while (opModeIsActive()){
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
@@ -42,7 +63,7 @@ public class GyroAITest extends LinearOpMode {
             telemetry.addData("Roll ", angles.secondAngle);
             telemetry.addData("Pitch", angles.thirdAngle);
             telemetry.update();
-
+            telemetry.addData("here",imu.getCalibrationStatus());
         }
     }
 
