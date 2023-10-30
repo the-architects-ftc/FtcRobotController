@@ -50,6 +50,7 @@ public class AreaTopRed1 extends LinearOpMode
     DcMotor fr = null;
     DcMotor br = null;
 
+
     @Override
     public void runOpMode()
     {
@@ -69,6 +70,7 @@ public class AreaTopRed1 extends LinearOpMode
         fr = hardwareMap.get(DcMotor.class, "RF");
         br = hardwareMap.get(DcMotor.class, "RB");
 
+
         // Set direction of DC Motors
         setMotorOrientation();
 
@@ -83,7 +85,7 @@ public class AreaTopRed1 extends LinearOpMode
         // CODE STARTS Here
 
         moveForward_wDistance(33.5,0.5);
-        moveRight_wDistance(27,0.);
+        moveRight_wDistance(27,0.5);
         turn90Left();
         moveBackward_wDistance(12,0.5);
         moveForward_wDistance(2,0.5);
@@ -223,19 +225,25 @@ public class AreaTopRed1 extends LinearOpMode
         telemetry.addData("enc-bl",bl.getCurrentPosition());
         telemetry.update();
         while (opModeIsActive() && (bl.getCurrentPosition() < encoderAbsCounts)) {
-            telemetry.addData("enc-bl",bl.getCurrentPosition());
-            telemetry.addData("enc-fl",fl.getCurrentPosition());
-            telemetry.addData("enc-fr",fr.getCurrentPosition());
-            telemetry.addData("enc-br",br.getCurrentPosition());
-            telemetry.update();
+            //telemetry.addData("enc-bl",bl.getCurrentPosition());
+            //telemetry.addData("enc-fl",fl.getCurrentPosition());
+            //telemetry.addData("enc-fr",fr.getCurrentPosition());
+            //telemetry.addData("enc-br",br.getCurrentPosition());
+            //telemetry.update();
             idle();
         }
 
-        telemetry.addData("bl power:", bl.getPower());
-        telemetry.addData("fl power:", fl.getPower());
-        telemetry.addData("fr power:", fr.getPower());
-        telemetry.addData("br power:", br.getPower());
+        telemetry.addData("enc-bl",bl.getCurrentPosition());
+        telemetry.addData("enc-fl",fl.getCurrentPosition());
+        telemetry.addData("enc-fr",fr.getCurrentPosition());
+        telemetry.addData("enc-br",br.getCurrentPosition());
         telemetry.update();
+
+        //telemetry.addData("bl power:", bl.getPower());
+        //telemetry.addData("fl power:", fl.getPower());
+        //telemetry.addData("fr power:", fr.getPower());
+        //telemetry.addData("br power:", br.getPower());
+        //telemetry.update();
 
         // apply zero power to avoid continuous power to the wheels
         setMotorToZeroPower();

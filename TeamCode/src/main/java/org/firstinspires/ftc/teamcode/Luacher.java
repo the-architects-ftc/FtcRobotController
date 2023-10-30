@@ -51,8 +51,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 
-@Autonomous(name="IntakeTest", group="Linear Opmode2")
-public class IntakeTest extends LinearOpMode {
+@Autonomous(name="Luacher", group="Linear Opmode2")
+public class Luacher extends LinearOpMode {
 
 
     // Declare OpMode members.
@@ -69,7 +69,6 @@ public class IntakeTest extends LinearOpMode {
     DcMotor br = null;
     DcMotor m0 = null;
     DcMotor m1 = null;
-
 
 
 
@@ -136,7 +135,7 @@ public class IntakeTest extends LinearOpMode {
             //GUYS CODE GHOES HERE JUST SAYING THO
             //LISTEN :)
 
-            intake_time(5000000);
+            launcher_time(5000000);
 
 
 
