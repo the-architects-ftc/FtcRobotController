@@ -30,10 +30,20 @@
 package org.firstinspires.ftc.teamcode;
 
 
+import com.qualcomm.hardware.bosch.BHI260IMU;
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 
 /**
@@ -50,8 +60,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 
-@Autonomous(name="IntakeTest", group="Linear Opmode2")
-public class IntakeTest extends LinearOpMode {
+@Autonomous(name="GyroWebTest Opmode2")
+public class GyroWebTest extends LinearOpMode {
 
 
     // Declare OpMode members.
@@ -67,88 +77,98 @@ public class IntakeTest extends LinearOpMode {
     DcMotor fr = null;
     DcMotor br = null;
 
+    BHI260IMU imu;
+    IMU.Parameters myIMUParameters;
 
-
-
-
+    // Create an object to receive the IMU angles
+    YawPitchRollAngles robotOrientation;
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
+// Two methods for Initializing the IMU:
 
-        // Initialize the hardware variables. Note that the strings used here as parameters
-        // to 'get' must correspond to the names assigned during the robot configuration
-        // step (using the FTC Robot Controller app on the phone).
-        bl = hardwareMap.get(DcMotor.class, "LB");
-        fl = hardwareMap.get(DcMotor.class, "LF");
-        fr = hardwareMap.get(DcMotor.class, "RF");
-        br = hardwareMap.get(DcMotor.class, "RB");
+// Initialize IMU directly
 
 
-        // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
-        // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive.
-        // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
-        bl.setDirection(DcMotor.Direction.REVERSE);
-        fl.setDirection(DcMotor.Direction.REVERSE);
-        fr.setDirection(DcMotor.Direction.FORWARD);
-        br.setDirection(DcMotor.Direction.FORWARD);
+
+
+
+
+
+
+
+       // imu.initialize(myIMUParameters);
+        telemetry.addData("Status", "Initialized");
+        telemetry.update();
+
+
+
 
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-        runtime.reset();
+
 
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
+            // Now use these simple methods to extract each angle
+            // (Java type double) from the object you just created:
+            double Yaw   = robotOrientation.getYaw(AngleUnit.DEGREES);
+            double Pitch = robotOrientation.getPitch(AngleUnit.DEGREES);
+            double Roll  = robotOrientation.getRoll(AngleUnit.DEGREES);
 
-            // Setup a variable for each drive wheel to save power level for telemetry
-            double LF = 0;
-            double RF = 0;
-            double LB = 0;
-            double RB = 0;
-            double currTime = 0;
-
-
-            // Choose to drive using either Tank Mode, or POV Mode
-            // Comment out the method that's not used.  The default below is POV.
-
-
-            // POV Mode uses left stick to go forward, and right stick to turn.
-            // - This uses basic math to combine motions and is easier to drive straight.
-            double drive = -gamepad1.left_stick_y;
-            double turn = gamepad1.right_stick_x;
-            // LF    = Range.clip(drive + turn, -1.0, 1.0) ;
-            // RF   = Range.clip(drive - turn, -1.0, 1.0) ;
-
-
-
-            //GUYS CODE GHOES HERE JUST SAYING THO
-            //LISTEN :)
-
-            moveBackward_time(100000);
-
-
-
-            // Tank Mode uses one stick to control each wheel.
-            // - This requires no math, but it is hard to drive forward slowly and keep straight.
-            // LF  = -gamepad1.left_stick_y ;
-            // RF = -gamepad1.right_stick_y ;
-
-
-            // Send calculated power to wheels
-            //bl.setPower(LB);
-            //fl.setPower(LF);
-            //fr.setPower(RF);
-            //br.setPower(RB);
-
-
-            // Show the elapsed game time and wheel power.
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Motors", "left (%.2f), right (%.2f)", LF, RF,LB,RB);
+            telemetry.addData("Yaw",Yaw);
+            telemetry.addData("Pitch",Pitch);
+            telemetry.addData("Roll",Roll);
             telemetry.update();
+            telemetry.update();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         }
     }
 
@@ -188,10 +208,10 @@ public class IntakeTest extends LinearOpMode {
     //FORWARDS
     private void moveForward_time (int t_msec)
     {
-        bl.setPower(5);
-        fl.setPower(5);
-        fr.setPower(5);
-        br.setPower(5);
+        bl.setPower(0.5);
+        fl.setPower(0.5);
+        fr.setPower(0.5);
+        br.setPower(0.5);
         sleep(t_msec);
 
     }
@@ -215,10 +235,10 @@ public class IntakeTest extends LinearOpMode {
     //BACKWARD
     private void moveBackward_time (int t_msec)
     {
-        bl.setPower(-5);
-        fl.setPower(-5);
-        fr.setPower(-5);
-        br.setPower(-5);
+        bl.setPower(-0.5);
+        fl.setPower(-0.5);
+        fr.setPower(-0.5);
+        br.setPower(-0.5);
         sleep(t_msec);
 
     }

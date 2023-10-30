@@ -44,7 +44,7 @@ public class GyroAITest extends LinearOpMode {
 
         }
 
-        telemetry.addData("Im here");
+
         telemetry.update();
 
         while (imu.isGyroCalibrated())
