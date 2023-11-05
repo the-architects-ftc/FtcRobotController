@@ -192,7 +192,7 @@ public class GyroWorkingSample extends LinearOpMode {
 
             //start code here
 
-            moveForward_wEncoder_counts(500,0.5);
+            moveForward_wEncoder_counts(500,0.5, imu);
 
 
         }
