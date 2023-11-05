@@ -109,6 +109,7 @@ public class GyroWorkingSample extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
+<<<<<<< HEAD
         // Now use these simple methods to extract each angle
         // (Java type double) from the object you just created:
         //prints the yaw pitch roll
@@ -120,6 +121,96 @@ public class GyroWorkingSample extends LinearOpMode {
         telemetry.addData("Pitch", Pitch);
         telemetry.addData("Roll", Roll);
         telemetry.update();
+=======
+        // run until the end of the match (driver presses STOP)
+        while (opModeIsActive()) {
+            double LF = 0;
+            double RF = 0;
+            double LB = 0;
+            double RB = 0;
+            double initialAngle = 0;
+
+            // Now use these simple methods to extract each angle
+            // (Java type double) from the object you just created:
+            //prints the yaw pitch roll
+            robotOrientation = imu.getRobotYawPitchRollAngles();
+            double Yaw = robotOrientation.getYaw(AngleUnit.DEGREES);
+            double Pitch = robotOrientation.getPitch(AngleUnit.DEGREES);
+            double Roll = robotOrientation.getRoll(AngleUnit.DEGREES);
+            telemetry.addData("Yaw", Yaw);
+            telemetry.addData("Pitch", Pitch);
+            telemetry.addData("Roll", Roll);
+            telemetry.update();
+
+
+            imu.resetYaw();
+
+            myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+            float X_axis = myRobotOrientation.firstAngle;
+            float Y_axis = myRobotOrientation.secondAngle;
+            float Z_axis = myRobotOrientation.thirdAngle;
+            //telemetry.addData("X_axis",X_axis);
+            //telemetry.addData("Y_axis",Y_axis);
+            telemetry.addData("Z_axis", Z_axis);
+            telemetry.update();
+
+            telemetry.addData("Moving the robot while in sleep", 0);
+            telemetry.update();
+
+
+//            myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC,AxesOrder.XYZ,AngleUnit.DEGREES);
+//            X_axis = myRobotOrientation.firstAngle;
+//            Y_axis = myRobotOrientation.secondAngle;
+//            Z_axis = myRobotOrientation.thirdAngle;
+//            //telemetry.addData("X_axis",X_axis);
+//            //telemetry.addData("Y_axis",Y_axis);
+//            telemetry.addData("Z_axis",Z_axis);
+//            telemetry.update();
+//
+//            sleep(10000);
+//
+//            myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC,AxesOrder.XYZ,AngleUnit.DEGREES);
+//            X_axis = myRobotOrientation.firstAngle;
+//            Y_axis = myRobotOrientation.secondAngle;
+//            Z_axis = myRobotOrientation.thirdAngle;
+//            //telemetry.addData("X_axis",X_axis);
+//            //telemetry.addData("Y_axis",Y_axis);
+//            telemetry.addData("Z_axis",Z_axis);
+//            telemetry.update();
+//            sleep(10000);
+//            initialAngle = myRobotOrientation.thirdAngle;
+//            telemetry.addData("Initial Angle", initialAngle);
+//
+//
+//                while (myRobotOrientation.thirdAngle <= 90) {
+//                    myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+//                    //telemetry.addData("Current Angle",myRobotOrientation.thirdAngle);
+//                    //telemetry.update();
+//                    double power = calculatePower(90, myRobotOrientation.thirdAngle);
+//                    bl.setPower(power);
+//                    fl.setPower(power);
+//                    fr.setPower(-power);
+//                    br.setPower(-power);
+//
+//                }
+//
+//
+//            bl.setPower(0);
+//            fl.setPower(0);
+//            fr.setPower(0);
+//            br.setPower(0);
+
+//            myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC,AxesOrder.XYZ,AngleUnit.DEGREES);
+//            telemetry.addData("Last Angle",myRobotOrientation.thirdAngle);
+//            telemetry.update();
+
+            //start code here
+
+            moveForward_wEncoder_counts(500,0.5, imu);
+
+
+        }
+>>>>>>> ad9909d4af3c1af29e18522e1f421205d26a7ba4
 
 
         //start code here
