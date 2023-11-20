@@ -82,8 +82,8 @@ public class Encoder_Test extends LinearOpMode
 
       // CODE STARTS Here
 
-        moveRight_wEncoder_counts(500,0.5);
-
+        moveRight_wEncoder_counts(500,0.2);
+        sleep(5000);
         sleep(1000000);
     }
 

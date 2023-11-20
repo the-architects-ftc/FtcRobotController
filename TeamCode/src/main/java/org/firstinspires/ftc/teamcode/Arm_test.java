@@ -38,6 +38,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -59,8 +60,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
  */
 
 
-@Autonomous(name="topblue1", group="Linear Opmode2")
-public class AreaBlueBottom1 extends LinearOpMode {
+@Autonomous(name="Arm_Test", group="Linear Opmode2")
+public class Arm_test extends LinearOpMode {
 
     ElapsedTime runtime = new ElapsedTime();
     BHI260IMU imu;
@@ -76,6 +77,10 @@ public class AreaBlueBottom1 extends LinearOpMode {
     DcMotor br = null;
     DcMotor m0 = null;
     DcMotor m1 = null;
+    DcMotor m2 = null;
+    DcMotor m3 = null;
+
+
 
     double ENC2DIST = 500/12.5;
 
@@ -97,6 +102,8 @@ public class AreaBlueBottom1 extends LinearOpMode {
         br = hardwareMap.get(DcMotor.class, "RB");
         m0 = hardwareMap.get(DcMotor.class, "M0");
         m1 = hardwareMap.get(DcMotor.class, "M1");
+        m2 = hardwareMap.get(DcMotor.class, "M2");
+        m3 = hardwareMap.get(DcMotor.class, "M3");
 
         // Initialize motors
         setMotorOrientation();
@@ -116,38 +123,11 @@ public class AreaBlueBottom1 extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
+//CODE STARTS HERE :)
 
-            telemetry.addData("moving forward----------------------",15);
-            telemetry.update();
-            moveForward_wDistance_wGyro(30, 0.2,ENC2DIST, imu);
-            sleep(500);
-
-            telemetry.addData("moving backwards--------------------",15);
-            telemetry.update();
-            moveBackwards_wDistance_wGyro(30, 0.2, ENC2DIST,imu);
-            sleep(500);
-
-            telemetry.addData("turn left---------------------------",90);
-            telemetry.update();
-            turn("left", 90, imu);
-            sleep(500);
-
-            telemetry.addData("turn right---------------------------",90);
-            telemetry.update();
-            turn("right", 90, imu);
-            sleep(500);
-
-            intake(500);
-
-            telemetry.addData("right--------------------",15);
-            telemetry.update();
-            moveRight_wGyro(15,0.2,imu);
-            sleep(500);
-
-            telemetry.addData("left---------------------",15);
-            telemetry.update();
-            moveLeft_wGyro(15,0.2,imu);
-            sleep(5000);
+            extend(1);
+            revert(1);
+            sleep(10000);
         }
     }
 
@@ -161,6 +141,30 @@ public class AreaBlueBottom1 extends LinearOpMode {
         fl.setDirection(DcMotor.Direction.FORWARD);
         fr.setDirection(DcMotor.Direction.REVERSE);
         br.setDirection(DcMotor.Direction.REVERSE);
+    }
+
+    private void extend (double power)
+    {
+        m2.setDirection(DcMotor.Direction.FORWARD);
+        m3.setDirection(DcMotor.Direction.FORWARD);
+        m3.setPower(power);
+        m2.setPower(power);
+        sleep(3050);
+        m3.setPower(0);
+        m2.setPower(0);
+
+
+    }
+
+    private void revert (double power)
+    {
+        m2.setDirection(DcMotor.Direction.FORWARD);
+        m3.setDirection(DcMotor.Direction.FORWARD);
+        m3.setPower(-power);
+        m2.setPower(-power);
+        sleep(2800);
+        m3.setPower(0);
+        m2.setPower(0);
     }
 
     // Reset motor encoder counts
@@ -418,7 +422,7 @@ public class AreaBlueBottom1 extends LinearOpMode {
     {
         double currZAngle = 0;
         int currEncoderCount = 0;
-        double encoderAbsCounts = (DistanceAbsIn/13)*500.0;
+        double encoderAbsCounts = (DistanceAbsIn/10.0)*500.0;
 
         // Resetting encoder counts
         resetMotorEncoderCounts();
@@ -478,7 +482,7 @@ public class AreaBlueBottom1 extends LinearOpMode {
     {
         double currZAngle = 0;
         int currEncoderCount = 0;
-        double encoderAbsCounts = (DistanceAbsIn/13)*500.0;
+        double encoderAbsCounts = (DistanceAbsIn/10.0)*500.0;
         // Resetting encoder counts
         resetMotorEncoderCounts();
         telemetry.addData("Im here",currZAngle);
