@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -50,7 +51,8 @@ public class Servo_test extends LinearOpMode
     DcMotor fl = null;
     DcMotor fr = null;
     DcMotor br = null;
-    Servo s1 = null;
+    //Servo s1 = null;
+    CRServo s1 = null;
 
     @Override
     public void runOpMode()
@@ -70,38 +72,32 @@ public class Servo_test extends LinearOpMode
         fl = hardwareMap.get(DcMotor.class, "LF");
         fr = hardwareMap.get(DcMotor.class, "RF");
         br = hardwareMap.get(DcMotor.class, "RB");
-        s1 = hardwareMap.get(Servo.class, "s1");
+        s1 = hardwareMap.get(CRServo.class, "s1");
 
         // Set direction of DC Motors
         setMotorOrientation();
 
         // Reset encoder counts kept by motors
         resetMotorEncoderCounts();
-
+        s1.setDirection(CRServo.Direction.REVERSE);
         // Wait for the game to start (driver presses PLAY)
-        waitForStart();
+        //waitForStart();
+
         telemetry.addData("Mode", "waiting");  // telemetry: Mode Waiting
         telemetry.update();
 
         // CODE STARTS Here
-        reset_servo();
-        telemetry.addData("S1 Start Position",s1.getPosition());
-        telemetry.update();
-        s1.setPosition(0.5);
-        while (s1.getPosition() < 0.5)
-        {
-            idle();
-        }
-        telemetry.addData("S1 Start Position",s1.getPosition());
-        telemetry.update();
-        s1.setPosition(0.0);
-        while (s1.getPosition() == 0)
-        {
-            idle();
-        }
-        telemetry.addData("S1 Start Position",s1.getPosition());
-        telemetry.update();
-        sleep(5000);
+        //s1.resetDeviceConfigurationForOpMode();
+        s1.setPower(0.1);
+
+        //s1.setPosition(0.10);
+        sleep(1000);
+        //s1.setPosition(0.20);
+        sleep(1000);
+        //s1.setPosition(0);
+        sleep(1000);
+        sleep(10000);
+
 
 //        while (opModeIsActive());
 //        {
@@ -146,16 +142,16 @@ public class Servo_test extends LinearOpMode
 
     private void reset_servo()
     {
-        s1.setPosition(0);
+        //s1.setPosition(0);
     }
 
     private void move_Servo ( double Angle)
     {
         double position = Angle/180;
         reset_servo();
-        s1.setPosition(position);
+        //s1.setPosition(position);
 
-        telemetry.addData("Servo position:", s1.getPosition());
+        //telemetry.addData("Servo position:", s1.getPosition());
     }
 
     // Turn 90 degree Left

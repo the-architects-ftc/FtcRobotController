@@ -126,7 +126,6 @@ public class Arm_test extends LinearOpMode {
 //CODE STARTS HERE :)
 
             extend(1);
-            revert(1);
             sleep(10000);
         }
     }
@@ -160,11 +159,17 @@ public class Arm_test extends LinearOpMode {
     {
         m2.setDirection(DcMotor.Direction.FORWARD);
         m3.setDirection(DcMotor.Direction.FORWARD);
-        m3.setPower(-power);
-        m2.setPower(-power);
-        sleep(2800);
-        m3.setPower(0);
-        m2.setPower(0);
+        resetMotorEncoderCounts();
+        m2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        m3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+       while (power == 1) {
+           telemetry.update();
+           telemetry.addData("enc-m2", m2.getCurrentPosition());
+           telemetry.update();
+       }
+
+
     }
 
     // Reset motor encoder counts
