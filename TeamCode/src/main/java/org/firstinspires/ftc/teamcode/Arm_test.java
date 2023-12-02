@@ -125,7 +125,7 @@ public class Arm_test extends LinearOpMode {
         while (opModeIsActive()) {
 //CODE STARTS HERE :)
 
-            extend(0.1,3);
+            extend(-0.2,1000);
             sleep(10000);
         }
     }
@@ -149,15 +149,17 @@ public class Arm_test extends LinearOpMode {
         m2.setDirection(DcMotor.Direction.FORWARD);
         m2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         m2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        telemetry.addData("Start count",m2.getCurrentPosition());
+        telemetry.update();
 
-        while (m2.getCurrentPosition() < encoderAbsCounts) {
+        while (m2.getCurrentPosition() > -encoderAbsCounts) {
             m2.setPower(power);
             idle();
         }
 
         telemetry.addData("Desired count",encoderAbsCounts);
         telemetry.update();
-        telemetry.addData("Current count",m2.getCurrentPosition());
+        telemetry.addData("Finish count",m2.getCurrentPosition());
         telemetry.update();
 
         m2.setPower(0);

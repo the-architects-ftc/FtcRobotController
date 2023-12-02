@@ -44,15 +44,15 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
-@Autonomous(name="Servo_Test", group="Linear Opmode2")
-public class Servo_test extends LinearOpMode
+@Autonomous(name="Claw_Servo", group="Linear Opmode2")
+public class Claw_Servo extends LinearOpMode
 {
     DcMotor bl = null;
     DcMotor fl = null;
     DcMotor fr = null;
     DcMotor br = null;
     //Servo s1 = null;
-    Servo s2 = null;
+    Servo s1 = null;
 
 
 
@@ -60,12 +60,13 @@ public class Servo_test extends LinearOpMode
     public void runOpMode()
     {
 
-        s2 = hardwareMap.get(Servo.class, "s2");
-        s2.setDirection(Servo.Direction.FORWARD);
-        s2.setPosition(0);
-        sleep(50000);
+        s1 = hardwareMap.get(Servo.class, "s1");
+        s1.setDirection(Servo.Direction.FORWARD);
 
-
+        s1.setPosition(0.45);
+        sleep(3000);
+        s1.setPosition(0.65);
+        sleep(3000);
     }
 
 
