@@ -96,16 +96,17 @@ public class Arm_test extends LinearOpMode {
         // map imu
         imu = hardwareMap.get(BHI260IMU.class,"imu");
         // map motors
-        bl = hardwareMap.get(DcMotor.class, "LB");
-        fl = hardwareMap.get(DcMotor.class, "LF");
-        fr = hardwareMap.get(DcMotor.class, "RF");
-        br = hardwareMap.get(DcMotor.class, "RB");
-        m0 = hardwareMap.get(DcMotor.class, "M0");
-        m1 = hardwareMap.get(DcMotor.class, "M1");
+        //bl = hardwareMap.get(DcMotor.class, "LB");
+        //fl = hardwareMap.get(DcMotor.class, "LF");
+        //fr = hardwareMap.get(DcMotor.class, "RF");
+        //br = hardwareMap.get(DcMotor.class, "RB");
+        //m0 = hardwareMap.get(DcMotor.class, "M0");
+        //m1 = hardwareMap.get(DcMotor.class, "M1");
         m2 = hardwareMap.get(DcMotor.class, "M2");
-        m3 = hardwareMap.get(DcMotor.class, "M3");
+        //m3 = hardwareMap.get(DcMotor.class, "M3");
 
         // Initialize motors
+
         setMotorOrientation();
         //resetMotorEncoderCounts();
 
@@ -165,6 +166,22 @@ public class Arm_test extends LinearOpMode {
         m2.setPower(0);
 
         sleep(3050);
+    }
+
+    private void moveForward_dist(double d_inch)
+    {
+        long t_msec = 0;
+        double temp = 0;
+        // 500 msec moves the robot 24 inches
+        temp = (500.0/24.0)*d_inch;
+        t_msec = (long) temp;
+        // Set powers
+        bl.setPower(0.5);
+        fl.setPower(0.5);
+        fr.setPower(0.5);
+        br.setPower(0.5);
+        sleep(t_msec);
+        stayPut(500);
     }
 
     private void revert (double power)
