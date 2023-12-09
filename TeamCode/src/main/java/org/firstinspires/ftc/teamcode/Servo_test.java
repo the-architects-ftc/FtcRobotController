@@ -62,10 +62,16 @@ public class Servo_test extends LinearOpMode
 
         s2 = hardwareMap.get(Servo.class, "s2");
         s2.setDirection(Servo.Direction.FORWARD);
-        s2.setPosition(0);
-        sleep(50000);
 
 
+        waitForStart();
+
+        while (opModeIsActive()) {
+//CODE STARTS HERE :)
+            s2.setPosition(0);
+            sleep(50000);
+
+        }
     }
 
 
