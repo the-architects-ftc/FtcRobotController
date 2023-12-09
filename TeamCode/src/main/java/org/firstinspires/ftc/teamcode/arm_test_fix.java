@@ -45,16 +45,22 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @Autonomous(name="Encoder_Test", group="Linear Opmode2")
 public class arm_test_fix extends LinearOpMode {
     DcMotor m2 = null;
+    DcMotor bl = null;
 
     @Override
     public void runOpMode() {
         m2 = hardwareMap.get(DcMotor.class, "M2");
+        bl.setDirection(DcMotor.Direction.FORWARD);
         waitForStart();
         while (opModeIsActive()) {
-            extend(-0.3, 8250);
+
+            extend(-0.3, 8250); // linear slide fully extends
+            telemetry.addData("Extending Finished, Count: "m2.getCurrentPosition());
             sleep(5000);
-            extend(0.3, 8350);
+            extend(0.3, 8350); // linear slide fully retracts
+            telemetry.addData("Program Finished, Count: ",m2.getCurrentPosition());
             sleep(5000);
+
         }
     }
 
@@ -69,6 +75,7 @@ public class arm_test_fix extends LinearOpMode {
             m2.setPower(power);
             idle();
         }
+        m2.setPower(0); // set power to 0 so the motor stops running
 
     }
 }
