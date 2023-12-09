@@ -17,6 +17,7 @@ public class joystick_driving extends LinearOpMode {
     DcMotor br = null;
 
     DcMotor fl = null;
+    DcMotor m2 = null;
     float leftY, rightY,leftX,rightX;
 
     // called when init button is  pressed.
@@ -26,6 +27,7 @@ public class joystick_driving extends LinearOpMode {
         fl = hardwareMap.get(DcMotor.class, "LF");
         fr = hardwareMap.get(DcMotor.class, "RF");
         br = hardwareMap.get(DcMotor.class, "RB");
+        m2 = hardwareMap.get(DcMotor.class, "M2");
 
         bl.setDirection(DcMotor.Direction.FORWARD);
         fl.setDirection(DcMotor.Direction.FORWARD);
@@ -40,6 +42,20 @@ waitForStart();
         rightY = gamepad1.right_stick_y * -1;
         leftX = gamepad1.left_stick_x * -1;
         rightX = gamepad1.right_stick_x * -1;
+
+        if (gamepad1.b) {
+            m2.setPower(0.5);
+        }
+        else {
+            m2.setPower(0);
+        }
+
+        if (gamepad1.a) {
+            m2.setPower(-0.5);
+        }
+        else {
+            m2.setPower(0);
+        }
 
 
         //Forwards/Backwards
