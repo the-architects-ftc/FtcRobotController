@@ -117,9 +117,18 @@ public class Unit_Test extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-           moveForward_wDistance_wGyro(50,0.2,ENC2DIST,imu);
 
-            sleep(1000000);
+            encoder_test(500);
+            sleep(500000);
+
+
+
+
+
+
+
+
+
         }
     }
 
@@ -501,6 +510,38 @@ public class Unit_Test extends LinearOpMode {
         telemetry.update();
         return (currEncoderCount);
     }
+
+    private void encoder_test(double time_ms)
+    {
+        resetMotorEncoderCounts();
+        bl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        fr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        bl.setPower(0.5);
+        fl.setPower(0.5);
+        br.setPower(0.5);
+        fr.setPower(0.5);
+        sleep(2000);
+
+
+        bl.setPower(0);
+        fl.setPower(0);
+        br.setPower(0);
+        fr.setPower(0);
+        idle();
+
+        telemetry.addData("encoder count b1",bl.getCurrentPosition());
+        telemetry.addData("encoder count br",br.getCurrentPosition());
+        telemetry.addData("encoder count fl",fl.getCurrentPosition());
+        telemetry.addData("encoder count fr",fr.getCurrentPosition());
+        telemetry.update();
+
+    }
+
+
+
 
 }
 
