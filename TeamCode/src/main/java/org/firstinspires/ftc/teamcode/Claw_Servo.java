@@ -63,10 +63,9 @@ public class Claw_Servo extends LinearOpMode
         s1 = hardwareMap.get(Servo.class, "s1");
         s1.setDirection(Servo.Direction.FORWARD);
 
-        s1.setPosition(0.45);
-        sleep(3000);
-        s1.setPosition(0.65);
-        sleep(3000);
+        s1.setPosition(0.);
+        sleep(30000);
+
     }
 
 

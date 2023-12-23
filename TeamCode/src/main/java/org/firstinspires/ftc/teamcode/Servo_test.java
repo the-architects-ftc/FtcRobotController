@@ -68,7 +68,7 @@ public class Servo_test extends LinearOpMode
 
         while (opModeIsActive()) {
 //CODE STARTS HERE :)
-            s2.setPosition(0);
+            s2.setPosition(-0.45);
             sleep(50000);
 
         }

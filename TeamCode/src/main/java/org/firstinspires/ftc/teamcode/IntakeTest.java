@@ -235,10 +235,10 @@ public class IntakeTest extends LinearOpMode {
 
     private void intake_time (int t_msec)
     {
-        bl.setPower(-0.2);
-        fl.setPower(-0.2);
-        fr.setPower(-0.2);
-        br.setPower(-0.2);
+        bl.setPower(0.2);
+        fl.setPower(0.2);
+        fr.setPower(0.2);
+        br.setPower(0.2);
         m0.setPower(1);
         m1.setPower(1);
         sleep(t_msec);

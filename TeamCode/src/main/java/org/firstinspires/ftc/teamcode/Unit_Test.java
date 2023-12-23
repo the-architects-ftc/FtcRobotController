@@ -197,7 +197,8 @@ public class Unit_Test extends LinearOpMode {
 
         while (bl.getCurrentPosition() < encoderAbsCounts) {
             myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-            double correction = myRobotOrientation.thirdAngle/180;
+            //double correction = myRobotOrientation.thirdAngle/180;
+            double correction =  0;
             bl.setPower(motorAbsPower-correction);
             fl.setPower(motorAbsPower-correction);
             fr.setPower(motorAbsPower+correction);

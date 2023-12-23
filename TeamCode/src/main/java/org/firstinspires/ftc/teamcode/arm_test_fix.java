@@ -42,23 +42,32 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
+<<<<<<< Updated upstream
 @Autonomous(name="Arm_test",group="Linear Opmode2")
+=======
+@Autonomous(name="Arm Test", group="Linear Opmode2")
+>>>>>>> Stashed changes
 public class arm_test_fix extends LinearOpMode {
     DcMotor m2 = null;
-    DcMotor bl = null;
+    DcMotor m3 = null;
+
 
     @Override
     public void runOpMode() {
         m2 = hardwareMap.get(DcMotor.class, "M2");
-        bl.setDirection(DcMotor.Direction.FORWARD);
+        m3 = hardwareMap.get(DcMotor.class, "M3");
+
         waitForStart();
         while (opModeIsActive()) {
 
+<<<<<<< Updated upstream
             extend(-0.3, 8250); // linear slide fully extends
             telemetry.addData("Extending Finished, Count:",m2.getCurrentPosition());
+=======
+            extend(0.3, 8000); // linear slide fully extends
+>>>>>>> Stashed changes
             sleep(5000);
-            extend(0.3, 8350); // linear slide fully retracts
-            telemetry.addData("Program Finished, Count: ",m2.getCurrentPosition());
+            extend(-0.3, 7900); // linear slide fully retracts
             sleep(5000);
 
         }
@@ -66,16 +75,25 @@ public class arm_test_fix extends LinearOpMode {
 
     private void extend(double power, int encoderAbsCounts) {
         m2.setDirection(DcMotor.Direction.FORWARD);
+        m3.setDirection(DcMotor.Direction.FORWARD);
         m2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        m3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         m2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        m3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         telemetry.addData("Start count", m2.getCurrentPosition());
+        telemetry.addData("Start count", m3.getCurrentPosition());
         telemetry.update();
 
-        while (m2.getCurrentPosition() > -encoderAbsCounts) {
+        while (m2.getCurrentPosition() < encoderAbsCounts){
             m2.setPower(power);
+            m3.setPower(-power);
+            telemetry.addData("Count M2",m2.getCurrentPosition());
+            telemetry.addData("Count M3",m3.getCurrentPosition());
+            telemetry.update();
             idle();
         }
         m2.setPower(0); // set power to 0 so the motor stops running
+        m3.setPower(0);
 
     }
 
