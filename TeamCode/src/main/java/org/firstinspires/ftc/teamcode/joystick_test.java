@@ -1,18 +1,16 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 
 
-@TeleOp(name="Joystick driving", group="Exercises")
+@TeleOp(name="Arm_joystick", group="Exercises")
 //@Disabled
-public class joystick_driving extends LinearOpMode {
+public class joystick_test extends LinearOpMode {
     DcMotor bl = null;
     DcMotor fl = null;
     DcMotor fr = null;

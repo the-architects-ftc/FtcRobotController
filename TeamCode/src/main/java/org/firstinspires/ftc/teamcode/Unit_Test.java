@@ -76,6 +76,8 @@ public class Unit_Test extends LinearOpMode {
     DcMotor br = null;
     DcMotor m0 = null;
     DcMotor m1 = null;
+    DcMotor m2 = null;
+    DcMotor m3 = null;
 
     double ENC2DIST = 500/12.5;
 
@@ -97,6 +99,8 @@ public class Unit_Test extends LinearOpMode {
         br = hardwareMap.get(DcMotor.class, "RB");
         m0 = hardwareMap.get(DcMotor.class, "M0");
         m1 = hardwareMap.get(DcMotor.class, "M1");
+        m2 = hardwareMap.get(DcMotor.class, "M2");
+        m3 = hardwareMap.get(DcMotor.class, "M3");
 
         // Initialize motors
         setMotorOrientation();
@@ -118,7 +122,7 @@ public class Unit_Test extends LinearOpMode {
         while (opModeIsActive()) {
 
 
-            encoder_test(500);
+          turn("Left",90,imu);
             sleep(500000);
 
 
@@ -347,7 +351,8 @@ public class Unit_Test extends LinearOpMode {
                 myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
                 //telemetry.addData("Current Angle",myRobotOrientation.thirdAngle);
                 //telemetry.update();
-                double power = calculatePower(targetAngle, myRobotOrientation.thirdAngle);
+                //double power = calculatePower(targetAngle, myRobotOrientation.thirdAngle);
+                double power = 0.7;
                 bl.setPower(power);
                 fl.setPower(power);
                 fr.setPower(-power);
@@ -367,7 +372,8 @@ public class Unit_Test extends LinearOpMode {
                 myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
                 //telemetry.addData("Current Angle",myRobotOrientation.thirdAngle);
                 //telemetry.update();
-                double power = calculatePower(-targetAngle, myRobotOrientation.thirdAngle);
+                //double power = calculatePower(-targetAngle, myRobotOrientation.thirdAngle);
+                double power = 0.7;
                 bl.setPower(-power);
                 fl.setPower(-power);
                 fr.setPower(power);
@@ -538,6 +544,30 @@ public class Unit_Test extends LinearOpMode {
         telemetry.addData("encoder count fl",fl.getCurrentPosition());
         telemetry.addData("encoder count fr",fr.getCurrentPosition());
         telemetry.update();
+
+    }
+
+    private void extend(double power, int encoderAbsCounts) {
+        m2.setDirection(DcMotor.Direction.FORWARD);
+        m3.setDirection(DcMotor.Direction.FORWARD);
+        m2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        m3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        m2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        m3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        telemetry.addData("Start count", m2.getCurrentPosition());
+        telemetry.addData("Start count", m3.getCurrentPosition());
+        telemetry.update();
+
+        while (m2.getCurrentPosition() < encoderAbsCounts){
+            m2.setPower(power);
+            m3.setPower(-power);
+            telemetry.addData("Count M2",m2.getCurrentPosition());
+            telemetry.addData("Count M3",m3.getCurrentPosition());
+            telemetry.update();
+            idle();
+        }
+        m2.setPower(0); // set power to 0 so the motor stops running
+        m3.setPower(0);
 
     }
 

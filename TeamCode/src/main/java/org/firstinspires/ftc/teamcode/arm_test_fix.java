@@ -42,11 +42,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
-<<<<<<< Updated upstream
-@Autonomous(name="Arm_test",group="Linear Opmode2")
-=======
+
 @Autonomous(name="Arm Test", group="Linear Opmode2")
->>>>>>> Stashed changes
+
 public class arm_test_fix extends LinearOpMode {
     DcMotor m2 = null;
     DcMotor m3 = null;
@@ -60,12 +58,12 @@ public class arm_test_fix extends LinearOpMode {
         waitForStart();
         while (opModeIsActive()) {
 
-<<<<<<< Updated upstream
+
             extend(-0.3, 8250); // linear slide fully extends
             telemetry.addData("Extending Finished, Count:",m2.getCurrentPosition());
-=======
+
             extend(0.3, 8000); // linear slide fully extends
->>>>>>> Stashed changes
+
             sleep(5000);
             extend(-0.3, 7900); // linear slide fully retracts
             sleep(5000);

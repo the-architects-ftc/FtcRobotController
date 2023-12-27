@@ -44,15 +44,16 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
-@Autonomous(name="Claw_Servo", group="Linear Opmode2")
-public class Claw_Servo extends LinearOpMode
+@Autonomous(name="Placing_Servo", group="Linear Opmode2")
+public class Placing_Servo extends LinearOpMode
 {
     DcMotor bl = null;
     DcMotor fl = null;
     DcMotor fr = null;
     DcMotor br = null;
-    //Servo s1 = null;
     Servo s1 = null;
+    Servo s2 = null;
+
 
 
 
@@ -61,13 +62,16 @@ public class Claw_Servo extends LinearOpMode
     {
 
         s1 = hardwareMap.get(Servo.class, "s1");
+        s2 = hardwareMap.get(Servo.class, "s2");
         s1.setDirection(Servo.Direction.FORWARD);
-        s1.setPosition(0.4);
-        sleep(3000);
-        //0.4 is the out position for the claw ( for now )
-        s1.setPosition(0.3);
-        //closed position
-        sleep(30000);
+        s2.setDirection(Servo.Direction.FORWARD);
+        waitForStart();
+
+       //s2.setPosition(0);
+       //s2.direction(FORWARDS) and position 0 is the starting position :) :0
+
+        s2.setPosition(0.28);
+       sleep(90000);
 
     }
 
