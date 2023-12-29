@@ -93,7 +93,7 @@ public class joystick_driving extends LinearOpMode {
 
 
             if(gamepad1.x){
-                m0.setPower(1);
+                m0.setPower(-1);
                 m1.setPower(-1);
             }
             else {
@@ -124,15 +124,12 @@ public class joystick_driving extends LinearOpMode {
 //            br.setPower(Range.clip(leftX, -1.0, 1.0));
 //
 //            //turning
-            fl.setPower(Range.clip(rightX, -1.0, 0.5));
-            bl.setPower(Range.clip(rightX, -1.0, 1.0));
-            fr.setPower(Range.clip(-rightX, -1.0, 0.5));
-            br.setPower(Range.clip(-rightX, -1.0, 1.0));
 
-            fl.setPower(Range.clip(rightY, -1.0, 0.5));
-            bl.setPower(Range.clip(rightY, -1.0, 1.0));
-            fr.setPower(Range.clip(-rightY, -1.0, 0.5));
-            br.setPower(Range.clip(-rightY, -1.0, 1.0));
+
+//            fl.setPower(Range.clip(rightY, -0.6, 0.5));
+//            bl.setPower(Range.clip(rightY, -1.0, 1.0));
+//            fr.setPower(Range.clip(-rightY, -0.6, 0.6));
+//            br.setPower(Range.clip(-rightY, -1.0, 1.0));
 
 
 

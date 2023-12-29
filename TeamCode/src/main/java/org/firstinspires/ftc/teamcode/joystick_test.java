@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.util.Range;
 
 
 
-@TeleOp(name="Arm_joystick", group="Exercises")
+@TeleOp(name="Joystick_test", group="Exercises")
 //@Disabled
 public class joystick_test extends LinearOpMode {
     DcMotor bl = null;

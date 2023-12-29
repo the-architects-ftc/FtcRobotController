@@ -110,7 +110,7 @@ public class Unit_Test extends LinearOpMode {
         telemetry.addData("Gyro Status", "Start initialization");
         telemetry.update();
         myIMUParameters = new IMU.Parameters(
-                new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.UP,RevHubOrientationOnRobot.UsbFacingDirection.FORWARD )
+                new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD,RevHubOrientationOnRobot.UsbFacingDirection.UP )
         );
         imu.initialize(myIMUParameters);
         telemetry.addData("Gyro Status", "Initialized");
