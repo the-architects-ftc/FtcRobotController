@@ -126,7 +126,7 @@ public class Teleop_live extends LinearOpMode {
                 s1.setPosition(0.3);
             }
             if(gamepad1.x){
-                    m0.setPower(1);
+                    m0.setPower(-1);
                     m1.setPower(1);
                 }
                 else {
@@ -150,12 +150,18 @@ public class Teleop_live extends LinearOpMode {
                 correction = (10.0 * correction*Math.abs(leftY)/THRESH_WM_POWER);
                 if(flag_correction == false){
                     correction = 0;
+
                 }
                 telemetry.addData("first Angle", myRobotOrientation.firstAngle);
                 telemetry.addData("second Angle", myRobotOrientation.secondAngle);
                 telemetry.addData("third Angle", myRobotOrientation.thirdAngle);
                 telemetry.addData("correction",correction);
                 telemetry.addData("leftY", leftY);
+                telemetry.addData("fl Enc Count", fl.getCurrentPosition());
+                telemetry.addData("bl Enc Count", bl.getCurrentPosition());
+                telemetry.addData("fr Enc Count", fr.getCurrentPosition());
+                telemetry.addData("br Enc Count", br.getCurrentPosition());
+                telemetry.update();
                 telemetry.update();
 
                 //correction = 0;
