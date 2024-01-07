@@ -103,16 +103,16 @@ public class Teleop_live extends LinearOpMode {
 
 
             if (gamepad1.b) {
-                m2.setPower(-0.5);
-                m3.setPower(0.5);
+                m2.setPower(-0.8);
+                m3.setPower(0.8);
             } else {
                 m2.setPower(0);
                 m3.setPower(0);
             }
 
             if (gamepad1.a) {
-                m2.setPower(0.5);
-                m3.setPower(-0.5);
+                m2.setPower(0.8);
+                m3.setPower(-0.8);
             } else {
                 m2.setPower(0);
                 m3.setPower(0);
@@ -137,8 +137,8 @@ public class Teleop_live extends LinearOpMode {
                 sleep(500);
 
                 if (intake_constant == true) {
-                    m0.setPower(-1);
-                    m1.setPower(1);
+                    m0.setPower(-0.8);
+                    m1.setPower(0.8);
                 } else {
                     m0.setPower(0);
                     m1.setPower(0);
@@ -155,7 +155,7 @@ public class Teleop_live extends LinearOpMode {
             }
             //Forwards/Backwards
             if (leftY != 0 && (rightY == 0)) {
-                double THRESH_WM_POWER = 0.8; // max abs wheel power
+                double THRESH_WM_POWER = 0.5; // max abs wheel power
                 myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
                 double correction = myRobotOrientation.thirdAngle / 180.0;
                 correction = (10.0 * correction * Math.abs(leftY) / THRESH_WM_POWER);

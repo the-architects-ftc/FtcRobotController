@@ -79,7 +79,7 @@ public class Unit_Test extends LinearOpMode {
     DcMotor m2 = null;
     DcMotor m3 = null;
 
-    double ENC2DIST = 500/12.5;
+    double ENC2DIST = 2000/48;
 
     @Override
     public void runOpMode() {
@@ -122,7 +122,7 @@ public class Unit_Test extends LinearOpMode {
         while (opModeIsActive()) {
 
 
-          turn("Left",90,imu);
+          moveRight_wCorrection(20,0.3,imu);
             sleep(500000);
 
 
@@ -142,10 +142,11 @@ public class Unit_Test extends LinearOpMode {
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive.
         // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
-        bl.setDirection(DcMotor.Direction.FORWARD);
-        fl.setDirection(DcMotor.Direction.FORWARD);
-        fr.setDirection(DcMotor.Direction.REVERSE);
-        br.setDirection(DcMotor.Direction.REVERSE);
+        bl.setDirection(DcMotor.Direction.REVERSE);
+        fl.setDirection(DcMotor.Direction.REVERSE);
+        fr.setDirection(DcMotor.Direction.FORWARD);
+        br.setDirection(DcMotor.Direction.FORWARD);
+
     }
 
     // Reset motor encoder counts
@@ -402,7 +403,7 @@ public class Unit_Test extends LinearOpMode {
 
     }
 
-    private int moveRight_wGyro(int DistanceAbsIn, double motorAbsPower,BHI260IMU imu)
+    private int moveRight_wCorrection(int DistanceAbsIn, double motorAbsPower,BHI260IMU imu)
     {
         double currZAngle = 0;
         int currEncoderCount = 0;
@@ -420,6 +421,7 @@ public class Unit_Test extends LinearOpMode {
         telemetry.addData("Status", "RUN_WITHOUT_ENCODER");
         telemetry.update();
 
+
         // Reset Yaw
         imu.resetYaw();
 
@@ -430,14 +432,42 @@ public class Unit_Test extends LinearOpMode {
         currZAngle = myRobotOrientation.thirdAngle;
         telemetry.addData("currZAngle (initial)", currZAngle);
         telemetry.update();
-        while (fr.getCurrentPosition() < encoderAbsCounts) {
+        double refEC = 0;
+        while (refEC < encoderAbsCounts) {
             myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-            double correction = myRobotOrientation.thirdAngle/180;
-            correction= 5*correction;
-            bl.setPower(motorAbsPower+correction);
-            fl.setPower(-motorAbsPower-correction);
-            fr.setPower(motorAbsPower-correction);
-            br.setPower(-motorAbsPower+correction);
+            double frEC = fr.getCurrentPosition();
+            double blEC = bl.getCurrentPosition();
+            double flEC = fl.getCurrentPosition();
+            double brEC = br.getCurrentPosition();
+            double frCorr = 1;
+            double blCorr = 1;
+            double flCorr = 1;
+            double brCorr = 1;
+            if (frEC != 0 ) {
+                frEC = Math.abs(frEC);
+                refEC = frEC;
+                blEC = Math.abs(blEC);
+                refEC = Math.min(refEC, blEC);
+                flEC = Math.abs(flEC);
+                refEC = Math.min(refEC, flEC);
+                brEC = Math.abs(brEC);
+                refEC = Math.min(refEC, brEC);
+                if (refEC == 0) {
+                    refEC = 1;
+                }
+                frCorr = refEC / frEC;
+                blCorr = refEC / blEC;
+                flCorr = refEC / flEC;
+                brCorr = refEC / brEC;
+            }
+            double flPow = -motorAbsPower * flCorr;
+            double blPow = motorAbsPower * blCorr;
+            double frPow = motorAbsPower * frCorr;
+            double brPow = -motorAbsPower * brCorr;
+            fl.setPower(-flPow);
+            bl.setPower(blPow);
+            fr.setPower(frPow);
+            br.setPower(-brPow);
 
             idle();
         }
@@ -518,26 +548,32 @@ public class Unit_Test extends LinearOpMode {
         return (currEncoderCount);
     }
 
-    private void encoder_test(double time_ms)
+    private void encoder_test(double encoderAbsCounts)
     {
+        bl.setDirection(DcMotor.Direction.REVERSE);
+        fl.setDirection(DcMotor.Direction.REVERSE);
+        fr.setDirection(DcMotor.Direction.FORWARD);
+        br.setDirection(DcMotor.Direction.FORWARD);
         resetMotorEncoderCounts();
         bl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         fr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        bl.setPower(0.5);
-        fl.setPower(0.5);
-        br.setPower(0.5);
-        fr.setPower(0.5);
-        sleep(2000);
-
-
+        while (bl.getCurrentPosition() > -encoderAbsCounts) {
+            myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+            bl.setPower(-0.3);
+            fl.setPower(-0.3);
+            fr.setPower(-0.3);
+            br.setPower(-0.3);
+            telemetry.update();
+            idle();
+        }
         bl.setPower(0);
         fl.setPower(0);
-        br.setPower(0);
         fr.setPower(0);
-        idle();
+        br.setPower(0);
+
 
         telemetry.addData("encoder count b1",bl.getCurrentPosition());
         telemetry.addData("encoder count br",br.getCurrentPosition());
