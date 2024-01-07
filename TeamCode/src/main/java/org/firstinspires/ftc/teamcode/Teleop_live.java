@@ -93,6 +93,8 @@ public class Teleop_live extends LinearOpMode {
         // Start opMode
         telemetry.addData("Mode", "waiting");
         telemetry.update();
+        s2.setPosition(0);
+        s1.setPosition(0.4);
         waitForStart();
         while (opModeIsActive()) {
 
@@ -154,15 +156,32 @@ public class Teleop_live extends LinearOpMode {
                 s2.setPosition(0.28);
             }
             //Forwards/Backwards
-            if (leftY != 0 && (rightY == 0)) {
-                double THRESH_WM_POWER = 0.5; // max abs wheel power
+            if ((leftY != 0 || leftX !=0) && (rightY == 0)) {
+                double THRESH_WM_POWER = 1.0; // max abs wheel power
                 myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
                 double correction = myRobotOrientation.thirdAngle / 180.0;
                 correction = (10.0 * correction * Math.abs(leftY) / THRESH_WM_POWER);
                 if (flag_correction == false) {
                     correction = 0;
-
                 }
+                correction = 0;
+                double flPow = leftY + leftX + correction;
+                double maxPow = Math.abs(flPow);
+                double blPow = leftY - leftX + correction;
+                maxPow = Math.max(maxPow,Math.abs(blPow));
+                double frPow = leftY - leftX - correction;
+                maxPow = Math.max(maxPow,Math.abs(frPow));
+                double brPow = leftY + leftX - correction;
+                maxPow = Math.max(maxPow,Math.abs(brPow));
+                flPow = (flPow/maxPow)*THRESH_WM_POWER;
+                blPow = (blPow/maxPow)*THRESH_WM_POWER;
+                frPow = (frPow/maxPow)*THRESH_WM_POWER;
+                brPow = (brPow/maxPow)*THRESH_WM_POWER;
+
+                fl.setPower(Range.clip(flPow, -THRESH_WM_POWER, THRESH_WM_POWER));
+                bl.setPower(Range.clip(blPow, -THRESH_WM_POWER, THRESH_WM_POWER));
+                fr.setPower(Range.clip(frPow, -THRESH_WM_POWER, THRESH_WM_POWER));
+                br.setPower(Range.clip(brPow, -THRESH_WM_POWER, THRESH_WM_POWER));
 
                 telemetry.addData("first Angle", myRobotOrientation.firstAngle);
                 telemetry.addData("second Angle", myRobotOrientation.secondAngle);
@@ -170,18 +189,16 @@ public class Teleop_live extends LinearOpMode {
                 telemetry.addData("correction", correction);
                 telemetry.addData("leftY", leftY);
                 telemetry.addData("leftX",leftX);
+                telemetry.addData("flPow", flPow);
+                telemetry.addData("blPow", blPow);
+                telemetry.addData("frPow", frPow);
+                telemetry.addData("brPow", brPow);
                 telemetry.addData("fl Enc Count", fl.getCurrentPosition());
                 telemetry.addData("bl Enc Count", bl.getCurrentPosition());
                 telemetry.addData("fr Enc Count", fr.getCurrentPosition());
                 telemetry.addData("br Enc Count", br.getCurrentPosition());
                 telemetry.update();
                 telemetry.update();
-
-                correction = 0;
-                fl.setPower(Range.clip(leftY + leftX + correction, -THRESH_WM_POWER, THRESH_WM_POWER));
-                bl.setPower(Range.clip(leftY - leftX + correction, -THRESH_WM_POWER, THRESH_WM_POWER));
-                fr.setPower(Range.clip(leftY - leftX - correction, -THRESH_WM_POWER, THRESH_WM_POWER));
-                br.setPower(Range.clip(leftY + leftX - correction, -THRESH_WM_POWER, THRESH_WM_POWER));
             }
 
             // DPad - down
