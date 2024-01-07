@@ -97,9 +97,9 @@ public class Teleop_live extends LinearOpMode {
         while (opModeIsActive()) {
 
             leftY = gamepad1.left_stick_y * -1;
+            leftX = gamepad1.left_stick_x;
             rightY = gamepad1.right_stick_y * -1;
-//            leftX = gamepad1.left_stick_x * -1;
-//            rightX = gamepad1.right_stick_x * -1;
+            rightX = gamepad1.right_stick_x;
 
 
             if (gamepad1.b) {
@@ -169,6 +169,7 @@ public class Teleop_live extends LinearOpMode {
                 telemetry.addData("third Angle", myRobotOrientation.thirdAngle);
                 telemetry.addData("correction", correction);
                 telemetry.addData("leftY", leftY);
+                telemetry.addData("leftX",leftX);
                 telemetry.addData("fl Enc Count", fl.getCurrentPosition());
                 telemetry.addData("bl Enc Count", bl.getCurrentPosition());
                 telemetry.addData("fr Enc Count", fr.getCurrentPosition());
@@ -176,11 +177,11 @@ public class Teleop_live extends LinearOpMode {
                 telemetry.update();
                 telemetry.update();
 
-                //correction = 0;
-                fl.setPower(Range.clip(leftY + correction, -THRESH_WM_POWER, THRESH_WM_POWER));
-                bl.setPower(Range.clip(leftY + correction, -THRESH_WM_POWER, THRESH_WM_POWER));
-                fr.setPower(Range.clip(leftY - correction, -THRESH_WM_POWER, THRESH_WM_POWER));
-                br.setPower(Range.clip(leftY - correction, -THRESH_WM_POWER, THRESH_WM_POWER));
+                correction = 0;
+                fl.setPower(Range.clip(leftY + leftX + correction, -THRESH_WM_POWER, THRESH_WM_POWER));
+                bl.setPower(Range.clip(leftY - leftX + correction, -THRESH_WM_POWER, THRESH_WM_POWER));
+                fr.setPower(Range.clip(leftY - leftX - correction, -THRESH_WM_POWER, THRESH_WM_POWER));
+                br.setPower(Range.clip(leftY + leftX - correction, -THRESH_WM_POWER, THRESH_WM_POWER));
             }
 
             // DPad - down
@@ -263,10 +264,10 @@ public class Teleop_live extends LinearOpMode {
             if (leftY == 0) {
                 //turning
                 double THRESH_WM_POWER_FORTURN = 0.8;
-                fl.setPower(Range.clip(rightY * 0.6, -THRESH_WM_POWER_FORTURN, THRESH_WM_POWER_FORTURN));
-                bl.setPower(Range.clip(rightY, -THRESH_WM_POWER_FORTURN, THRESH_WM_POWER_FORTURN));
-                fr.setPower(Range.clip(-rightY * 0.6, -THRESH_WM_POWER_FORTURN, THRESH_WM_POWER_FORTURN));
-                br.setPower(Range.clip(-rightY, -THRESH_WM_POWER_FORTURN, THRESH_WM_POWER_FORTURN));
+                fl.setPower(Range.clip(rightX * 0.6, -THRESH_WM_POWER_FORTURN, THRESH_WM_POWER_FORTURN));
+                bl.setPower(Range.clip(rightX, -THRESH_WM_POWER_FORTURN, THRESH_WM_POWER_FORTURN));
+                fr.setPower(Range.clip(-rightX * 0.6, -THRESH_WM_POWER_FORTURN, THRESH_WM_POWER_FORTURN));
+                br.setPower(Range.clip(-rightX, -THRESH_WM_POWER_FORTURN, THRESH_WM_POWER_FORTURN));
 
                imu.resetYaw();
                 idle();
