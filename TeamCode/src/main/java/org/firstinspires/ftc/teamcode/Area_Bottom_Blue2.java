@@ -137,6 +137,7 @@ public class Area_Bottom_Blue2 extends LinearOpMode {
             sleep(100);
 
             //Place Purple Pixel ( will code it later )
+            //hi
 
             moveForward_wDistance_wGyro(19,0.5,ENC2DIST,imu);
             sleep(100);
