@@ -93,7 +93,6 @@ public class Teleop_live extends LinearOpMode {
         // Start opMode
         telemetry.addData("Mode", "waiting");
         telemetry.update();
-        telemetry.update();
         s2.setPosition(0);
         s1.setPosition(0.4);
         waitForStart();
