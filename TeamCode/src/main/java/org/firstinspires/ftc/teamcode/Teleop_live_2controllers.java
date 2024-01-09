@@ -126,6 +126,8 @@ public class Teleop_live_2controllers extends LinearOpMode {
             }
             // gamepad A for gamepad 1 and 2
             if (gamepad1.a) {
+                s2.setPosition(0);
+                s1.setPosition(0.3);
                 m2.setPower(0.8);
                 m3.setPower(-0.8);
             } else {
@@ -134,6 +136,8 @@ public class Teleop_live_2controllers extends LinearOpMode {
 
             }
             if (gamepad2.a) {
+                s2.setPosition(0);
+                s1.setPosition(0.3);
                 m2.setPower(0.8);
                 m3.setPower(-0.8);
             } else {
@@ -220,18 +224,19 @@ public class Teleop_live_2controllers extends LinearOpMode {
                     correction = 0;
                 }
                 correction = 0;
+                double maxPow = THRESH_WM_POWER;
                 double flPow = left1Y + left1X + correction;
-                double maxPow = Math.abs(flPow);
+                maxPow = Math.max(maxPow,Math.abs(flPow));
                 double blPow = left1Y - left1X + correction;
                 maxPow = Math.max(maxPow,Math.abs(blPow));
                 double frPow = left1Y - left1X - correction;
                 maxPow = Math.max(maxPow,Math.abs(frPow));
                 double brPow = left1Y + left1X - correction;
                 maxPow = Math.max(maxPow,Math.abs(brPow));
-                flPow = (flPow/2.0)*THRESH_WM_POWER;
-                blPow = (blPow/2.0)*THRESH_WM_POWER;
-                frPow = (frPow/2.0)*THRESH_WM_POWER;
-                brPow = (brPow/2.0)*THRESH_WM_POWER;
+                flPow = (flPow/maxPow)*THRESH_WM_POWER;
+                blPow = (blPow/maxPow)*THRESH_WM_POWER;
+                frPow = (frPow/maxPow)*THRESH_WM_POWER;
+                brPow = (brPow/maxPow)*THRESH_WM_POWER;
 
                 fl.setPower(Range.clip(flPow, -THRESH_WM_POWER, THRESH_WM_POWER));
                 bl.setPower(Range.clip(blPow, -THRESH_WM_POWER, THRESH_WM_POWER));
@@ -265,18 +270,19 @@ public class Teleop_live_2controllers extends LinearOpMode {
                     correction = 0;
                 }
                 correction = 0;
+                double maxPow = THRESH_WM_POWER;
                 double flPow = left2Y + left2X + correction;
-                double maxPow = Math.abs(flPow);
+                maxPow = Math.max(maxPow,Math.abs(flPow));
                 double blPow = left2Y - left2X + correction;
                 maxPow = Math.max(maxPow,Math.abs(blPow));
                 double frPow = left2Y - left2X - correction;
                 maxPow = Math.max(maxPow,Math.abs(frPow));
                 double brPow = left2Y + left2X - correction;
                 maxPow = Math.max(maxPow,Math.abs(brPow));
-                flPow = (flPow/2.0)*THRESH_WM_POWER;
-                blPow = (blPow/2.0)*THRESH_WM_POWER;
-                frPow = (frPow/2.0)*THRESH_WM_POWER;
-                brPow = (brPow/2.0)*THRESH_WM_POWER;
+                flPow = (flPow/maxPow)*THRESH_WM_POWER;
+                blPow = (blPow/maxPow)*THRESH_WM_POWER;
+                frPow = (frPow/maxPow)*THRESH_WM_POWER;
+                brPow = (brPow/maxPow)*THRESH_WM_POWER;
 
                 fl.setPower(Range.clip(flPow, -THRESH_WM_POWER, THRESH_WM_POWER));
                 bl.setPower(Range.clip(blPow, -THRESH_WM_POWER, THRESH_WM_POWER));
