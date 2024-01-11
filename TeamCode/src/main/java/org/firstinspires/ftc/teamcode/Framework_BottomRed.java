@@ -117,8 +117,8 @@ public class Framework_BottomRed extends LinearOpMode {
         // Initialize motors
         util.setMotorOrientation();
         //resetMotorEncoderCounts();
-        s2.setPosition(0);
-        s1.setPosition(0.3);
+        util.clawClosed();
+        util.wristFlat();
         // Start imu initialization
         telemetry.addData("Gyro Status", "Start initialization");
         telemetry.update();
@@ -155,18 +155,18 @@ public class Framework_BottomRed extends LinearOpMode {
             util.extend(1,2000);
             sleep(1000);
 
-            s1.setPosition(0.3);
-            s2.setPosition(0.28);
+            util.clawClosed();
+            util.wristBent();
             sleep(500);
 
-            s1.setPosition(0.4);
+            util.clawOpen();
             sleep(700);
 
             util.moveForward_wDistance_wGyro(3,0.7,ENC2DIST,imu);
             sleep(200);
 
-            s2.setPosition(0);
-            s1.setPosition(0.3);
+            util.clawClosed();
+            util.wristFlat();
 
             util.moveSideways_wCorrection("left",24,0.5);
             sleep(500);

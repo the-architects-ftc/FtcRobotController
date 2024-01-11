@@ -116,8 +116,8 @@ public class Framework_BottomBlue extends LinearOpMode {
         // Initialize motors
         util.setMotorOrientation();
         //resetMotorEncoderCounts();
-        s2.setPosition(0);
-        s1.setPosition(0.4);
+        util.clawClosed();
+        util.wristFlat();
         // Start imu initialization
         telemetry.addData("Gyro Status", "Start initialization");
         telemetry.update();

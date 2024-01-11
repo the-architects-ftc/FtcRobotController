@@ -116,8 +116,8 @@ public class Area_Top_Red1 extends LinearOpMode {
         // Initialize motors
         setMotorOrientation();
         //resetMotorEncoderCounts();
-        s2.setPosition(0);
-        s1.setPosition(0.4);
+        util.clawClosed();
+        util.wristFlat();
         // Start imu initialization
         telemetry.addData("Gyro Status", "Start initialization");
         telemetry.update();

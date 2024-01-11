@@ -213,6 +213,30 @@ public class CommonUtil extends LinearOpMode {
     }
 
 
+    public void clawClosed()
+    {
+        s1.setPosition(0.2);
+    }
+
+
+    public void wristFlat()
+    {
+        s2.setPosition(0.147);
+    }
+
+    public void clawOpen()
+    {
+        s1.setPosition(0.4);
+    }
+
+    public void wristBent()
+    {
+        s2.setPosition(0.427);
+    }
+
+
+
+
     public void turn(String direction, double targetAngle, BHI260IMU imu)
     {
         imu.resetYaw();

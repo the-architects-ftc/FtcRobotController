@@ -171,6 +171,27 @@ public class Unit_Test extends LinearOpMode {
 
     }
 
+    public void clawClosed()
+    {
+        s1.setPosition(0.2);
+    }
+
+
+    public void wristFlat()
+    {
+        s2.setPosition(0.147);
+    }
+
+    public void clawOpen()
+    {
+        s1.setPosition(0.4);
+    }
+
+    public void wristBent()
+    {
+        s2.setPosition(0.427);
+    }
+
     // Reset motor encoder counts
     private void resetMotorEncoderCounts()
     {

@@ -94,8 +94,9 @@ public class Teleop_live_2controllers extends LinearOpMode {
         // Start opMode
         telemetry.addData("Mode", "waiting");
         telemetry.update();
-        s2.setPosition(0);
-        s1.setPosition(0.3);
+        s2.setPosition(0.147);
+        //s2.(0.147) is the init ( flat position )
+        s1.setPosition(0.2);
         waitForStart();
         while (opModeIsActive()) {
             // initiate the left and right variables
@@ -126,8 +127,7 @@ public class Teleop_live_2controllers extends LinearOpMode {
             }
             // gamepad A for gamepad 1 and 2
             if (gamepad1.a) {
-                s2.setPosition(0);
-                s1.setPosition(0.3);
+
                 m2.setPower(0.8);
                 m3.setPower(-0.8);
             } else {
@@ -136,8 +136,7 @@ public class Teleop_live_2controllers extends LinearOpMode {
 
             }
             if (gamepad2.a) {
-                s2.setPosition(0);
-                s1.setPosition(0.3);
+
                 m2.setPower(0.8);
                 m3.setPower(-0.8);
             } else {
@@ -163,10 +162,10 @@ public class Teleop_live_2controllers extends LinearOpMode {
             }
             // right bumper for gamepad 1 and 2
             if (gamepad1.right_bumper) {
-                s1.setPosition(0.3);
+                s1.setPosition(0.2);
             }
             if (gamepad2.right_bumper) {
-                s1.setPosition(0.3);
+                s1.setPosition(0.2);
             }
             // gamepad X for gamepad 1 and 2
             if (gamepad1.x) {
@@ -201,17 +200,17 @@ public class Teleop_live_2controllers extends LinearOpMode {
 
             // gamepad left trigger for gamepad 1 and 2
             if (gamepad1.left_trigger > 0.5) {
-                s2.setPosition(0);
+                s2.setPosition(0.147);
             }
             if (gamepad2.left_trigger > 0.5) {
-                s2.setPosition(0);
+                s2.setPosition(0.147);
             }
             // gamepad right trigger for gamepad 1 and 2
             if (gamepad1.right_trigger > 0.5) {
-                s2.setPosition(0.28);
+                s2.setPosition(0.427);
             }
             if (gamepad2.right_trigger > 0.5) {
-                s2.setPosition(0.28);
+                s2.setPosition(0.427);
             }
 
             //Forwards/Backward for gamepad 1
