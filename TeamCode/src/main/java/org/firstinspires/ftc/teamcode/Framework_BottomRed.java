@@ -115,7 +115,7 @@ public class Framework_BottomRed extends LinearOpMode {
         setMotorOrientation();
         //resetMotorEncoderCounts();
         s2.setPosition(0);
-        s1.setPosition(0.4);
+        s1.setPosition(0.3);
         // Start imu initialization
         telemetry.addData("Gyro Status", "Start initialization");
         telemetry.update();
@@ -139,16 +139,33 @@ public class Framework_BottomRed extends LinearOpMode {
 
             //intake white :)
 
-            moveBackwards_wDistance_wGyro(90,0.5,ENC2DIST,imu);
+            moveBackwards_wDistance_wGyro(91,0.8,ENC2DIST,imu);
+            sleep(1000);
+
+
+            moveSideways_wCorrection("left",22,0.4);
             sleep(500);
 
-            moveSideways_wCorrection("left",22,0.5);
+            moveBackwards_wDistance_wGyro(5,0.2,ENC2DIST,imu);
             sleep(500);
 
-            moveBackwards_wDistance_wGyro(14,0.4,ENC2DIST,imu);
-            sleep(1500);
+            extend(1,2000);
+            sleep(1000);
 
-            moveSideways_wCorrection("left",19,0.5);
+            s1.setPosition(0.3);
+            s2.setPosition(0.28);
+            sleep(500);
+
+            s1.setPosition(0.4);
+            sleep(700);
+
+            moveForward_wDistance_wGyro(3,0.7,ENC2DIST,imu);
+            sleep(200);
+
+            s2.setPosition(0);
+            s1.setPosition(0.3);
+
+            moveSideways_wCorrection("left",24,0.5);
             sleep(500);
 
             moveBackwards_wDistance_wGyro(10,0.5,ENC2DIST,imu);
@@ -225,7 +242,8 @@ public class Framework_BottomRed extends LinearOpMode {
             myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
             double correction = myRobotOrientation.thirdAngle/180;
 
-            double power = calculatePowerFB(encoderAbsCounts,Math.abs(bl.getCurrentPosition()),motorAbsPower);
+//            double power = calculatePowerFB(encoderAbsCounts,Math.abs(bl.getCurrentPosition()),motorAbsPower);
+            double power = motorAbsPower;
             bl.setPower(power-correction);
             fl.setPower(power-correction);
             fr.setPower(power+correction);
@@ -282,7 +300,8 @@ public class Framework_BottomRed extends LinearOpMode {
         while(bl.getCurrentPosition() > -encoderAbsCounts) {
             myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
             double correction = myRobotOrientation.thirdAngle/180;
-            double power = calculatePowerFB(encoderAbsCounts,Math.abs(bl.getCurrentPosition()),motorAbsPower);
+//            double power = calculatePowerFB(encoderAbsCounts,Math.abs(bl.getCurrentPosition()),motorAbsPower);
+            double power = motorAbsPower;
             bl.setPower(-power-correction);
             fl.setPower(-power-correction);
             fr.setPower(-power+correction);
@@ -628,17 +647,16 @@ public class Framework_BottomRed extends LinearOpMode {
     private void extend(double power, int encoderAbsCounts) {
         m2.setDirection(DcMotor.Direction.FORWARD);
         m3.setDirection(DcMotor.Direction.FORWARD);
-        m2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        m3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        resetMotorEncoderCounts();
         m2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         m3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         telemetry.addData("Start count", m2.getCurrentPosition());
         telemetry.addData("Start count", m3.getCurrentPosition());
         telemetry.update();
 
-        while (m2.getCurrentPosition() < encoderAbsCounts){
-            m2.setPower(power);
-            m3.setPower(-power);
+        while (Math.abs(m2.getCurrentPosition()) < encoderAbsCounts){
+            m2.setPower(-power);
+            m3.setPower(power);
             telemetry.addData("Count M2",m2.getCurrentPosition());
             telemetry.addData("Count M3",m3.getCurrentPosition());
             telemetry.update();
