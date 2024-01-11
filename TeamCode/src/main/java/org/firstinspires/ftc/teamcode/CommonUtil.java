@@ -202,7 +202,7 @@ public class CommonUtil extends LinearOpMode {
 
     public double calculatePowerFB(double targetEC, double currentEC,double motorMaxPower)
     {
-        double power = motorMaxPower*(1-(targetEC/currentEC));
+        double power = motorMaxPower*(1-(currentEC/targetEC));
         if (power < 0.4){
             power = 0.4;
         }

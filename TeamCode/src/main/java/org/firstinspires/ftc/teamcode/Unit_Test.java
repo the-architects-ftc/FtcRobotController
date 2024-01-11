@@ -41,6 +41,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.CommonUtil;
 
+
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -225,7 +226,7 @@ public class Unit_Test extends LinearOpMode {
             myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
             double correction = myRobotOrientation.thirdAngle/180;
 
-//            double power = calculatePowerFB(encoderAbsCounts,Math.abs(bl.getCurrentPosition()),motorAbsPower);
+           calculatePowerFB(encoderAbsCounts,Math.abs(bl.getCurrentPosition()),motorAbsPower);
             double power = motorAbsPower;
             bl.setPower(power-correction);
             fl.setPower(power-correction);
@@ -367,7 +368,7 @@ public class Unit_Test extends LinearOpMode {
     }
     public double calculatePowerFB(double targetEC, double currentEC,double motorMaxPower)
     {
-        double power = motorMaxPower*(1-(targetEC/currentEC));
+        double power = motorMaxPower*(1-(currentEC/targetEC));
         if (power < 0.4){
             power = 0.4;
         }

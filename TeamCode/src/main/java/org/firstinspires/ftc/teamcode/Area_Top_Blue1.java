@@ -38,6 +38,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import org.firstinspires.ftc.teamcode.CommonUtil;
+
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -63,6 +65,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 @Autonomous(name="Area_Top_Blue1", group="Linear Opmode2")
 public class Area_Top_Blue1 extends LinearOpMode {
 
+    CommonUtil util = new CommonUtil();
     ElapsedTime runtime = new ElapsedTime();
     BHI260IMU imu;
     //IMU.Parameters myIMUParameters;
