@@ -63,115 +63,86 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 
 @Autonomous(name="Framework_BottomRed", group="Linear Opmode2")
-public class Framework_BottomRed extends LinearOpMode {
+public class Framework_BottomRed extends CommonUtil {
 
-    CommonUtil util = new CommonUtil();
-    ElapsedTime runtime = new ElapsedTime();
-    BHI260IMU imu;
-    //IMU.Parameters myIMUParameters;
-
-    // Create an object to receive the IMU angles
-    YawPitchRollAngles robotOrientation;
     Orientation myRobotOrientation;
-
-    DcMotor bl = null;
-    DcMotor fl = null;
-    DcMotor fr = null;
-    DcMotor br = null;
-    DcMotor m0 = null;
-    DcMotor m1 = null;
-    DcMotor m2 = null;
-    DcMotor m3 = null;
-    Servo s1 = null;
-    Servo s2 = null;
-    Servo s3 = null;
-
-    double ENC2DIST = 2000/48;
 
     @Override
     public void runOpMode() {
 
-        // Variable declaration
-        BHI260IMU.Parameters myIMUParameters;
-
         //setup
         telemetry.setAutoClear(false);
-
-        // map imu
-        imu = hardwareMap.get(BHI260IMU.class,"imu");
-        // map motors
-        bl = hardwareMap.get(DcMotor.class, "LB");
-        fl = hardwareMap.get(DcMotor.class, "LF");
-        fr = hardwareMap.get(DcMotor.class, "RF");
-        br = hardwareMap.get(DcMotor.class, "RB");
-        m0 = hardwareMap.get(DcMotor.class, "M0");
-        m1 = hardwareMap.get(DcMotor.class, "M1");
-        m2 = hardwareMap.get(DcMotor.class, "M2");
-        m3 = hardwareMap.get(DcMotor.class, "M3");
-        s1 = hardwareMap.get(Servo.class, "s1");
-        s2 = hardwareMap.get(Servo.class, "s2");
-        s3 = hardwareMap.get(Servo.class, "s3");
-        s1.setDirection(Servo.Direction.FORWARD);
-        s2.setDirection(Servo.Direction.FORWARD);
-
+        // initialize hardware
+        initialize(hardwareMap);
         // Initialize motors
-        util.setMotorOrientation();
+        setMotorOrientation();
         //resetMotorEncoderCounts();
-        util.clawClosed();
-        util.wristFlat();
-        // Start imu initialization
-        telemetry.addData("Gyro Status", "Start initialization");
-        telemetry.update();
-        myIMUParameters = new IMU.Parameters(
-                new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD,RevHubOrientationOnRobot.UsbFacingDirection.UP )
-        );
-        imu.initialize(myIMUParameters);
-        telemetry.addData("Gyro Status", "Initialized");
-        telemetry.update();
+        clawOpen();
+        wristFlat();
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
         while (opModeIsActive()) {
 
-            util.moveSideways_wCorrection("right",25,0.5);
-            sleep(500);
 
-            util.moveForward_wDistance_wGyro(15,0.5,ENC2DIST,imu);
-            sleep(500);
+            clawClosed();
+            sleep(600);
 
-            //intake white :)
-
-            util.moveBackwards_wDistance_wGyro(91,0.8,ENC2DIST,imu);
-            sleep(1000);
-
-
-            util.moveSideways_wCorrection("left",22,0.4);
-            sleep(500);
-
-            util.moveBackwards_wDistance_wGyro(5,0.2,ENC2DIST,imu);
-            sleep(500);
-
-            util.extend(1,2000);
-            sleep(1000);
-
-            util.clawClosed();
-            util.wristBent();
-            sleep(500);
-
-            util.clawOpen();
-            sleep(700);
-
-            util.moveForward_wDistance_wGyro(3,0.7,ENC2DIST,imu);
+            extend(1,200);
             sleep(200);
 
-            util.clawClosed();
-            util.wristFlat();
-
-            util.moveSideways_wCorrection("left",24,0.5);
+            moveBackwards_wDistance_wGyro(17,0.35);
             sleep(500);
 
-            util.moveBackwards_wDistance_wGyro(10,0.5,ENC2DIST,imu);
+            turn("right",90);
+            sleep(1000);
+
+            moveBackwards_wDistance_wGyro(1,0.35);
+
+
+            moveSideways_wCorrection("right",28,0.5);
+            sleep(500);
+
+
+            moveBackwards_wDistance_wGyro(66,0.8);
+            sleep(1000);
+
+
+            moveSideways_wCorrection("left",25,0.4);
+            sleep(500);
+
+            moveBackwards_wDistance_wGyro(8,0.2);
+            sleep(500);
+
+            extend(1,4800);
+            sleep(1000);
+
+            clawClosed();
+            wristBent();
+            sleep(1000);
+
+            clawOpen();
+            sleep(1000);
+
+            moveForward_wDistance_wGyro(1,0.3);
+
+            moveSideways_wCorrection("left",3,0.35);
+            sleep(1000);
+
+            moveSideways_wCorrection("left",3,0.35);
+            sleep(1000);
+
+            moveForward_wDistance_wGyro(3,0.7);
+            sleep(1000);
+
+            clawClosed();
+            wristFlat();
+
+            moveSideways_wCorrection("left",22,0.4);
+            sleep(500);
+
+            moveBackwards_wDistance_wGyro(10,0.5);
             sleep(500000);
 
         }

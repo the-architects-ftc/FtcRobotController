@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
@@ -24,10 +25,15 @@ public class CommonUtil extends LinearOpMode {
 
     Orientation myRobotOrientation;
 
-    BHI260IMU imu;
+    double ENC2DIST = 2000.0/48.0;
+    ElapsedTime runtime = new ElapsedTime();
 
+    //imu init
+    BHI260IMU imu;
+    BHI260IMU.Parameters myIMUParameters;
     YawPitchRollAngles robotOrientation;
 
+    //motor / servo init
     DcMotor bl = null;
     DcMotor fl = null;
     DcMotor fr = null;
@@ -40,7 +46,40 @@ public class CommonUtil extends LinearOpMode {
     Servo s2 = null;
     Servo s3 = null;
 
+
     //All Our functions!
+
+    // Initialize
+    public void initialize(HardwareMap hardwareMap){
+
+        telemetry.addData("at","initialize");
+        telemetry.update();
+
+        // map imu
+        imu = hardwareMap.get(BHI260IMU.class,"imu");
+        myIMUParameters = new IMU.Parameters(
+                new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD,RevHubOrientationOnRobot.UsbFacingDirection.UP )
+        );
+        imu.initialize(myIMUParameters);
+        // Start imu initialization
+        telemetry.addData("Gyro Status", "Initialized");
+        telemetry.update();
+        // map motors
+        bl = hardwareMap.get(DcMotor.class, "LB");
+        fl = hardwareMap.get(DcMotor.class, "LF");
+        fr = hardwareMap.get(DcMotor.class, "RF");
+        br = hardwareMap.get(DcMotor.class, "RB");
+        m0 = hardwareMap.get(DcMotor.class, "M0");
+        m1 = hardwareMap.get(DcMotor.class, "M1");
+        m2 = hardwareMap.get(DcMotor.class, "M2");
+        m3 = hardwareMap.get(DcMotor.class, "M3");
+        s1 = hardwareMap.get(Servo.class, "s1");
+        s2 = hardwareMap.get(Servo.class, "s2");
+        s3 = hardwareMap.get(Servo.class, "s3");
+        s1.setDirection(Servo.Direction.FORWARD);
+        s2.setDirection(Servo.Direction.FORWARD);
+    }
+
 
     // Set motor directions
     public void setMotorOrientation()
@@ -55,6 +94,7 @@ public class CommonUtil extends LinearOpMode {
 
     }
 
+    //reset encoder counts
     public void resetMotorEncoderCounts()
     {
         // Reset encoder counts kept by motors
@@ -67,6 +107,7 @@ public class CommonUtil extends LinearOpMode {
 
     }
 
+    //motor power 0
     public void setMotorToZeroPower()
     {
         bl.setPower(0);
@@ -75,13 +116,13 @@ public class CommonUtil extends LinearOpMode {
         br.setPower(0);
     }
 
-
-    public int moveForward_wDistance_wGyro(int DistanceAbsIn, double motorAbsPower, double CountToDist, BHI260IMU imu)
+    //move forwards with gyro
+    public int moveForward_wDistance_wGyro(int DistanceAbsIn, double motorAbsPower)
     {
 
         double currZAngle = 0;
         int currEncoderCount = 0;
-        double encoderAbsCounts = CountToDist*DistanceAbsIn;
+        double encoderAbsCounts = ENC2DIST*DistanceAbsIn;
         telemetry.addData("Im here",currZAngle);
 
         // Resetting encoder counts
@@ -108,7 +149,7 @@ public class CommonUtil extends LinearOpMode {
             myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
             double correction = myRobotOrientation.thirdAngle/180;
 
-//            double power = calculatePowerFB(encoderAbsCounts,Math.abs(bl.getCurrentPosition()),motorAbsPower);
+            //double power = calculatePowerFB(encoderAbsCounts,Math.abs(bl.getCurrentPosition()),motorAbsPower);
             double power = motorAbsPower;
             bl.setPower(power-correction);
             fl.setPower(power-correction);
@@ -132,13 +173,14 @@ public class CommonUtil extends LinearOpMode {
         return (currEncoderCount);
     }
 
-    public int moveBackwards_wDistance_wGyro(int DistanceAbsIn, double motorAbsPower,double CountToDist, BHI260IMU imu)
+    //move backwards with gyro correction
+    public int moveBackwards_wDistance_wGyro(int DistanceAbsIn, double motorAbsPower)
     {
 
         double currZAngle = 0;
         int currEncoderCount = 0;
 
-        double encoderAbsCounts = CountToDist*DistanceAbsIn;
+        double encoderAbsCounts = ENC2DIST *DistanceAbsIn;
         telemetry.addData("Im here",currZAngle);
 
         // Resetting encoder counts
@@ -164,7 +206,7 @@ public class CommonUtil extends LinearOpMode {
         while(bl.getCurrentPosition() > -encoderAbsCounts) {
             myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
             double correction = myRobotOrientation.thirdAngle/180;
-//            double power = calculatePowerFB(encoderAbsCounts,Math.abs(bl.getCurrentPosition()),motorAbsPower);
+            //double power = calculatePowerFB(encoderAbsCounts,Math.abs(bl.getCurrentPosition()),motorAbsPower);
             double power = motorAbsPower;
             bl.setPower(-power-correction);
             fl.setPower(-power-correction);
@@ -234,10 +276,7 @@ public class CommonUtil extends LinearOpMode {
         s2.setPosition(0.427);
     }
 
-
-
-
-    public void turn(String direction, double targetAngle, BHI260IMU imu)
+    public void turn(String direction, double targetAngle)
     {
         imu.resetYaw();
         if (direction.equalsIgnoreCase("right")){
@@ -286,8 +325,6 @@ public class CommonUtil extends LinearOpMode {
 
         }
     }
-
-
 
     public void intake(int t_msec )
     {
@@ -441,6 +478,30 @@ public class CommonUtil extends LinearOpMode {
         telemetry.addData("Start count", m3.getCurrentPosition());
         telemetry.update();
 
+        while (m2.getCurrentPosition() > -encoderAbsCounts){
+            m2.setPower(-power);
+            m3.setPower(power);
+            telemetry.addData("Count M2",m2.getCurrentPosition());
+            telemetry.addData("Count M3",m3.getCurrentPosition());
+            telemetry.update();
+            idle();
+        }
+        m2.setPower(0); // set power to 0 so the motor stops running
+        m3.setPower(0);
+
+    }
+
+    public void retract(double power, int encoderAbsCounts) {
+        m2.setDirection(DcMotor.Direction.FORWARD);
+        m3.setDirection(DcMotor.Direction.FORWARD);
+        m2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        m3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        m2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        m3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        telemetry.addData("Start count", m2.getCurrentPosition());
+        telemetry.addData("Start count", m3.getCurrentPosition());
+        telemetry.update();
+
         while (m2.getCurrentPosition() < encoderAbsCounts){
             m2.setPower(power);
             m3.setPower(-power);
@@ -453,9 +514,6 @@ public class CommonUtil extends LinearOpMode {
         m3.setPower(0);
 
     }
-
-
-
 
 
     @Override

@@ -136,18 +136,18 @@ public class Framework_BottomBlue extends LinearOpMode {
             util.moveSideways_wCorrection("left",25,0.5);
             sleep(500);
 
-            util.moveForward_wDistance_wGyro(15,0.5,ENC2DIST,imu);
+            util.moveForward_wDistance_wGyro(15,0.5);
             sleep(500);
 
             //intake white :)
 
-            util.moveBackwards_wDistance_wGyro(90,0.5,ENC2DIST,imu);
+            util.moveBackwards_wDistance_wGyro(90,0.5);
             sleep(500);
 
             util.moveSideways_wCorrection("right",22,0.5);
             sleep(500);
 
-            util.moveBackwards_wDistance_wGyro(14,0.4,ENC2DIST,imu);
+            util.moveBackwards_wDistance_wGyro(14,0.4);
             sleep(500);
 
             util.extend(1,2000);
@@ -155,7 +155,7 @@ public class Framework_BottomBlue extends LinearOpMode {
             util.moveSideways_wCorrection("right",19,0.5);
             sleep(500);
 
-            util.moveBackwards_wDistance_wGyro(10,0.5,ENC2DIST,imu);
+            util.moveBackwards_wDistance_wGyro(10,0.5);
             sleep(500000);
 
         }
