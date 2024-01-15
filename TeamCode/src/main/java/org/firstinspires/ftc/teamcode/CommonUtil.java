@@ -26,7 +26,7 @@ public class CommonUtil extends LinearOpMode {
     Orientation myRobotOrientation;
 
     double ENC2DIST = 2000.0/48.0;
-    ElapsedTime runtime = new ElapsedTime();
+    ElapsedTime timer = new ElapsedTime();
 
     //imu init
     BHI260IMU imu;
@@ -145,6 +145,7 @@ public class CommonUtil extends LinearOpMode {
         telemetry.addData("enc-bl",bl.getCurrentPosition());
         telemetry.update();
 
+        start();
         while (bl.getCurrentPosition() < encoderAbsCounts) {
             myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
             double correction = myRobotOrientation.thirdAngle/180;
@@ -159,6 +160,8 @@ public class CommonUtil extends LinearOpMode {
             //telemetry.update();
             idle();
         }
+        stop();
+        getRuntime();
 
         // apply zero power to avoid continuous power to the wheels
         setMotorToZeroPower();
@@ -172,6 +175,8 @@ public class CommonUtil extends LinearOpMode {
         telemetry.update();
         return (currEncoderCount);
     }
+
+
 
     //move backwards with gyro correction
     public int moveBackwards_wDistance_wGyro(int DistanceAbsIn, double motorAbsPower)
@@ -203,6 +208,7 @@ public class CommonUtil extends LinearOpMode {
         telemetry.addData("enc-bl",bl.getCurrentPosition());
         telemetry.update();
 
+        start();
         while(bl.getCurrentPosition() > -encoderAbsCounts) {
             myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
             double correction = myRobotOrientation.thirdAngle/180;
@@ -216,6 +222,8 @@ public class CommonUtil extends LinearOpMode {
             //telemetry.update();
             idle();
         }
+        stop();
+        getRuntime();
 
         // apply zero power to avoid continuous power to the wheels
         setMotorToZeroPower();

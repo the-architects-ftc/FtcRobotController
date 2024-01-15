@@ -85,72 +85,61 @@ public class Area_Bottom_Red1 extends CommonUtil {
 
         while (opModeIsActive()) {
 
-
             clawClosed();
             sleep(600);
-
-            extend(1,100);
+            extend(1,50);
             sleep(200);
 
-            moveBackwards_wDistance_wGyro(17,0.35);
+            moveForward_wDistance_wGyro(5,0.2);
+            sleep(500);
+            moveSideways_wCorrection("right",27,0.4);
+            sleep(500);
+            moveForward_wDistance_wGyro(7,0.35); //was 9
             sleep(500);
 
-            turn("left",90);
+            extend(0.65,400);
+            sleep(1000); // pausing to let pixel drop
+
+            moveForward_wDistance_wGyro(2,0.4);
+            sleep(500);
+
+
+            moveBackwards_wDistance_wGyro(9,0.35); // was 9
+            sleep(500);
+            moveSideways_wCorrection("right",25,0.4);
+            sleep(500);
+            retract(1,150);
+            sleep(500);
+            moveBackwards_wDistance_wGyro(75,0.8); // was 90
             sleep(1000);
-
-            moveSideways_wCorrection("left",5,0.35);
+            extend(1,700);
             sleep(500);
-
-            moveForward_wDistance_wGyro(2,0.2);
-
-            extend(1,300);
+            moveSideways_wCorrection("left",19,0.4);
             sleep(500);
-
-            retract(1,300);
-            sleep(500);
-
-
-            moveSideways_wCorrection("left",23,0.5);
-            sleep(500);
-
-            moveForward_wDistance_wGyro(1,0.2);
-
-            turn("right",90);
-            turn("right",90);
-
-
-
-
-            moveBackwards_wDistance_wGyro(66,0.8);
-            sleep(1000);
-
-
-            moveSideways_wCorrection("left",31,0.4);
-            sleep(500);
-
+            extend(1,4000);
+            sleep(200);
             moveBackwards_wDistance_wGyro(2,0.2);
+            sleep(200);
 
-            extend(1,4800);
-            sleep(1000);
+            bl.setPower(-0.2);
+            fl.setPower(-0.2);
+            fr.setPower(-0.2);
+            br.setPower(-0.2);
+            sleep(1500);
+            bl.setPower(0);
+            fl.setPower(0);
+            fr.setPower(0);
+            br.setPower(0);
 
-            clawClosed();
             wristBent();
-            sleep(1000);
-
-            clawOpen();
-            sleep(1000);
-
-            moveForward_wDistance_wGyro(3,0.7);
-            sleep(1000);
-
             clawClosed();
-            wristFlat();
-
-            moveSideways_wCorrection("left",26,0.4);
             sleep(500);
-
-            moveBackwards_wDistance_wGyro(10,0.5);
-            sleep(500000);
+            wristBent();
+            clawOpen();
+            sleep(500);
+            wristFlat();
+            clawClosed();
+                sleep(500000);
 
         }
     }

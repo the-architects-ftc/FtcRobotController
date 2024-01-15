@@ -62,8 +62,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
  */
 
 
-@Autonomous(name="Area_Bottom_Red3", group="Linear Opmode2")
-public class Area_Bottom_Red3 extends CommonUtil {
+@Autonomous(name="Area_Bottom_Red2BKP ", group="Linear Opmode2")
+public class Area_Bottom_Red2BKP extends CommonUtil {
 
     Orientation myRobotOrientation;
 
@@ -88,53 +88,69 @@ public class Area_Bottom_Red3 extends CommonUtil {
 
             clawClosed();
             sleep(600);
-            extend(1,50);
+
+            extend(1,200);
             sleep(200);
 
-            moveForward_wDistance_wGyro(5,0.2);
-            sleep(500);
-            moveSideways_wCorrection("right",27,0.4);
+            moveBackwards_wDistance_wGyro(23,0.35);
             sleep(500);
 
-            moveBackwards_wDistance_wGyro(6,0.3);
-            sleep(500);
-            extend(0.65,400);
-            sleep(1000); // pausing to let pixel drop
-
-            moveForward_wDistance_wGyro(4,0.4);
+            extend(1,400);
             sleep(500);
 
-            moveSideways_wCorrection("right",25,0.4);
+
+
+            moveForward_wDistance_wGyro(5,0.35);
             sleep(500);
-            retract(1,150);
-            sleep(500);
-            moveBackwards_wDistance_wGyro(75,0.8); // was 90
+
+            turn("right",90);
             sleep(1000);
-            extend(1,700);
-            sleep(500);
-            moveSideways_wCorrection("left",32,0.4);
-            sleep(500);
-            extend(1,4000);
-            sleep(200);
 
-            bl.setPower(-0.2);
-            fl.setPower(-0.2);
-            fr.setPower(-0.2);
-            br.setPower(-0.2);
-            sleep(1500);
-            bl.setPower(0);
-            fl.setPower(0);
-            fr.setPower(0);
-            br.setPower(0);
+            moveBackwards_wDistance_wGyro(1,0.35);
 
-            wristBent();
+
+            moveSideways_wCorrection("right",28,0.5);
+            sleep(500);
+
+            retract(1,400);
+
+
+            moveBackwards_wDistance_wGyro(66,0.8);
+            sleep(1000);
+
+
+            moveSideways_wCorrection("left",25,0.4);
+            sleep(500);
+
+
+            extend(1,4800);
+            sleep(1000);
+
             clawClosed();
-            sleep(500);
             wristBent();
+            sleep(1000);
+
             clawOpen();
-            sleep(500);
-            wristFlat();
+            sleep(1000);
+
+            moveForward_wDistance_wGyro(1,0.3);
+
+            moveSideways_wCorrection("left",3,0.35);
+            sleep(1000);
+
+            moveSideways_wCorrection("left",3,0.35);
+            sleep(1000);
+
+            moveForward_wDistance_wGyro(3,0.7);
+            sleep(1000);
+
             clawClosed();
+            wristFlat();
+
+            moveSideways_wCorrection("left",22,0.4);
+            sleep(500);
+
+            moveBackwards_wDistance_wGyro(10,0.5);
             sleep(500000);
 
         }

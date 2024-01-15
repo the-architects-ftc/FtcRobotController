@@ -84,6 +84,7 @@ public class Teleop_live_2controllers extends LinearOpMode {
         s3 = hardwareMap.get(Servo.class, "s3");
         s1.setDirection(Servo.Direction.FORWARD);
         s2.setDirection(Servo.Direction.FORWARD);
+        s3.setDirection(Servo.Direction.REVERSE);
 
         // Initial settings
         bl.setPower(0);
@@ -146,11 +147,11 @@ public class Teleop_live_2controllers extends LinearOpMode {
             }
             // gamepad Y for gamepad 1 and 2
             if (gamepad1.y) {
-                s3.setPosition(0.5);
+                s3.setPosition(0);
 
             }
             if (gamepad2.y) {
-                s3.setPosition(0.5);
+                s3.setPosition(0);
 
             }
             // left bumper for gamepad 1 and 2
