@@ -117,7 +117,7 @@ public class CommonUtil extends LinearOpMode {
     }
 
     //move forwards with gyro
-    public int moveForward_wDistance_wGyro(int DistanceAbsIn, double motorAbsPower)
+    public int moveForward_wDistance_wGyro(double DistanceAbsIn, double motorAbsPower)
     {
 
         double currZAngle = 0;
@@ -174,7 +174,7 @@ public class CommonUtil extends LinearOpMode {
     }
 
     //move backwards with gyro correction
-    public int moveBackwards_wDistance_wGyro(int DistanceAbsIn, double motorAbsPower)
+    public int moveBackwards_wDistance_wGyro(double DistanceAbsIn, double motorAbsPower)
     {
 
         double currZAngle = 0;

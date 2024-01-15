@@ -119,8 +119,8 @@ public class Teleop_live_2controllers extends LinearOpMode {
                 m3.setPower(0);
             }
             if (gamepad2.b) {
-                m2.setPower(-0.8);
-                m3.setPower(0.8);
+                m2.setPower(-0.9);
+                m3.setPower(0.9);
             } else {
                 m2.setPower(0);
                 m3.setPower(0);
@@ -128,8 +128,8 @@ public class Teleop_live_2controllers extends LinearOpMode {
             // gamepad A for gamepad 1 and 2
             if (gamepad1.a) {
 
-                m2.setPower(0.8);
-                m3.setPower(-0.8);
+                m2.setPower(0.9);
+                m3.setPower(-0.9);
             } else {
                 m2.setPower(0);
                 m3.setPower(0);
