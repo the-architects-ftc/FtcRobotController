@@ -37,8 +37,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
-
+import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.CommonUtil;
+
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -65,11 +66,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 public class Area_Top_Red3 extends CommonUtil {
 
     Orientation myRobotOrientation;
+
     @Override
     public void runOpMode() {
-
-        // Variable declaration
-        BHI260IMU.Parameters myIMUParameters;
 
         //setup
         telemetry.setAutoClear(false);
@@ -85,41 +84,53 @@ public class Area_Top_Red3 extends CommonUtil {
         waitForStart();
 
         while (opModeIsActive()) {
-            //start
+
+
             clawClosed();
             sleep(600);
-
-            extend(1,100);
+            extend(1,50);
             sleep(200);
 
-            moveSideways_wCorrection("left",6,0.7);
-            sleep(1000);
-
-            moveBackwards_wDistance_wGyro(12,0.35);
+            moveForward_wDistance_wGyro(22,0.2);
+            sleep(500);
+            moveSideways_wCorrection("left",27,0.4);
             sleep(500);
 
-            extend(1,400);
+
             sleep(500);
+            extend(0.65,400);
+            sleep(1000); // pausing to let pixel drop
 
-            retract(1,200);
-
-            moveForward_wDistance_wGyro(4,0.7);
+            retract(1,100);
             sleep(300);
+
+            moveForward_wDistance_wGyro(8,0.4);
+            sleep(500);
 
             turn("right",90);
-            sleep(300);
-
-            moveBackwards_wDistance_wGyro(12,0.7);
-            sleep(1000);
-
-            moveSideways_wCorrection("right",8,0.7);
-            sleep(1000);
-
-            moveBackwards_wDistance_wGyro(1.5,0.35);
+            turn("right",90);
             sleep(100);
 
+            moveSideways_wCorrection("left",7,0.6);
+            sleep(500);
+            moveBackwards_wDistance_wGyro(1 ,0.4);
+            sleep(100);
+            moveBackwards_wDistance_wGyro(2,0.35);
+            sleep(300);
+
+            bl.setPower(-0.2);
+            fl.setPower(-0.2);
+            fr.setPower(-0.2);
+            br.setPower(-0.2);
+            sleep(1150);
+            bl.setPower(0);
+            fl.setPower(0);
+            fr.setPower(0);
+            br.setPower(0);
+
+
             //add liner slide
-            extend(1,4000);
+            extend(1,3300);
             sleep(1000);
 
             clawClosed();
@@ -131,16 +142,19 @@ public class Area_Top_Red3 extends CommonUtil {
 
             clawClosed();
             wristFlat();
-            moveForward_wDistance_wGyro(1,0.7);
-            sleep(10);
-
-            moveSideways_wCorrection("left",12,0.5);
             sleep(1000);
 
-            retract(1,3900);
+            moveForward_wDistance_wGyro(3,0.3);
+            sleep(300);
+            moveSideways_wCorrection("left",9,0.5);
+
+            retract(1,2750);
             sleep(500000);
+
         }
     }
+
+
 }
 
 
