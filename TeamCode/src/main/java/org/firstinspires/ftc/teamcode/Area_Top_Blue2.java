@@ -63,589 +63,96 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 
 @Autonomous(name="Area_Top_Blue2", group="Linear Opmode2")
-public class Area_Top_Blue2 extends LinearOpMode {
+public class Area_Top_Blue2 extends CommonUtil {
 
-    CommonUtil util = new CommonUtil();
-    ElapsedTime runtime = new ElapsedTime();
-    BHI260IMU imu;
-    //IMU.Parameters myIMUParameters;
-
-    // Create an object to receive the IMU angles
-    YawPitchRollAngles robotOrientation;
     Orientation myRobotOrientation;
-
-    DcMotor bl = null;
-    DcMotor fl = null;
-    DcMotor fr = null;
-    DcMotor br = null;
-    DcMotor m0 = null;
-    DcMotor m1 = null;
-    DcMotor m2 = null;
-    DcMotor m3 = null;
-    Servo s1 = null;
-    Servo s2 = null;
-    Servo s3 = null;
-
-    double ENC2DIST = 2000/48;
 
     @Override
     public void runOpMode() {
 
-        // Variable declaration
-        BHI260IMU.Parameters myIMUParameters;
-
         //setup
         telemetry.setAutoClear(false);
-
-        // map imu
-        imu = hardwareMap.get(BHI260IMU.class,"imu");
-        // map motors
-        bl = hardwareMap.get(DcMotor.class, "LB");
-        fl = hardwareMap.get(DcMotor.class, "LF");
-        fr = hardwareMap.get(DcMotor.class, "RF");
-        br = hardwareMap.get(DcMotor.class, "RB");
-        m0 = hardwareMap.get(DcMotor.class, "M0");
-        m1 = hardwareMap.get(DcMotor.class, "M1");
-        m2 = hardwareMap.get(DcMotor.class, "M2");
-        m3 = hardwareMap.get(DcMotor.class, "M3");
-        s1 = hardwareMap.get(Servo.class, "s1");
-        s2 = hardwareMap.get(Servo.class, "s2");
-        s3 = hardwareMap.get(Servo.class, "s3");
-        s1.setDirection(Servo.Direction.FORWARD);
-        s2.setDirection(Servo.Direction.FORWARD);
-
+        // initialize hardware
+        initialize(hardwareMap);
         // Initialize motors
         setMotorOrientation();
         //resetMotorEncoderCounts();
-        util.clawClosed();
-        util.wristFlat();
-        // Start imu initialization
-        telemetry.addData("Gyro Status", "Start initialization");
-        telemetry.update();
-        myIMUParameters = new IMU.Parameters(
-                new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD,RevHubOrientationOnRobot.UsbFacingDirection.UP )
-        );
-        imu.initialize(myIMUParameters);
-        telemetry.addData("Gyro Status", "Initialized");
-        telemetry.update();
+        clawOpen();
+        wristFlat();
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
         while (opModeIsActive()) {
-            moveForward_wDistance_wGyro(15,0.7,ENC2DIST,imu);
+
+
+            clawClosed();
+            sleep(600);
+            extend(1,50);
+            sleep(200);
+
+            moveForward_wDistance_wGyro(11,0.2);
+            sleep(500);
+            moveSideways_wCorrection("right",38,0.4);
+            sleep(500);
+
+
+            sleep(500);
+            extend(0.65,400);
+            sleep(1000); // pausing to let pixel drop
+
+            retract(1,150);
+            sleep(300);
+
+            moveForward_wDistance_wGyro(8,0.4);
+            sleep(500);
+
+            turn("right",90);
+            turn("right",90);
+            sleep(100);
+
+            moveSideways_wCorrection("right",7,0.6);
+            sleep(500);
+            moveBackwards_wDistance_wGyro(10,0.6);
+            sleep(100);
+            moveBackwards_wDistance_wGyro(2,0.35);
+            sleep(300);
+
+            bl.setPower(-0.2);
+            fl.setPower(-0.2);
+            fr.setPower(-0.2);
+            br.setPower(-0.2);
+            sleep(1150);
+            bl.setPower(0);
+            fl.setPower(0);
+            fr.setPower(0);
+            br.setPower(0);
+
+
+            //add liner slide
+            extend(1,3300);
             sleep(1000);
 
-            moveBackwards_wDistance_wGyro(15,0.7,ENC2DIST,imu);
+            clawClosed();
+            wristBent();
+            sleep(500);
+
+            clawOpen();
+            sleep(700);
+
+            clawClosed();
+            wristFlat();
             sleep(1000);
 
-            moveSideways_wCorrection("left",15,0.5);
-            sleep(1000);
+            moveForward_wDistance_wGyro(3,0.3);
+            sleep(300);
+            moveSideways_wCorrection("right",22,0.5);
 
-            moveSideways_wCorrection("right",15,0.5);
-            sleep(1000);
-
-            turn("right",90,imu);
-            sleep(1000);
-
-            turn("left",90,imu);
+            retract(1,2750);
             sleep(500000);
-        }
-    }
-
-    // Set motor directions
-    private void setMotorOrientation()
-    {
-        // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
-        // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive.
-        // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
-        bl.setDirection(DcMotor.Direction.REVERSE);
-        fl.setDirection(DcMotor.Direction.REVERSE);
-        fr.setDirection(DcMotor.Direction.FORWARD);
-        br.setDirection(DcMotor.Direction.FORWARD);
-
-    }
-
-    // Reset motor encoder counts
-    private void resetMotorEncoderCounts()
-    {
-        // Reset encoder counts kept by motors
-        bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fl.setMode((DcMotor.RunMode.STOP_AND_RESET_ENCODER));
-        fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        br.setMode((DcMotor.RunMode.STOP_AND_RESET_ENCODER));
-        telemetry.addData("Encoder", "Count Reset");  // telemetry: Mode Waiting
-        telemetry.update();
-    }
-
-    // Set motor to zero power
-    private void setMotorToZeroPower()
-    {
-        bl.setPower(0);
-        fl.setPower(0);
-        fr.setPower(0);
-        br.setPower(0);
-    }
-
-
-    //Uses gyro to self correct while moving forwards
-    private int moveForward_wDistance_wGyro(int DistanceAbsIn, double motorAbsPower, double CountToDist, BHI260IMU imu)
-    {
-
-        double currZAngle = 0;
-        int currEncoderCount = 0;
-        double encoderAbsCounts = CountToDist*DistanceAbsIn;
-        telemetry.addData("Im here",currZAngle);
-
-        // Resetting encoder counts
-        resetMotorEncoderCounts();
-
-        // Setting motor to run in runToPosition
-        bl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        fr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        telemetry.addData("Status", "RUN_WITHOUT_ENCODER");
-        telemetry.update();
-
-        // Reset Yaw
-        imu.resetYaw();
-
-        // Wait for robot to finish this movement
-        telemetry.addData("encoderAbsCounts", encoderAbsCounts);
-        telemetry.update();
-        telemetry.addData("enc-bl",bl.getCurrentPosition());
-        telemetry.update();
-
-        while (bl.getCurrentPosition() < encoderAbsCounts) {
-            myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-            double correction = myRobotOrientation.thirdAngle/180;
-
-            double power = calculatePowerFB(encoderAbsCounts,Math.abs(bl.getCurrentPosition()),motorAbsPower);
-            bl.setPower(power-correction);
-            fl.setPower(power-correction);
-            fr.setPower(power+correction);
-            br.setPower(power+correction);
-            //telemetry.addData("correction", correction);
-            //telemetry.update();
-            idle();
-        }
-
-        // apply zero power to avoid continuous power to the wheels
-        setMotorToZeroPower();
-
-        // return current encoder count
-        currEncoderCount = bl.getCurrentPosition();
-        myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-        currZAngle = myRobotOrientation.thirdAngle;
-        telemetry.addData("currEncoderCount", currEncoderCount);
-        telemetry.addData("currZAngle", currZAngle);
-        telemetry.update();
-        return (currEncoderCount);
-    }
-
-
-    //Uses gyro to self correct while moving backwards
-    private int moveBackwards_wDistance_wGyro(int DistanceAbsIn, double motorAbsPower,double CountToDist, BHI260IMU imu)
-    {
-
-        double currZAngle = 0;
-        int currEncoderCount = 0;
-
-        double encoderAbsCounts = CountToDist*DistanceAbsIn;
-        telemetry.addData("Im here",currZAngle);
-
-        // Resetting encoder counts
-        resetMotorEncoderCounts();
-
-        // Setting motor to run in runToPosition
-        bl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        fr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        telemetry.addData("Status", "RUN_WITHOUT_ENCODER");
-        telemetry.update();
-
-        // Reset Yaw
-        imu.resetYaw();
-
-        // Wait for robot to finish this movement
-        telemetry.addData("encoderAbsCounts", encoderAbsCounts);
-        telemetry.update();
-        telemetry.addData("enc-bl",bl.getCurrentPosition());
-        telemetry.update();
-
-        while(bl.getCurrentPosition() > -encoderAbsCounts) {
-            myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-            double correction = myRobotOrientation.thirdAngle/180;
-            double power = calculatePowerFB(encoderAbsCounts,Math.abs(bl.getCurrentPosition()),motorAbsPower);
-            bl.setPower(-power-correction);
-            fl.setPower(-power-correction);
-            fr.setPower(-power+correction);
-            br.setPower(-power+correction);
-            //telemetry.addData("correction", correction);
-            //telemetry.update();
-            idle();
-        }
-
-        // apply zero power to avoid continuous power to the wheels
-        setMotorToZeroPower();
-
-        // return current encoder count
-        currEncoderCount = bl.getCurrentPosition();
-        myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-        currZAngle = myRobotOrientation.thirdAngle;
-        telemetry.addData("currEncoderCount", currEncoderCount);
-        telemetry.addData("currZAngle", currZAngle);
-        telemetry.update();
-        return (currEncoderCount);
-    }
-
-    //self explained
-    private void stayPut(int t_msec)
-    {
-        bl.setPower(0);
-        fl.setPower(0);
-        fr.setPower(0);
-        br.setPower(0);
-        sleep(t_msec);
-
-    }
-
-    //Move right using time measurement ( not accurate )
-    private void moveRight_dist(double d_inch)
-    {
-        long t_msec = 0;
-        double temp = 0;
-        // 500 msec moves the robot 24 inches
-        temp = (500.0/13.5)*d_inch;
-        t_msec = (long) temp;
-        // Set powers
-        bl.setPower(0.5);
-        fl.setPower(-0.5);
-        fr.setPower(0.5);
-        br.setPower(-0.5);
-        sleep(t_msec);
-        stayPut(500);
-    }
-
-    //Move left using time measurement ( not accurate )
-    private void moveLeft_dist(double d_inch)
-    {
-        long t_msec = 0;
-        double temp = 0;
-        // 500 msec moves the robot 24 inches
-        temp = (500.0/13.5)*d_inch;
-        t_msec = (long) temp;
-        // Set powers
-        bl.setPower(-0.5);
-        fl.setPower(0.5);
-        fr.setPower(-0.5);
-        br.setPower(0.5);
-        sleep(t_msec);
-        stayPut(500);
-    }
-
-
-    //Calculate power for gyro
-    public double calculatePower(double targetAngle, double currentAngle)
-    {
-        double power = 0.7*(1-(currentAngle/targetAngle));
-        if (power < 0.2){
-            power = 0.2;
-        }
-        telemetry.addData("Calculated Power",power);
-        telemetry.update();
-        return power;
-
-    }
-    public double calculatePowerFB(double targetEC, double currentEC,double motorMaxPower)
-    {
-        double power = motorMaxPower*(1-(targetEC/currentEC));
-        if (power < 0.4){
-            power = 0.4;
-        }
-        telemetry.addData("Calculated Power",power);
-        telemetry.update();
-        return power;
-
-    }
-
-
-    //TURN WITH GYRO
-    public void turn(String direction, double targetAngle, BHI260IMU imu)
-    {
-        imu.resetYaw();
-        if (direction.equalsIgnoreCase("right")){
-            myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-            telemetry.addData("Turn", "Right");
-            telemetry.addData("Initial Angle",myRobotOrientation.thirdAngle);
-            telemetry.update();
-            while (Math.abs(myRobotOrientation.thirdAngle) <= targetAngle) {
-                myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-                double power = calculatePower(targetAngle, Math.abs(myRobotOrientation.thirdAngle));
-                bl.setPower(power);
-                fl.setPower(power);
-                fr.setPower(-power);
-                br.setPower(-power);
-                telemetry.addData("Turn", "Right");
-                telemetry.addData("Current Angle",myRobotOrientation.thirdAngle);
-                telemetry.addData("power", power);
-                telemetry.update();
-            }
-            bl.setPower(0);
-            fl.setPower(0);
-            fr.setPower(0);
-            br.setPower(0);
-        } else if(direction.equalsIgnoreCase("left")){
-            myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-
-            while (Math.abs(myRobotOrientation.thirdAngle) <= targetAngle) {
-                myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-                telemetry.addData("Current Angle",myRobotOrientation.thirdAngle);
-                telemetry.update();
-                double power = calculatePower(targetAngle, Math.abs(myRobotOrientation.thirdAngle));
-                bl.setPower(-power);
-                fl.setPower(-power);
-                fr.setPower(power);
-                br.setPower(power);
-                telemetry.addData("Turn", "Left");
-                telemetry.addData("Current Angle",myRobotOrientation.thirdAngle);
-                telemetry.addData("power", power);
-                telemetry.update();
-
-            }
-            bl.setPower(0);
-            fl.setPower(0);
-            fr.setPower(0);
-            br.setPower(0);
 
         }
     }
-
-    public void intake(int t_msec )
-    {
-        m0.setDirection(DcMotor.Direction.FORWARD);
-        m1.setDirection(DcMotor.Direction.REVERSE);
-        m0.setPower(1);
-        m1.setPower(1);
-        sleep(t_msec);
-        m0.setPower(0);
-        m1.setPower(0);
-
-    }
-
-    private int moveSideways_wCorrection(String direction, int DistanceAbsIn, double motorAbsPower)
-    {
-
-        int currEncoderCount = 0;
-        double encoderAbsCounts = 2000/42*DistanceAbsIn;
-        setMotorOrientation();
-        // Resetting encoder counts
-        resetMotorEncoderCounts();
-        telemetry.addData("Encoder count target",encoderAbsCounts);
-
-        // Setting motor to run in runToPosition\
-        bl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        fr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        telemetry.addData("Status", "RUN_WITHOUT_ENCODER");
-        telemetry.update();
-
-        // Reset Yaw
-
-        // Wait for robot to finish this movement
-        telemetry.addData("encoderAbsCounts (target)", encoderAbsCounts);
-        telemetry.addData("currEncoderCount (initial)",bl.getCurrentPosition());
-
-
-
-        telemetry.update();
-        double refEC = 0;
-        while (refEC < encoderAbsCounts) {
-
-            double frEC = fr.getCurrentPosition();
-            double blEC = bl.getCurrentPosition();
-            double flEC = fl.getCurrentPosition();
-            double brEC = br.getCurrentPosition();
-            double frCorr = 1;
-            double blCorr = 1;
-            double flCorr = 1;
-            double brCorr = 1;
-            if (frEC != 0 ) {
-                frEC = Math.abs(frEC);
-                refEC = frEC;
-                blEC = Math.abs(blEC);
-                refEC = Math.min(refEC, blEC);
-                flEC = Math.abs(flEC);
-                refEC = Math.min(refEC, flEC);
-                brEC = Math.abs(brEC);
-                refEC = Math.min(refEC, brEC);
-                if (refEC == 0) {
-                    refEC = 1;
-                }
-                frCorr = refEC / frEC;
-                blCorr = refEC / blEC;
-                flCorr = refEC / flEC;
-                brCorr = refEC / brEC;
-            }
-            double flPow = -motorAbsPower * flCorr;
-            double blPow = motorAbsPower * blCorr;
-            double frPow = motorAbsPower * frCorr;
-            double brPow = -motorAbsPower * brCorr;
-
-            if (direction.equalsIgnoreCase("left")) {
-                fl.setPower(flPow);
-                bl.setPower(blPow);
-                fr.setPower(frPow);
-                br.setPower(brPow);
-            }
-            else if (direction.equalsIgnoreCase("right")) {
-                fl.setPower(-flPow);
-                bl.setPower(-blPow);
-                fr.setPower(-frPow);
-                br.setPower(-brPow);
-            }
-            idle();
-        }
-        telemetry.addData("enc-fl",fl.getCurrentPosition()); // we dont get encoder counts in fl
-        telemetry.addData("enc-br",br.getCurrentPosition()); // possibly, running faster
-        telemetry.addData("enc-bl",bl.getCurrentPosition());
-        telemetry.addData("enc-fr",fr.getCurrentPosition());
-        telemetry.update();
-
-        // apply zero power to avoid continuous power to the wheels
-        setMotorToZeroPower();
-
-        // return current encoder count
-        currEncoderCount = bl.getCurrentPosition();
-        myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-
-        telemetry.addData("currEncoderCount (final)", currEncoderCount);
-
-        telemetry.update();
-        return (currEncoderCount);
-    }
-
-
-
-    private int moveLeft_wGyro(int DistanceAbsIn, double motorAbsPower,BHI260IMU imu)
-    {
-        double currZAngle = 0;
-        int currEncoderCount = 0;
-        double encoderAbsCounts = (DistanceAbsIn/10.0)*500.0;
-        // Resetting encoder counts
-        resetMotorEncoderCounts();
-        telemetry.addData("Target encoder counts",encoderAbsCounts);
-
-        // Setting motor to run in runToPosition\
-        bl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        fr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        telemetry.addData("Status", "RUN_WITHOUT_ENCODER");
-        telemetry.update();
-
-        // Reset Yaw
-        imu.resetYaw();
-
-        // Wait for robot to finish this movement
-        telemetry.addData("encoderAbsCounts", encoderAbsCounts);
-        telemetry.update();
-        telemetry.addData("enc-bl",bl.getCurrentPosition());
-        telemetry.update();
-        while (bl.getCurrentPosition() > -encoderAbsCounts) {
-            myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-            double correction = myRobotOrientation.thirdAngle/180;
-            correction = 0;
-            bl.setPower(-motorAbsPower-correction);
-            fl.setPower(motorAbsPower-correction);
-            fr.setPower(-motorAbsPower+correction);
-            br.setPower(motorAbsPower+correction);
-            telemetry.addData("correction", correction);
-            telemetry.update();
-            idle();
-        }
-        telemetry.addData("bl power:", bl.getPower());
-        telemetry.addData("fl power:", fl.getPower());
-        telemetry.addData("fr power:", fr.getPower());
-        telemetry.addData("br power:", br.getPower());
-        telemetry.update();
-
-        // apply zero power to avoid continuous power to the wheels
-        setMotorToZeroPower();
-
-        // return current encoder count
-        currEncoderCount = bl.getCurrentPosition();
-        myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-        currZAngle = myRobotOrientation.thirdAngle;
-        telemetry.addData("currEncoderCount", currEncoderCount);
-        telemetry.addData("currZAngle", currZAngle);
-        telemetry.update();
-        return (currEncoderCount);
-    }
-
-    private void encoder_test(double encoderAbsCounts)
-    {
-        bl.setDirection(DcMotor.Direction.REVERSE);
-        fl.setDirection(DcMotor.Direction.REVERSE);
-        fr.setDirection(DcMotor.Direction.FORWARD);
-        br.setDirection(DcMotor.Direction.FORWARD);
-        resetMotorEncoderCounts();
-        bl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        fr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        while (bl.getCurrentPosition() > -encoderAbsCounts) {
-            myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-            bl.setPower(-0.3);
-            fl.setPower(-0.3);
-            fr.setPower(-0.3);
-            br.setPower(-0.3);
-            telemetry.update();
-            idle();
-        }
-        bl.setPower(0);
-        fl.setPower(0);
-        fr.setPower(0);
-        br.setPower(0);
-
-
-        telemetry.addData("encoder count b1",bl.getCurrentPosition());
-        telemetry.addData("encoder count br",br.getCurrentPosition());
-        telemetry.addData("encoder count fl",fl.getCurrentPosition());
-        telemetry.addData("encoder count fr",fr.getCurrentPosition());
-        telemetry.update();
-
-    }
-
-    private void extend(double power, int encoderAbsCounts) {
-        m2.setDirection(DcMotor.Direction.FORWARD);
-        m3.setDirection(DcMotor.Direction.FORWARD);
-        m2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        m3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        m2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        m3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        telemetry.addData("Start count", m2.getCurrentPosition());
-        telemetry.addData("Start count", m3.getCurrentPosition());
-        telemetry.update();
-
-        while (m2.getCurrentPosition() < encoderAbsCounts){
-            m2.setPower(power);
-            m3.setPower(-power);
-            telemetry.addData("Count M2",m2.getCurrentPosition());
-            telemetry.addData("Count M3",m3.getCurrentPosition());
-            telemetry.update();
-            idle();
-        }
-        m2.setPower(0); // set power to 0 so the motor stops running
-        m3.setPower(0);
-
-    }
-
-
 
 
 }
