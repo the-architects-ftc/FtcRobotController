@@ -63,91 +63,86 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 
 @Autonomous(name="Area_Bottom_Blue1", group="Linear Opmode2")
-public class Area_Bottom_Blue1 extends LinearOpMode {
+public class Area_Bottom_Blue1 extends CommonUtil {
 
-    ElapsedTime runtime = new ElapsedTime();
-    CommonUtil util = new CommonUtil();
-    BHI260IMU imu;
-    //IMU.Parameters myIMUParameters;
-
-    // Create an object to receive the IMU angles
-    YawPitchRollAngles robotOrientation;
     Orientation myRobotOrientation;
-
-    DcMotor bl = null;
-    DcMotor fl = null;
-    DcMotor fr = null;
-    DcMotor br = null;
-    DcMotor m0 = null;
-    DcMotor m1 = null;
-    DcMotor m2 = null;
-    DcMotor m3 = null;
-    Servo s1 = null;
-    Servo s2 = null;
-    Servo s3 = null;
-
-    double ENC2DIST = 2000/48;
 
     @Override
     public void runOpMode() {
 
-        // Variable declaration
-        BHI260IMU.Parameters myIMUParameters;
-
         //setup
         telemetry.setAutoClear(false);
-
-        // map imu
-        imu = hardwareMap.get(BHI260IMU.class,"imu");
-        // map motors
-        bl = hardwareMap.get(DcMotor.class, "LB");
-        fl = hardwareMap.get(DcMotor.class, "LF");
-        fr = hardwareMap.get(DcMotor.class, "RF");
-        br = hardwareMap.get(DcMotor.class, "RB");
-        m0 = hardwareMap.get(DcMotor.class, "M0");
-        m1 = hardwareMap.get(DcMotor.class, "M1");
-        m2 = hardwareMap.get(DcMotor.class, "M2");
-        m3 = hardwareMap.get(DcMotor.class, "M3");
-        s1 = hardwareMap.get(Servo.class, "s1");
-        s2 = hardwareMap.get(Servo.class, "s2");
-        s3 = hardwareMap.get(Servo.class, "s3");
-        s1.setDirection(Servo.Direction.FORWARD);
-        s2.setDirection(Servo.Direction.FORWARD);
-
+        // initialize hardware
+        initialize(hardwareMap);
         // Initialize motors
-        util.setMotorOrientation();
+        setMotorOrientation();
         //resetMotorEncoderCounts();
-        util.clawClosed();
-        util.wristFlat();
-        // Start imu initialization
-        telemetry.addData("Gyro Status", "Start initialization");
-        telemetry.update();
-        myIMUParameters = new IMU.Parameters(
-                new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD,RevHubOrientationOnRobot.UsbFacingDirection.UP )
-        );
-        imu.initialize(myIMUParameters);
-        telemetry.addData("Gyro Status", "Initialized");
-        telemetry.update();
+        clawOpen();
+        wristFlat();
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
         while (opModeIsActive()) {
 
+            clawClosed();
+            sleep(600);
+            extend(1,50);
+            sleep(200);
+
+            moveForward_wDistance_wGyro(5,0.2);
+            sleep(500);
+            moveSideways_wCorrection("left",27,0.4);
+            sleep(500);
+            moveForward_wDistance_wGyro(7,0.35); //was 9
+            sleep(500);
+
+            extend(0.65,400);
+            sleep(1000); // pausing to let pixel drop
+
+            moveForward_wDistance_wGyro(2,0.4);
+            sleep(500);
 
 
+            moveBackwards_wDistance_wGyro(9,0.35); // was 9
+            sleep(500);
+            moveSideways_wCorrection("left",25,0.4);
+            sleep(500);
+            retract(1,150);
+            sleep(500);
+            moveBackwards_wDistance_wGyro(75,0.8); // was 90
+            sleep(1000);
+            extend(1,700);
+            sleep(500);
+            moveSideways_wCorrection("right",19,0.4);
+            sleep(500);
+            extend(1,4000);
+            sleep(200);
+            moveBackwards_wDistance_wGyro(2,0.2);
+            sleep(200);
 
+            bl.setPower(-0.2);
+            fl.setPower(-0.2);
+            fr.setPower(-0.2);
+            br.setPower(-0.2);
+            sleep(1500);
+            bl.setPower(0);
+            fl.setPower(0);
+            fr.setPower(0);
+            br.setPower(0);
 
-
-
-
+            wristBent();
+            clawClosed();
+            sleep(500);
+            wristBent();
+            clawOpen();
+            sleep(500);
+            wristFlat();
+            clawClosed();
+            sleep(500000);
 
         }
     }
-
-
-
-
 
 
 }
