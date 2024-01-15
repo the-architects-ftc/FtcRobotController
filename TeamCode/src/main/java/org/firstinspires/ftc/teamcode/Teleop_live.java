@@ -106,8 +106,8 @@ public class Teleop_live extends LinearOpMode {
 
             if (gamepad1.b) {
                 //up
-                m2.setPower(-0.8);
-                m3.setPower(0.8);
+                m2.setPower(-1);
+                m3.setPower(1);
             } else {
                 m2.setPower(0);
                 m3.setPower(0);
@@ -117,8 +117,8 @@ public class Teleop_live extends LinearOpMode {
                 //down
                 s2.setPosition(0);
                 s1.setPosition(0.3);
-                m2.setPower(0.8);
-                m3.setPower(-0.8);
+                m2.setPower(1);
+                m3.setPower(-1);
             } else {
                 m2.setPower(0);
                 m3.setPower(0);
