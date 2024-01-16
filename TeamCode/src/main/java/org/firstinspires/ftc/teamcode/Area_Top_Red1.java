@@ -108,7 +108,7 @@ public class Area_Top_Red1 extends CommonUtil {
             turn("right",90);
             sleep(100);
 
-            moveSideways_wCorrection("right",4,0.6);
+            moveSideways_wCorrection("right",2,0.6);
             sleep(500);
             moveBackwards_wDistance_wGyro(9,0.6);
             sleep(100);
@@ -127,12 +127,13 @@ public class Area_Top_Red1 extends CommonUtil {
 
 
             //add liner slide
-            extend(1,4000);
+            extend(1,3300);
             sleep(1000);
 
             clawClosed();
             wristBent();
             sleep(500);
+
 
             clawOpen();
             sleep(700);
@@ -143,7 +144,7 @@ public class Area_Top_Red1 extends CommonUtil {
 
             moveForward_wDistance_wGyro(3,0.3);
             sleep(300);
-            moveSideways_wCorrection("left",22,0.5);
+            moveSideways_wCorrection("left",29,0.5);
 
             retract(1,3700);
             sleep(500000);

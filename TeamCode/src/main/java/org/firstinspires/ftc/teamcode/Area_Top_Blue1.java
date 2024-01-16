@@ -96,15 +96,13 @@ public class Area_Top_Blue1 extends CommonUtil {
             moveSideways_wCorrection("right",27,0.4);
             sleep(500);
 
-
+            moveBackwards_wDistance_wGyro(2,0.3);
             sleep(500);
             extend(0.65,400);
             sleep(1000); // pausing to let pixel drop
+            moveForward_wDistance_wGyro(2,0.3);
 
-            retract(1,100);
-            sleep(300);
-
-            moveForward_wDistance_wGyro(8,0.4);
+            moveForward_wDistance_wGyro(5,0.4);
             sleep(500);
 
             turn("right",90);
@@ -146,7 +144,7 @@ public class Area_Top_Blue1 extends CommonUtil {
 
             moveForward_wDistance_wGyro(3,0.3);
             sleep(300);
-            moveSideways_wCorrection("right",9,0.5);
+            moveSideways_wCorrection("right",14,0.4);
 
             retract(1,2750);
             sleep(500000);
