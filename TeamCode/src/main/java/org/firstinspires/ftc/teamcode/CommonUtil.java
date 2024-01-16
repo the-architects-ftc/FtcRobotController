@@ -327,6 +327,8 @@ public class CommonUtil extends LinearOpMode {
             br.setPower(0);
 
         }
+        imu.resetYaw(); // [ AARUSH ]
+
     }
 
     public void turnToZeroAngle()
@@ -343,7 +345,8 @@ public class CommonUtil extends LinearOpMode {
         {
             telemetry.addData("targetAnge",targetAngle);
             telemetry.update();
-            turn("left", Math.abs(targetAngle));
+            turn("lef" +
+                    "t", Math.abs(targetAngle));
         }
         imu.resetYaw();
     }
