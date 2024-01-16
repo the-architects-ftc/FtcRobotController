@@ -112,9 +112,9 @@ public class Area_Bottom_Red2 extends CommonUtil {
             sleep(1000);
             extend(1,700);
             sleep(500);
-            moveSideways_wCorrection("left",24,0.4);
+            moveSideways_wCorrection("left",21,0.4);
             sleep(500);
-            extend(1,4000);
+            extend(1,3500);
             sleep(200);
 
             bl.setPower(-0.2);
@@ -135,6 +135,14 @@ public class Area_Bottom_Red2 extends CommonUtil {
             sleep(500);
             wristFlat();
             clawClosed();
+            retract(1,3500);
+            sleep(200);
+            moveForward_wDistance_wGyro(2,0.3);
+            sleep(100);
+            moveSideways_wCorrection("right",24,0.4);
+            sleep(200);
+            moveBackwards_wDistance_wGyro(5,0.35);
+
             sleep(500000);
 
         }
