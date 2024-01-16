@@ -30,22 +30,10 @@
 package org.firstinspires.ftc.teamcode;
 
 
-import com.qualcomm.hardware.bosch.BHI260IMU;
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.IMU;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import org.firstinspires.ftc.teamcode.CommonUtil;
 
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 
 /**
@@ -85,40 +73,43 @@ public class Area_Bottom_Blue1 extends CommonUtil {
 
         while (opModeIsActive()) {
 
+
             clawClosed();
             sleep(600);
-            extend(1,50);
+            extend(1,100);
             sleep(200);
 
             moveForward_wDistance_wGyro(5,0.2);
             sleep(500);
             moveSideways_wCorrection("left",27,0.4);
             sleep(500);
-            moveForward_wDistance_wGyro(7,0.35); //was 9
-            sleep(500);
 
+            moveBackwards_wDistance_wGyro(6,0.3);
+            sleep(500);
             extend(0.65,400);
             sleep(1000); // pausing to let pixel drop
 
-            moveForward_wDistance_wGyro(2,0.4);
+            moveBackwards_wDistance_wGyro(1,0.3);
+            sleep(500);
+            moveForward_wDistance_wGyro(1,0.3);
             sleep(500);
 
-
-            moveBackwards_wDistance_wGyro(9,0.35); // was 9
+            moveForward_wDistance_wGyro(4,0.4);
             sleep(500);
+
             moveSideways_wCorrection("left",25,0.4);
             sleep(500);
             retract(1,150);
             sleep(500);
+
+            turnToZeroAngle();
             moveBackwards_wDistance_wGyro(75,0.8); // was 90
             sleep(1000);
             extend(1,700);
             sleep(500);
-            moveSideways_wCorrection("right",19,0.4);
+            moveSideways_wCorrection("right",24,0.4);
             sleep(500);
-            extend(1,4000);
-            sleep(200);
-            moveBackwards_wDistance_wGyro(2,0.2);
+            extend(1,3300);
             sleep(200);
 
             bl.setPower(-0.2);
@@ -139,8 +130,13 @@ public class Area_Bottom_Blue1 extends CommonUtil {
             sleep(500);
             wristFlat();
             clawClosed();
-            sleep(500000);
 
+            moveForward_wDistance_wGyro(3,0.3);
+            sleep(300);
+            moveSideways_wCorrection("left",24,0.5);
+
+            retract(1,3700);
+            sleep(500000);
         }
     }
 

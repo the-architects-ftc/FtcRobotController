@@ -61,6 +61,7 @@ public class CommonUtil extends LinearOpMode {
                 new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD,RevHubOrientationOnRobot.UsbFacingDirection.UP )
         );
         imu.initialize(myIMUParameters);
+        imu.resetYaw();
         // Start imu initialization
         telemetry.addData("Gyro Status", "Initialized");
         telemetry.update();
@@ -137,7 +138,7 @@ public class CommonUtil extends LinearOpMode {
         telemetry.update();
 
         // Reset Yaw
-        imu.resetYaw();
+        //imu.resetYaw(); [Aarush]
 
         // Wait for robot to finish this movement
         telemetry.addData("encoderAbsCounts", encoderAbsCounts);
@@ -176,8 +177,6 @@ public class CommonUtil extends LinearOpMode {
         return (currEncoderCount);
     }
 
-
-
     //move backwards with gyro correction
     public int moveBackwards_wDistance_wGyro(double DistanceAbsIn, double motorAbsPower)
     {
@@ -200,7 +199,7 @@ public class CommonUtil extends LinearOpMode {
         telemetry.update();
 
         // Reset Yaw
-        imu.resetYaw();
+        //imu.resetYaw(); // [Aarush]
 
         // Wait for robot to finish this movement
         telemetry.addData("encoderAbsCounts", encoderAbsCounts);
@@ -240,12 +239,10 @@ public class CommonUtil extends LinearOpMode {
 
     public double calculatePower(double targetAngle, double currentAngle)
     {
-        double power = 0.7*(1-(currentAngle/targetAngle));
+        double power = 0.5*(1-(currentAngle/targetAngle));
         if (power < 0.2){
             power = 0.2;
         }
-        telemetry.addData("Calculated Power",power);
-        telemetry.update();
         return power;
 
     }
@@ -299,33 +296,31 @@ public class CommonUtil extends LinearOpMode {
                 fl.setPower(power);
                 fr.setPower(-power);
                 br.setPower(-power);
-                telemetry.addData("Turn", "Right");
-                telemetry.addData("Current Angle",myRobotOrientation.thirdAngle);
-                telemetry.addData("power", power);
-                telemetry.update();
             }
+            telemetry.addData("Turn", "Right");
+            telemetry.addData("Current Angle",myRobotOrientation.thirdAngle);
+            telemetry.update();
             bl.setPower(0);
             fl.setPower(0);
             fr.setPower(0);
             br.setPower(0);
         } else if(direction.equalsIgnoreCase("left")){
             myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+            telemetry.addData("Turn", "Right");
+            telemetry.addData("Initial Angle",myRobotOrientation.thirdAngle);
+            telemetry.update();
 
             while (Math.abs(myRobotOrientation.thirdAngle) <= targetAngle) {
                 myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-                telemetry.addData("Current Angle",myRobotOrientation.thirdAngle);
-                telemetry.update();
                 double power = calculatePower(targetAngle, Math.abs(myRobotOrientation.thirdAngle));
                 bl.setPower(-power);
                 fl.setPower(-power);
                 fr.setPower(power);
                 br.setPower(power);
-                telemetry.addData("Turn", "Left");
-                telemetry.addData("Current Angle",myRobotOrientation.thirdAngle);
-                telemetry.addData("power", power);
-                telemetry.update();
-
             }
+            telemetry.addData("Turn", "Left");
+            telemetry.addData("Current Angle",myRobotOrientation.thirdAngle);
+            telemetry.update();
             bl.setPower(0);
             fl.setPower(0);
             fr.setPower(0);
@@ -334,6 +329,24 @@ public class CommonUtil extends LinearOpMode {
         }
     }
 
+    public void turnToZeroAngle()
+    {
+        myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+        double targetAngle = myRobotOrientation.thirdAngle;
+        if (targetAngle > 0)
+        {
+            telemetry.addData("targetAnge",targetAngle);
+            telemetry.update();
+            turn("right", Math.abs(targetAngle));
+        }
+        else if (targetAngle < 0)
+        {
+            telemetry.addData("targetAnge",targetAngle);
+            telemetry.update();
+            turn("left", Math.abs(targetAngle));
+        }
+        imu.resetYaw();
+    }
     public void intake(int t_msec )
     {
         m0.setDirection(DcMotor.Direction.FORWARD);
