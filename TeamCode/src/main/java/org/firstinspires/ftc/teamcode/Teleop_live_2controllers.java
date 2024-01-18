@@ -458,8 +458,10 @@ public class Teleop_live_2controllers extends LinearOpMode {
                 bl.setPower(Range.clip(right1X, -THRESH_WM_POWER_FORTURN, THRESH_WM_POWER_FORTURN));
                 fr.setPower(Range.clip(-right1X * 0.6, -THRESH_WM_POWER_FORTURN, THRESH_WM_POWER_FORTURN));
                 br.setPower(Range.clip(-right1X, -THRESH_WM_POWER_FORTURN, THRESH_WM_POWER_FORTURN));
-
-                imu.resetYaw();
+                myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+                telemetry.addData("THIS IS THE ANGLE",myRobotOrientation.thirdAngle);
+                telemetry.update();
+                //imu.resetYaw();
                 idle();
             }
             if (left2Y == 0) {
@@ -469,8 +471,10 @@ public class Teleop_live_2controllers extends LinearOpMode {
                 bl.setPower(Range.clip(right2X, -THRESH_WM_POWER_FORTURN, THRESH_WM_POWER_FORTURN));
                 fr.setPower(Range.clip(-right2X * 0.6, -THRESH_WM_POWER_FORTURN, THRESH_WM_POWER_FORTURN));
                 br.setPower(Range.clip(-right2X, -THRESH_WM_POWER_FORTURN, THRESH_WM_POWER_FORTURN));
-
-                imu.resetYaw();
+                myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+                telemetry.addData("THIS IS THE ANGLE",myRobotOrientation.thirdAngle);
+                telemetry.update();
+                //imu.resetYaw();
                 idle();
             }
         }
