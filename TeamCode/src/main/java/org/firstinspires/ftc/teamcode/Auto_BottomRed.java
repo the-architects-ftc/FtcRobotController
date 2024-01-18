@@ -30,22 +30,10 @@
 package org.firstinspires.ftc.teamcode;
 
 
-import com.qualcomm.hardware.bosch.BHI260IMU;
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.IMU;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import org.firstinspires.ftc.teamcode.CommonUtil;
 
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 
 /**
@@ -62,8 +50,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
  */
 
 
-@Autonomous(name="Framework_BottomRed", group="Linear Opmode2")
-public class Framework_BottomRed extends CommonUtil {
+@Autonomous(name="Auto_BottomRed", group="Linear Opmode2")
+public class Auto_BottomRed extends CommonUtil {
 
     Orientation myRobotOrientation;
 
@@ -85,15 +73,16 @@ public class Framework_BottomRed extends CommonUtil {
 
         while (opModeIsActive()) {
 
-           turn("right",90);
+            clawClosed();
+            extend(1,300);
+           moveSideways_wCorrection("right",2,0.35);
            sleep(500);
-           turn("left",90);
+           moveBackwards_wDistance_wGyro(90,0.7);
            sleep(500);
-           turn("right",45);
+           moveSideways_wCorrection("right",20,0.4);
            sleep(500);
-           turn("left",15);
-           sleep(500);
-           sleep(9000000);
+           extend(1,3000);
+            sleep(500000);
 
         }
     }

@@ -111,26 +111,26 @@ public class Teleop_live_2controllers extends LinearOpMode {
             right2Y = gamepad2.right_stick_y * -1;
             right2X = gamepad2.right_stick_x;
 
-            // gamepad B for gamepad 1 and 2
+            // B for gamepad 1 and 2
             if (gamepad1.b) {
-                m2.setPower(-0.8);
-                m3.setPower(0.8);
+                m2.setPower(-1);
+                m3.setPower(1);
             } else {
                 m2.setPower(0);
                 m3.setPower(0);
             }
             if (gamepad2.b) {
-                m2.setPower(-0.9);
-                m3.setPower(0.9);
+                m2.setPower(-1);
+                m3.setPower(1);
             } else {
                 m2.setPower(0);
                 m3.setPower(0);
             }
-            // gamepad A for gamepad 1 and 2
+            // A for gamepad 1 and 2
             if (gamepad1.a) {
 
-                m2.setPower(0.9);
-                m3.setPower(-0.9);
+                m2.setPower(1);
+                m3.setPower(-1);
             } else {
                 m2.setPower(0);
                 m3.setPower(0);
@@ -138,14 +138,14 @@ public class Teleop_live_2controllers extends LinearOpMode {
             }
             if (gamepad2.a) {
 
-                m2.setPower(0.8);
-                m3.setPower(-0.8);
+                m2.setPower(1);
+                m3.setPower(-1);
             } else {
                 m2.setPower(0);
                 m3.setPower(0);
 
             }
-            // gamepad Y for gamepad 1 and 2
+            // Y for gamepad 1 and 2
             if (gamepad1.y) {
                 s3.setPosition(0);
 
@@ -168,12 +168,11 @@ public class Teleop_live_2controllers extends LinearOpMode {
             if (gamepad2.right_bumper) {
                 s1.setPosition(0.2);
             }
-            // gamepad X for gamepad 1 and 2
+            // X for gamepad 1 and 2
             if (gamepad1.x) {
                 intake_constant = !intake_constant;
                 telemetry.addData("intake",intake_constant);
                 telemetry.update();
-                sleep(500);
                 double THRESH_WM_POWER_INTAKE = 1.0; // max abs wheel power
                 if (intake_constant == true) {
                     m0.setPower(-THRESH_WM_POWER_INTAKE);
@@ -187,7 +186,6 @@ public class Teleop_live_2controllers extends LinearOpMode {
                 intake_constant = !intake_constant;
                 telemetry.addData("intake",intake_constant);
                 telemetry.update();
-                sleep(500);
                 double THRESH_WM_POWER_INTAKE = 1.0; // max abs wheel power
                 if (intake_constant == true) {
                     m0.setPower(-THRESH_WM_POWER_INTAKE);
@@ -198,15 +196,14 @@ public class Teleop_live_2controllers extends LinearOpMode {
                 }
             }
 
-
-            // gamepad left trigger for gamepad 1 and 2
+            // left trigger for gamepad 1 and 2
             if (gamepad1.left_trigger > 0.5) {
                 s2.setPosition(0.147);
             }
             if (gamepad2.left_trigger > 0.5) {
                 s2.setPosition(0.147);
             }
-            // gamepad right trigger for gamepad 1 and 2
+            // right trigger for gamepad 1 and 2
             if (gamepad1.right_trigger > 0.5) {
                 s2.setPosition(0.427);
             }
@@ -215,7 +212,7 @@ public class Teleop_live_2controllers extends LinearOpMode {
             }
 
             //Forwards/Backward for gamepad 1
-            if ((left1Y != 0 || left1X !=0) && (right1Y == 0)) {
+            if ((left1Y != 0 || left1X !=0) && (right1Y == 0) && (left2Y == 0 && left2X ==0)) {
                 double THRESH_WM_POWER = 1.0; // max abs wheel power
                 myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
                 double correction = myRobotOrientation.thirdAngle / 180.0;
@@ -261,7 +258,7 @@ public class Teleop_live_2controllers extends LinearOpMode {
                 telemetry.update();
             }
             // forward/backword for gamepad 2
-            if ((left2Y != 0 || left2X !=0) && (right2Y == 0)) {
+            if ((left2Y != 0 || left2X !=0) && (right2Y == 0) && (left1Y == 0 && left1X ==0)) {
                 double THRESH_WM_POWER = 1.0; // max abs wheel power
                 myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
                 double correction = myRobotOrientation.thirdAngle / 180.0;

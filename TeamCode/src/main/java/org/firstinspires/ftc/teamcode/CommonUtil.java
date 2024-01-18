@@ -124,7 +124,6 @@ public class CommonUtil extends LinearOpMode {
         double currZAngle = 0;
         int currEncoderCount = 0;
         double encoderAbsCounts = ENC2DIST*DistanceAbsIn;
-        telemetry.addData("Im here",currZAngle);
 
         // Resetting encoder counts
         resetMotorEncoderCounts();
@@ -134,19 +133,10 @@ public class CommonUtil extends LinearOpMode {
         fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         fr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        telemetry.addData("Status", "RUN_WITHOUT_ENCODER");
-        telemetry.update();
 
         // Reset Yaw
         //imu.resetYaw(); [Aarush]
-
-        // Wait for robot to finish this movement
-        telemetry.addData("encoderAbsCounts", encoderAbsCounts);
-        telemetry.update();
-        telemetry.addData("enc-bl",bl.getCurrentPosition());
-        telemetry.update();
-
-        start();
+        //start();
         while (bl.getCurrentPosition() < encoderAbsCounts) {
             myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
             double correction = myRobotOrientation.thirdAngle/180;
@@ -161,8 +151,8 @@ public class CommonUtil extends LinearOpMode {
             //telemetry.update();
             idle();
         }
-        stop();
-        getRuntime();
+        //stop();
+        //getRuntime();
 
         // apply zero power to avoid continuous power to the wheels
         setMotorToZeroPower();
@@ -201,13 +191,7 @@ public class CommonUtil extends LinearOpMode {
         // Reset Yaw
         //imu.resetYaw(); // [Aarush]
 
-        // Wait for robot to finish this movement
-        telemetry.addData("encoderAbsCounts", encoderAbsCounts);
-        telemetry.update();
-        telemetry.addData("enc-bl",bl.getCurrentPosition());
-        telemetry.update();
-
-        start();
+        //start();
         while(bl.getCurrentPosition() > -encoderAbsCounts) {
             myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
             double correction = myRobotOrientation.thirdAngle/180;
@@ -221,8 +205,8 @@ public class CommonUtil extends LinearOpMode {
             //telemetry.update();
             idle();
         }
-        stop();
-        getRuntime();
+        //stop();
+        //getRuntime();
 
         // apply zero power to avoid continuous power to the wheels
         setMotorToZeroPower();
@@ -239,7 +223,7 @@ public class CommonUtil extends LinearOpMode {
 
     public double calculatePower(double targetAngle, double currentAngle)
     {
-        double power = 0.5*(1-(currentAngle/targetAngle));
+        double power = (targetAngle - currentAngle)*0.01;
         if (power < 0.2){
             power = 0.2;
         }
@@ -539,9 +523,53 @@ public class CommonUtil extends LinearOpMode {
 
     }
 
+    public void realign_Sideways(String direction){
+
+
+        if (direction.equalsIgnoreCase("left")) {
+            bl.setPower(-0.2);
+            fl.setPower(0.2);
+            fr.setPower(0.2);
+            br.setPower(-0.2);
+        }
+        else if (direction.equalsIgnoreCase("right")) {
+            bl.setPower(0.2);
+            fl.setPower(-0.2);
+            fr.setPower(-0.2);
+            br.setPower(0.2);
+        }
+        sleep(1500);
+        bl.setPower(0);
+        fl.setPower(0);
+        fr.setPower(0);
+        br.setPower(0);
+
+    }
+
+    public void realign_FB(String direction){
+        if (direction.equalsIgnoreCase("forward")) {
+            bl.setPower(0.2);
+            fl.setPower(0.2);
+            fr.setPower(0.2);
+            br.setPower(0.2);
+        }
+        else if (direction.equalsIgnoreCase("backward")) {
+            bl.setPower(-0.2);
+            fl.setPower(-0.2);
+            fr.setPower(-0.2);
+            br.setPower(-0.2);
+        }
+        sleep(1500);
+        bl.setPower(0);
+        fl.setPower(0);
+        fr.setPower(0);
+        br.setPower(0);
+
+    }
 
     @Override
     public void runOpMode() throws InterruptedException {
-
     }
+
+
 }
