@@ -65,6 +65,7 @@ public class Auto_BottomRed extends CommonUtil {
         // Initialize motors
         setMotorOrientation();
         //resetMotorEncoderCounts();
+        setMotorToZeroPower();
         clawOpen();
         wristFlat();
 

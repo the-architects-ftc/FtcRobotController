@@ -90,23 +90,9 @@ public class Framework_BottomRed extends CommonUtil {
             telemetry.addData("original z-angle",myRobotOrientation.thirdAngle);
             telemetry.update();
 
-            //moveForward_wDistance_wGyro(110,0.6);
-            //sleep(500);
-//            moveBackwards_wDistance_wGyro(110,0.7);
-//            sleep(500);
-//            turnToZeroAngle();
-//            sleep(100);
-            moveSideways_wCorrection("left",100,0.5);
-            sleep(100);
-//            turnToZeroAngle();
-//            sleep(100);
-//            moveSideways_wCorrection("left",20,0.5);
-//            sleep(100);
-//            turnToZeroAngle();
-//            sleep(500);
-//            turn("right",90);
-//            sleep(100);
-//            turn("left",90);
+            moveForward_wDistance_wGyro(50,0.6);
+
+
 
             myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
             telemetry.addData("FINAL z-angle",myRobotOrientation.thirdAngle);

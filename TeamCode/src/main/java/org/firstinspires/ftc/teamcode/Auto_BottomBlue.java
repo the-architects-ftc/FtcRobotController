@@ -67,6 +67,7 @@ public class Auto_BottomBlue extends CommonUtil {
         //resetMotorEncoderCounts();
         clawOpen();
         wristFlat();
+        setZeroPowerBehavior();
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();

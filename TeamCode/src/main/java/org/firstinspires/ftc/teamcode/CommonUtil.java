@@ -33,6 +33,8 @@ public class CommonUtil extends LinearOpMode {
     BHI260IMU imu;
     BHI260IMU.Parameters myIMUParameters;
 
+
+
     YawPitchRollAngles robotOrientation;
 
     //motor / servo init
@@ -129,7 +131,7 @@ public class CommonUtil extends LinearOpMode {
 
     public double PID_Turn (double targetAngle, double currentAngle, String minPower) {
         double sign = 1;
-        double power = (targetAngle - currentAngle) * 0.2;
+        double power = (targetAngle - currentAngle) * 0.05;
         if (minPower.equalsIgnoreCase("on")&& (power != 0)) {
             sign = Math.signum(power);
             power = Math.max(Math.abs(power), 0.1);
@@ -190,6 +192,7 @@ public class CommonUtil extends LinearOpMode {
         }
         //stop();
         //getRuntime();
+        turnToZeroAngle();
 
         // apply zero power to avoid continuous power to the wheels
         setMotorToZeroPower();
@@ -248,7 +251,7 @@ public class CommonUtil extends LinearOpMode {
             idle();
         }
 
-
+        turnToZeroAngle();
         // apply zero power to avoid continuous power to the wheels
         setMotorToZeroPower();
 
