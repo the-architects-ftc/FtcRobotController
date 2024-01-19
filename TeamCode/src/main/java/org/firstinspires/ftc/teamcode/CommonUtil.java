@@ -148,7 +148,7 @@ public class CommonUtil extends LinearOpMode {
 
     }
     //move forwards with gyro
-    public int moveForward_wDistance_wGyro(double DistanceAbsIn, double motorAbsPower)
+    public int moveForward_wDistance_wGyro(double DistanceAbsIn,double Mpower)
     {
 
         double currZAngle = 0;
@@ -205,7 +205,7 @@ public class CommonUtil extends LinearOpMode {
     }
 
     //move backwards with gyro correction
-    public int moveBackwards_wDistance_wGyro(double DistanceAbsIn, double motorAbsPower)
+    public int moveBackwards_wDistance_wGyro(double DistanceAbsIn,double Mpower)
     {
 
         double currZAngle = 0;
@@ -366,7 +366,7 @@ public class CommonUtil extends LinearOpMode {
 
     public int moveSideways_wCorrection(String direction, int DistanceAbsIn, double motorAbsPower)
     {
-
+        turnToZeroAngle();
         int currEncoderCount = 0;
         double encoderAbsCounts = ENC2DIST_SIDEWAYS*DistanceAbsIn; //2000/42
         setMotorOrientation();
@@ -382,7 +382,7 @@ public class CommonUtil extends LinearOpMode {
         telemetry.addData("Status", "RUN_WITHOUT_ENCODER");
         telemetry.update();
 
-        
+
 
         // Wait for robot to finish this movement
         telemetry.addData("encoderAbsCounts (target)", encoderAbsCounts);
@@ -443,6 +443,7 @@ public class CommonUtil extends LinearOpMode {
         telemetry.addData("enc-bl",bl.getCurrentPosition());
         telemetry.addData("enc-fr",fr.getCurrentPosition());
         telemetry.update();
+        turnToZeroAngle();
 
         // apply zero power to avoid continuous power to the wheels
         setMotorToZeroPower();

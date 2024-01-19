@@ -187,6 +187,7 @@ public class Teleop_live_2controllers extends LinearOpMode {
                 telemetry.addData("intake",intake_constant);
                 telemetry.update();
                 double THRESH_WM_POWER_INTAKE = 1.0; // max abs wheel power
+                sleep(500);
                 if (intake_constant == true) {
                     m0.setPower(-THRESH_WM_POWER_INTAKE);
                     m1.setPower(THRESH_WM_POWER_INTAKE);
