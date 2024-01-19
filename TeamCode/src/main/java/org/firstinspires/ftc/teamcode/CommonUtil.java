@@ -20,6 +20,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
+import com.qualcomm.robotcore.hardware.ColorSensor;
+
 
 public class CommonUtil extends LinearOpMode {
 
@@ -56,8 +58,8 @@ public class CommonUtil extends LinearOpMode {
     // Initialize
     public void initialize(HardwareMap hardwareMap){
 
-        telemetry.addData("at","initialize");
-        telemetry.update();
+        //setup
+        telemetry.setAutoClear(true);
 
         // map imu
         imu = hardwareMap.get(BHI260IMU.class,"imu");
@@ -67,7 +69,8 @@ public class CommonUtil extends LinearOpMode {
         imu.initialize(myIMUParameters);
         imu.resetYaw();
         // Start imu initialization
-        telemetry.addData("Gyro Status", "Initialized");
+
+        telemetry.addData("initialize:Gyro Status", "Initialized");
         telemetry.update();
         // map motors
         bl = hardwareMap.get(DcMotor.class, "LB");
@@ -131,7 +134,7 @@ public class CommonUtil extends LinearOpMode {
 
     public double PID_Turn (double targetAngle, double currentAngle, String minPower) {
         double sign = 1;
-        double power = (targetAngle - currentAngle) * 0.05;
+        double power = (targetAngle - currentAngle) * 0.01; // was 0.05
         if (minPower.equalsIgnoreCase("on")&& (power != 0)) {
             sign = Math.signum(power);
             power = Math.max(Math.abs(power), 0.1);
@@ -143,8 +146,13 @@ public class CommonUtil extends LinearOpMode {
     public double PID_FB (double targetEC, double currentEC)
     {
         double power = (targetEC -currentEC)*0.0003;
-        if (power < 0.3){
-            power = 0.3;
+        if (power < 0)
+        {
+            power = 0;
+        }
+        else if (power < 0.1)
+        {
+            power = 0.1;
         }
         return power;
 
@@ -170,7 +178,6 @@ public class CommonUtil extends LinearOpMode {
 
         // Reset Yaw
         //imu.resetYaw(); [Aarush]
-        //start();
         while (bl.getCurrentPosition() < encoderAbsCounts) {
             myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
             double correction = PID_Turn(0,myRobotOrientation.thirdAngle,"off");
@@ -178,20 +185,13 @@ public class CommonUtil extends LinearOpMode {
 
             bl.setPower(power-correction);
             fl.setPower(power-correction);
-            double bl_fl = power - correction;
-
             fr.setPower(power+correction);
             br.setPower(power+correction);
-            double fr_br = power + correction;
-
-//            telemetry.addData("power", bl_fl);
-//            telemetry.addData("power", fr_br);
-//            telemetry.addData("correction", correction);
-//            telemetry.update();
+            telemetry.addData("fw:power", power);
+            telemetry.addData("fw:correction", correction);
+            telemetry.update();
             idle();
         }
-        //stop();
-        //getRuntime();
         turnToZeroAngle();
 
         // apply zero power to avoid continuous power to the wheels
@@ -201,8 +201,8 @@ public class CommonUtil extends LinearOpMode {
         currEncoderCount = bl.getCurrentPosition();
         myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
         currZAngle = myRobotOrientation.thirdAngle;
-        telemetry.addData("currEncoderCount", currEncoderCount);
-        telemetry.addData("currZAngle", currZAngle);
+        telemetry.addData("fw:currEncoderCount", currEncoderCount);
+        telemetry.addData("fw:currZAngle", currZAngle);
         telemetry.update();
         return (currEncoderCount);
     }
@@ -225,8 +225,6 @@ public class CommonUtil extends LinearOpMode {
         fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         fr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        telemetry.addData("Status", "RUN_WITHOUT_ENCODER");
-        telemetry.update();
 
         // Reset Yaw
         //imu.resetYaw(); // [Aarush]
@@ -244,10 +242,10 @@ public class CommonUtil extends LinearOpMode {
             br.setPower(-power+correction);
             double fr_br = power + correction;
 
-            telemetry.addData("Left_Power", bl_fl);
-            telemetry.addData("Right_Power", fr_br);
-            telemetry.addData("correction", correction);
+            telemetry.addData("bw:power", power);
+            telemetry.addData("bw:correction", correction);
             telemetry.update();
+
             idle();
         }
 
@@ -259,8 +257,8 @@ public class CommonUtil extends LinearOpMode {
         currEncoderCount = bl.getCurrentPosition();
         myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
         currZAngle = myRobotOrientation.thirdAngle;
-        telemetry.addData("currEncoderCount", currEncoderCount);
-        telemetry.addData("currZAngle", currZAngle);
+        telemetry.addData("bw:currEncoderCount", currEncoderCount);
+        telemetry.addData("bw:currZAngle", currZAngle);
         telemetry.update();
         return (currEncoderCount);
     }
@@ -291,10 +289,10 @@ public class CommonUtil extends LinearOpMode {
         imu.resetYaw();
         if (direction.equalsIgnoreCase("right")){
             myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-            telemetry.addData("Turn", "Right");
-            telemetry.addData("Initial Angle",myRobotOrientation.thirdAngle);
+
+            telemetry.addData("turnRight:Init Angle",myRobotOrientation.thirdAngle);
             telemetry.update();
-            while (Math.abs(myRobotOrientation.thirdAngle) <= targetAngle) {
+            while (Math.abs(targetAngle-Math.abs(myRobotOrientation.thirdAngle))>0.1) {
                 myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
                 double power = PID_Turn(targetAngle, Math.abs(myRobotOrientation.thirdAngle),"on");
                 bl.setPower(power);
@@ -302,8 +300,7 @@ public class CommonUtil extends LinearOpMode {
                 fr.setPower(-power);
                 br.setPower(-power);
             }
-            telemetry.addData("Turn", "Right");
-            telemetry.addData("Current Angle",myRobotOrientation.thirdAngle);
+            telemetry.addData("turnRight:Curr Angle",myRobotOrientation.thirdAngle);
             telemetry.update();
             bl.setPower(0);
             fl.setPower(0);
@@ -311,11 +308,10 @@ public class CommonUtil extends LinearOpMode {
             br.setPower(0);
         } else if(direction.equalsIgnoreCase("left")){
             myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-            telemetry.addData("Turn", "Right");
-            telemetry.addData("Initial Angle",myRobotOrientation.thirdAngle);
+            telemetry.addData("turnLeft:Init Angle",myRobotOrientation.thirdAngle);
             telemetry.update();
 
-            while (Math.abs(myRobotOrientation.thirdAngle) <= targetAngle) {
+            while (Math.abs(targetAngle-Math.abs(myRobotOrientation.thirdAngle))>0.1) {
                 myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
                 double power = PID_Turn(targetAngle, Math.abs(myRobotOrientation.thirdAngle),"on");
                 bl.setPower(-power);
@@ -323,8 +319,7 @@ public class CommonUtil extends LinearOpMode {
                 fr.setPower(power);
                 br.setPower(power);
             }
-            telemetry.addData("Turn", "Left");
-            telemetry.addData("Current Angle",myRobotOrientation.thirdAngle);
+            telemetry.addData("turnLeft:Curr Angle",myRobotOrientation.thirdAngle);
             telemetry.update();
             bl.setPower(0);
             fl.setPower(0);
@@ -342,13 +337,13 @@ public class CommonUtil extends LinearOpMode {
         double targetAngle = myRobotOrientation.thirdAngle;
         if (targetAngle > 0)
         {
-            telemetry.addData("targetAnge",targetAngle);
+            telemetry.addData("turnToZeroAngle:targetAngle",targetAngle);
             telemetry.update();
             turn("right", Math.abs(targetAngle));
         }
         else if (targetAngle < 0)
         {
-            telemetry.addData("targetAnge",targetAngle);
+            telemetry.addData("turnToZeroAngle:targetAngle",targetAngle);
             telemetry.update();
             turn("left", Math.abs(targetAngle));
         }
@@ -363,7 +358,6 @@ public class CommonUtil extends LinearOpMode {
         sleep(t_msec);
         m0.setPower(0);
         m1.setPower(0);
-
     }
 
 
@@ -382,18 +376,8 @@ public class CommonUtil extends LinearOpMode {
         fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         fr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        telemetry.addData("Status", "RUN_WITHOUT_ENCODER");
-        telemetry.update();
-
-
 
         // Wait for robot to finish this movement
-        telemetry.addData("encoderAbsCounts (target)", encoderAbsCounts);
-        telemetry.addData("currEncoderCount (initial)",bl.getCurrentPosition());
-
-
-
-        telemetry.update();
         double refEC = 0;
         while (refEC < encoderAbsCounts) {
 
@@ -441,11 +425,6 @@ public class CommonUtil extends LinearOpMode {
             }
             idle();
         }
-        telemetry.addData("enc-fl",fl.getCurrentPosition()); // we dont get encoder counts in fl
-        telemetry.addData("enc-br",br.getCurrentPosition()); // possibly, running faster
-        telemetry.addData("enc-bl",bl.getCurrentPosition());
-        telemetry.addData("enc-fr",fr.getCurrentPosition());
-        telemetry.update();
         turnToZeroAngle();
 
         // apply zero power to avoid continuous power to the wheels
@@ -455,8 +434,7 @@ public class CommonUtil extends LinearOpMode {
         currEncoderCount = bl.getCurrentPosition();
         myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
 
-        telemetry.addData("currEncoderCount (final)", currEncoderCount);
-
+        telemetry.addData("sideways:currEncoderCount (final)", currEncoderCount);
         telemetry.update();
         return (currEncoderCount);
     }

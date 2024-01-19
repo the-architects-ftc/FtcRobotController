@@ -30,6 +30,8 @@
 package org.firstinspires.ftc.teamcode;
 
 
+import android.graphics.Color;
+
 import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -46,6 +48,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
+
+
+import com.qualcomm.robotcore.hardware.ColorSensor;
 
 
 /**
@@ -71,8 +76,10 @@ public class Framework_BottomRed extends CommonUtil {
     @Override
     public void runOpMode() {
 
-        //setup
-        telemetry.setAutoClear(false);
+        // Variable initialization
+        ColorSensor cs_front;
+        Color cs_front_color;
+
         // initialize hardware
         initialize(hardwareMap);
         // Initialize motors
@@ -87,15 +94,26 @@ public class Framework_BottomRed extends CommonUtil {
 
         while (opModeIsActive()) {
             myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-            telemetry.addData("original z-angle",myRobotOrientation.thirdAngle);
+            telemetry.addData("frmwrkBR:start z-angle",myRobotOrientation.thirdAngle);
             telemetry.update();
 
-            moveForward_wDistance_wGyro(50,0.6);
+//            moveForward_wDistance_wGyro(50,0.6);
+//            moveBackwards_wDistance_wGyro(50,0.6);
+//            moveSideways_wCorrection("right",25,0.5);
+//            moveSideways_wCorrection("left",25,0.5);
+//            turn("right", 25);
+//            turn("left", 90);
+//            turn("right",65);
+
+            cs_front = hardwareMap.get(ColorSensor.class, "colorSensor");
+            cs_front.enableLed(true);
+
+
 
 
 
             myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-            telemetry.addData("FINAL z-angle",myRobotOrientation.thirdAngle);
+            telemetry.addData("frmwrkBR:final z-angle",myRobotOrientation.thirdAngle);
             telemetry.update();
             sleep(9000000);
 
