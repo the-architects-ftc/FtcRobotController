@@ -67,6 +67,7 @@ public class Framework_BottomRed extends CommonUtil {
 
     Orientation myRobotOrientation;
 
+
     @Override
     public void runOpMode() {
 
@@ -79,21 +80,38 @@ public class Framework_BottomRed extends CommonUtil {
         //resetMotorEncoderCounts();
         clawOpen();
         wristFlat();
+        setZeroPowerBehavior();
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
         while (opModeIsActive()) {
+            myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+            telemetry.addData("original z-angle",myRobotOrientation.thirdAngle);
+            telemetry.update();
 
-           turn("right",90);
-           sleep(500);
-           turn("left",90);
-           sleep(500);
-           turn("right",45);
-           sleep(500);
-           turn("left",15);
-           sleep(500);
-           sleep(9000000);
+            //moveForward_wDistance_wGyro(110,0.6);
+            //sleep(500);
+//            moveBackwards_wDistance_wGyro(110,0.7);
+//            sleep(500);
+//            turnToZeroAngle();
+//            sleep(100);
+            moveSideways_wCorrection("left",100,0.5);
+            sleep(100);
+//            turnToZeroAngle();
+//            sleep(100);
+//            moveSideways_wCorrection("left",20,0.5);
+//            sleep(100);
+//            turnToZeroAngle();
+//            sleep(500);
+//            turn("right",90);
+//            sleep(100);
+//            turn("left",90);
+
+            myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+            telemetry.addData("FINAL z-angle",myRobotOrientation.thirdAngle);
+            telemetry.update();
+            sleep(9000000);
 
         }
     }
