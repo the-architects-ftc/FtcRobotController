@@ -226,15 +226,15 @@ public class CommonUtil extends LinearOpMode {
             {
                 turnToZeroAngle();
             }
-            // identify if you are stuck [Aarush]
-            double flagStuck = amIStuck_FB(encoderAbsCounts, currEncoderCount, prevEncoderCount);
-            if (flagStuck==1)
-                break;
-            else if (flagStuck==0)
-                prevEncoderCount = currEncoderCount;
-            else
-                // nothing to do
-            idle();
+//            // identify if you are stuck [Aarush]
+//            double flagStuck = amIStuck_FB(encoderAbsCounts, currEncoderCount, prevEncoderCount);
+//            if (flagStuck==1)
+//                break;
+//            else if (flagStuck==0)
+//                prevEncoderCount = currEncoderCount;
+//            else
+//                // nothing to do
+//            idle();
         }
         turnToZeroAngle();
 
@@ -295,14 +295,14 @@ public class CommonUtil extends LinearOpMode {
             {
                 turnToZeroAngle();
             }
-            // identify if you are stuck [Aarush]
-            double flagStuck = amIStuck_FB(encoderAbsCounts, currEncoderCount, prevEncoderCount);
-            if (flagStuck==1)
-                break;
-            else if (flagStuck==0)
-                prevEncoderCount = currEncoderCount;
-            else
-                // nothing to do
+//            // identify if you are stuck [Aarush]
+//            double flagStuck = amIStuck_FB(encoderAbsCounts, currEncoderCount, prevEncoderCount);
+//            if (flagStuck==1)
+//                break;
+//            else if (flagStuck==0)
+//                prevEncoderCount = currEncoderCount;
+//            else
+//                // nothing to do
 
             idle();
         }

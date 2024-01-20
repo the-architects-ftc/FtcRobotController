@@ -68,6 +68,7 @@ public class ColorSensorDummyCode extends CommonUtil {
     private static final double BLUE_HUE_MAX = 240;   // Maximum hue for blue
     private float[] hsvValues = new float[3]; // Declare hsvValues at the class level
 
+
     @Override
     public void runOpMode() {
 
@@ -117,15 +118,13 @@ public class ColorSensorDummyCode extends CommonUtil {
 //        telemetry.addData("Blue Value:","%.2f",blueValue);
 //        telemetry.addData("Alpha Value:","%.2f",alphaValue);
 //        telemetry.update();
-
-        float[] hsvValues = new float[3];
         Color.RGBToHSV((int) redValue, (int) greenValue, (int) blueValue, hsvValues);
 
-//        telemetry.addData("Hue:", "%.2f", hsvValues[0]);
-//        telemetry.addData("Saturation:", "%.2f", hsvValues[1]);
-//        telemetry.addData("Value:", "%.2f", hsvValues[2]);
+        telemetry.addData("Hue:", "%.2f", hsvValues[0]);
+        telemetry.addData("Saturation:", "%.2f", hsvValues[1]);
+        telemetry.addData("Value:", "%.2f", hsvValues[2]);
 
-//        telemetry.update();
+        telemetry.update();
     }
 
     private boolean isRedDetected() {
