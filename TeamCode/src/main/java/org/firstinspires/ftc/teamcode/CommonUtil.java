@@ -54,6 +54,7 @@ public class CommonUtil extends LinearOpMode {
     Servo s3 = null;
 
 
+
     //All Our functions!
 
     // Initialize
@@ -85,8 +86,10 @@ public class CommonUtil extends LinearOpMode {
         s1 = hardwareMap.get(Servo.class, "s1");
         s2 = hardwareMap.get(Servo.class, "s2");
         s3 = hardwareMap.get(Servo.class, "s3");
+        s3 = hardwareMap.get(Servo.class, "s3");
         s1.setDirection(Servo.Direction.FORWARD);
         s2.setDirection(Servo.Direction.FORWARD);
+        s3.setDirection(Servo.Direction.REVERSE);
     }
 
 
@@ -114,6 +117,10 @@ public class CommonUtil extends LinearOpMode {
         telemetry.addData("Encoder", "Count Reset");  // telemetry: Mode Waiting
         telemetry.update();
 
+    }
+
+    public void drone_Test(){
+        s3.setPosition(0);
     }
 
     //motor power 0

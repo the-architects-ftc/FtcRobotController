@@ -32,6 +32,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 
@@ -49,8 +50,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
  */
 
 
-@Autonomous(name="Auto_TopBlue", group="Linear Opmode2")
-public class Auto_TopBlue extends CommonUtil {
+@Autonomous(name="Auto_BottomBluePR", group="Linear Opmode2")
+public class Auto_BottomBluePR extends CommonUtil {
 
     Orientation myRobotOrientation;
 
@@ -78,7 +79,7 @@ public class Auto_TopBlue extends CommonUtil {
             clawClosed();
             moveSideways_wCorrection("left",1,0.35);
             sleep(500);
-            moveBackwards_wDistance_wGyro(30,1);
+            moveBackwards_wDistance_wGyro(77,1);
             sleep(500);
             moveSideways_wCorrection("left",21,0.4);
             sleep(500);
@@ -98,10 +99,8 @@ public class Auto_TopBlue extends CommonUtil {
             wristFlat();
             moveForward_wDistance_wGyro(5,1);
             sleep(500);
-            moveSideways_wCorrection("right",22,0.6);
+            moveSideways_wCorrection("left",22,0.6);
             sleep(200);
-            moveBackwards_wDistance_wGyro(10,0.5);
-            sleep(500000);
             moveBackwards_wDistance_wGyro(10,0.5);
             sleep(500000);
 
