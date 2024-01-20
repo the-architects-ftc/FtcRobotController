@@ -276,16 +276,15 @@ public class CommonUtil extends LinearOpMode {
         timer.reset();
         while(bl.getCurrentPosition() > -encoderAbsCounts) {
             myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-            double correction = PID_Turn(0,myRobotOrientation.thirdAngle,"off");
-            double power = PID_FB(encoderAbsCounts,Math.abs(bl.getCurrentPosition()));
+            currZAngle = myRobotOrientation.thirdAngle;
+            double correction = PID_Turn(0,currZAngle,"off");
+            currEncoderCount = bl.getCurrentPosition();
+            double power = PID_FB(encoderAbsCounts,Math.abs(currEncoderCount));
+
             bl.setPower(-power-correction);
             fl.setPower(-power-correction);
-            double bl_fl = power - correction;
-
             fr.setPower(-power+correction);
             br.setPower(-power+correction);
-            double fr_br = power + correction;
-
             telemetry.addData("bw:power", power);
             telemetry.addData("bw:correction", correction);
             telemetry.update();

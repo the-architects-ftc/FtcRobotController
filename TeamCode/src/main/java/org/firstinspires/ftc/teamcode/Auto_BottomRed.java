@@ -100,6 +100,7 @@ public class Auto_BottomRed extends CommonUtil {
             moveForward_wDistance_wGyro(5,1);
             sleep(500);
             moveSideways_wCorrection("left",22,0.6);
+            moveBackwards_wDistance_wGyro(10,0.5);
             sleep(500000);
 
         }
