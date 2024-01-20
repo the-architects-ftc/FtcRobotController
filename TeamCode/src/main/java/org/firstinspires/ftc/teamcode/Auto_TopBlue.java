@@ -30,27 +30,9 @@
 package org.firstinspires.ftc.teamcode;
 
 
-import android.graphics.Color;
-
-import com.qualcomm.hardware.bosch.BHI260IMU;
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.IMU;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import org.firstinspires.ftc.teamcode.CommonUtil;
 
-
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
-
-
-import com.qualcomm.robotcore.hardware.ColorSensor;
 
 
 /**
@@ -67,28 +49,16 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
  */
 
 
-@Autonomous(name="Framework_BottomRed", group="Linear Opmode2")
-public class Framework_BottomRed extends CommonUtil {
+@Autonomous(name="Auto_TopBlue", group="Linear Opmode2")
+public class Auto_TopBlue extends CommonUtil {
 
     Orientation myRobotOrientation;
-
 
     @Override
     public void runOpMode() {
 
-        // New stuff [Aarush]
-        double target_FB= 0; // positive is forward, negative is backwards
-        double rem_FB = 0;
-        double target_Sideways = 0; // positive is right, negative is left
-        double rem_Sideways = 0;
-        int flagFW = 0;
-        int flagBW = 0;
-        int flagRight = 0;
-        int flagLeft = 0;
-        // Variable initialization
-        ColorSensor cs_front;
-        Color cs_front_color;
-
+        //setup
+        telemetry.setAutoClear(false);
         // initialize hardware
         initialize(hardwareMap);
         // Initialize motors
@@ -102,25 +72,38 @@ public class Framework_BottomRed extends CommonUtil {
         waitForStart();
 
         while (opModeIsActive()) {
-            myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-            telemetry.addData("frmwrkBR:start z-angle",myRobotOrientation.thirdAngle);
-            telemetry.update();
-
-//            moveForward_wDistance_wGyro(50,0.6);
-//            moveBackwards_wDistance_wGyro(50,0.6);
-//            moveSideways_wCorrection("right",25,0.5);
-//            moveSideways_wCorrection("left",25,0.5);
-//            turn("right", 25);
-//            turn("left", 90);
-//            turn("right",65);
-
-            cs_front = hardwareMap.get(ColorSensor.class, "colorSensor");
-            cs_front.enableLed(true);
-
-            myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-            telemetry.addData("frmwrkBR:final z-angle",myRobotOrientation.thirdAngle);
-            telemetry.update();
-            sleep(9000000);
+            clawClosed();
+            sleep(500);
+            extend(1,150);
+            clawClosed();
+            moveSideways_wCorrection("left",1,0.35);
+            sleep(500);
+            moveBackwards_wDistance_wGyro(30,1);
+            sleep(500);
+            moveSideways_wCorrection("left",21,0.4);
+            sleep(500);
+            moveBackwards_wDistance_wGyro(5,1);
+            realign_FB("backward");
+            extend(1,5500);
+            clawClosed();
+            wristBent();
+            sleep(500);
+            clawOpen();
+            sleep(200);
+            clawClosed();
+            sleep(100);
+            wristFlat();
+            retract(1,4700);
+            sleep(500);
+            wristFlat();
+            moveForward_wDistance_wGyro(5,1);
+            sleep(500);
+            moveSideways_wCorrection("right",22,0.6);
+            sleep(200);
+            moveBackwards_wDistance_wGyro(10,0.5);
+            sleep(500000);
+            moveBackwards_wDistance_wGyro(10,0.5);
+            sleep(500000);
 
         }
     }

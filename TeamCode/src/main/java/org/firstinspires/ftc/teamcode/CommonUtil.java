@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.hardware.bosch.BHI260IMU;
@@ -11,6 +12,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.CommonUtil;
 
@@ -21,6 +23,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 import com.qualcomm.robotcore.hardware.ColorSensor;
+
+import java.util.Timer;
 
 
 public class CommonUtil extends LinearOpMode {
@@ -34,9 +38,6 @@ public class CommonUtil extends LinearOpMode {
     //imu init
     BHI260IMU imu;
     BHI260IMU.Parameters myIMUParameters;
-
-
-
     YawPitchRollAngles robotOrientation;
 
     //motor / servo init
@@ -73,7 +74,7 @@ public class CommonUtil extends LinearOpMode {
         telemetry.addData("initialize:Gyro Status", "Initialized");
         telemetry.update();
         // map motors
-        bl = hardwareMap.get(DcMotor.class, "LB");
+        bl = hardwareMap.get(DcMotorEx.class, "LB");
         fl = hardwareMap.get(DcMotor.class, "LF");
         fr = hardwareMap.get(DcMotor.class, "RF");
         br = hardwareMap.get(DcMotor.class, "RB");
@@ -155,14 +156,40 @@ public class CommonUtil extends LinearOpMode {
             power = 0.1;
         }
         return power;
-
     }
+
+    public int amIStuck_FB(double encoderAbsCounts, double currEncoderCount, double prevEncoderCount)
+    {
+        double currErrEC = 0;
+        if (timer.time()> 0.5) // wait for passing of 0.5 second
+        {
+            currErrEC = Math.abs(encoderAbsCounts - Math.abs(currEncoderCount));
+            if ((currErrEC/encoderAbsCounts)<0.98) {
+                if (Math.abs(currEncoderCount) - Math.abs(prevEncoderCount) <100)
+                {
+                    telemetry.addData("fw:stuck","yes");
+                    telemetry.update();
+                    sleep(100000);
+                    timer.reset();
+                    return(1);
+                }
+                else {
+                    timer.reset();
+                    return(0);
+                }
+            }
+        }
+        return(-1);
+    }
+
     //move forwards with gyro
     public int moveForward_wDistance_wGyro(double DistanceAbsIn,double Mpower)
     {
-
         double currZAngle = 0;
+        double prevZAngle = 0;
         int currEncoderCount = 0;
+        int prevEncoderCount = 0;
+        double currErrEC = 0;
         double encoderAbsCounts = ENC2DIST*DistanceAbsIn;
         telemetry.addData("EC Target", encoderAbsCounts);
         telemetry.update();
@@ -176,12 +203,14 @@ public class CommonUtil extends LinearOpMode {
         fr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        // Reset Yaw
-        //imu.resetYaw(); [Aarush]
+        // move forward
+        timer.reset();
         while (bl.getCurrentPosition() < encoderAbsCounts) {
             myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-            double correction = PID_Turn(0,myRobotOrientation.thirdAngle,"off");
-            double power = PID_FB(encoderAbsCounts,Math.abs(bl.getCurrentPosition()));
+            currZAngle = myRobotOrientation.thirdAngle;
+            double correction = PID_Turn(0,currZAngle,"off");
+            currEncoderCount = bl.getCurrentPosition();
+            double power = PID_FB(encoderAbsCounts,Math.abs(currEncoderCount));
 
             bl.setPower(power-correction);
             fl.setPower(power-correction);
@@ -190,6 +219,21 @@ public class CommonUtil extends LinearOpMode {
             telemetry.addData("fw:power", power);
             telemetry.addData("fw:correction", correction);
             telemetry.update();
+
+            // quick correct for angle if it is greater than 10 [Aarush]
+            double absError_angle = Math.abs(currZAngle);
+            if (absError_angle > 10)
+            {
+                turnToZeroAngle();
+            }
+            // identify if you are stuck [Aarush]
+            double flagStuck = amIStuck_FB(encoderAbsCounts, currEncoderCount, prevEncoderCount);
+            if (flagStuck==1)
+                break;
+            else if (flagStuck==0)
+                prevEncoderCount = currEncoderCount;
+            else
+                // nothing to do
             idle();
         }
         turnToZeroAngle();
@@ -210,9 +254,11 @@ public class CommonUtil extends LinearOpMode {
     //move backwards with gyro correction
     public int moveBackwards_wDistance_wGyro(double DistanceAbsIn,double Mpower)
     {
-
         double currZAngle = 0;
+        double prevZAngle = 0;
         int currEncoderCount = 0;
+        int prevEncoderCount = 0;
+        double currErrEC = 0;
 
         double encoderAbsCounts = ENC2DIST *DistanceAbsIn;
         telemetry.addData("Im here",currZAngle);
@@ -226,10 +272,8 @@ public class CommonUtil extends LinearOpMode {
         fr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        // Reset Yaw
-        //imu.resetYaw(); // [Aarush]
-
-        //start();
+        // move backward
+        timer.reset();
         while(bl.getCurrentPosition() > -encoderAbsCounts) {
             myRobotOrientation = imu.getRobotOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
             double correction = PID_Turn(0,myRobotOrientation.thirdAngle,"off");
@@ -245,6 +289,21 @@ public class CommonUtil extends LinearOpMode {
             telemetry.addData("bw:power", power);
             telemetry.addData("bw:correction", correction);
             telemetry.update();
+
+            // quick correct for angle if it is greater than 10 [Aarush]
+            double absError_angle = Math.abs(currZAngle);
+            if (absError_angle > 10)
+            {
+                turnToZeroAngle();
+            }
+            // identify if you are stuck [Aarush]
+            double flagStuck = amIStuck_FB(encoderAbsCounts, currEncoderCount, prevEncoderCount);
+            if (flagStuck==1)
+                break;
+            else if (flagStuck==0)
+                prevEncoderCount = currEncoderCount;
+            else
+                // nothing to do
 
             idle();
         }
