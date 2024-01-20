@@ -49,8 +49,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
  */
 
 
-@Autonomous(name="Auto_TopBluePR", group="Linear Opmode2")
-public class Auto_TopBluePR extends CommonUtil {
+@Autonomous(name="Auto_TopRedPO", group="Linear Opmode2")
+public class Auto_TopRedPO extends CommonUtil {
 
     Orientation myRobotOrientation;
 
@@ -64,9 +64,9 @@ public class Auto_TopBluePR extends CommonUtil {
         // Initialize motors
         setMotorOrientation();
         //resetMotorEncoderCounts();
+        setMotorToZeroPower();
         clawOpen();
         wristFlat();
-        setZeroPowerBehavior();
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -76,11 +76,11 @@ public class Auto_TopBluePR extends CommonUtil {
             sleep(500);
             extend(1,150);
             clawClosed();
-            moveSideways_wCorrection("left",1,0.35);
+            moveSideways_wCorrection("right",1,0.35);
             sleep(500);
             moveBackwards_wDistance_wGyro(30,1);
             sleep(500);
-            moveSideways_wCorrection("left",21,0.4);
+            moveSideways_wCorrection("right",21,0.4);
             sleep(500);
             moveBackwards_wDistance_wGyro(5,1);
             realign_FB("backward");
@@ -99,8 +99,6 @@ public class Auto_TopBluePR extends CommonUtil {
             moveForward_wDistance_wGyro(5,1);
             sleep(500);
             moveSideways_wCorrection("left",22,0.6);
-            sleep(200);
-            moveBackwards_wDistance_wGyro(10,0.5);
             sleep(500000);
             moveBackwards_wDistance_wGyro(10,0.5);
             sleep(500000);

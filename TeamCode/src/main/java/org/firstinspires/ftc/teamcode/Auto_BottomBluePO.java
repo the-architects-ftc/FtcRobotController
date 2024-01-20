@@ -50,8 +50,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
  */
 
 
-@Autonomous(name="Auto_BottomBluePL", group="Linear Opmode2")
-public class Auto_BottomBluePL extends CommonUtil {
+@Autonomous(name="Auto_BottomBluePO", group="Linear Opmode2")
+public class Auto_BottomBluePO extends CommonUtil {
 
     Orientation myRobotOrientation;
 
