@@ -31,10 +31,12 @@ package org.firstinspires.ftc.teamcode;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 
 
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
+import android.graphics.Color;
 
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
@@ -50,19 +52,33 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
  */
 
 
-@Autonomous(name="Area_Bottom_Blue1", group="Linear Opmode2")
-public class Area_Bottom_Blue1 extends CommonUtil {
+@Autonomous(name="ColorSensorDummyCode", group="Linear Opmode2")
+public class ColorSensorDummyCode extends CommonUtil {
 
     Orientation myRobotOrientation;
+    private ColorSensor cs;
+    private double redValue;
+    private double greenValue;
+    private double blueValue;
+    private double alphaValue; //light intensity
+    private double targetValue = 1000;
+    private static final double RED_HUE_MIN = 0;      // Minimum hue for red
+    private static final double RED_HUE_MAX = 30;     // Maximum hue for red
+    private static final double BLUE_HUE_MIN = 180;   // Minimum hue for blue
+    private static final double BLUE_HUE_MAX = 240;   // Maximum hue for blue
+    private float[] hsvValues = new float[3]; // Declare hsvValues at the class level
 
     @Override
     public void runOpMode() {
 
         //setup
         telemetry.setAutoClear(false);
-
         // initialize hardware
         initialize(hardwareMap);
+        cs = hardwareMap.get(ColorSensor.class,"colorSensor");
+
+
+
         // Initialize motors
         setMotorOrientation();
         //resetMotorEncoderCounts();
@@ -73,77 +89,50 @@ public class Area_Bottom_Blue1 extends CommonUtil {
         waitForStart();
 
         while (opModeIsActive()) {
+            getColor();
+            colorTelemetry();
 
+            if (isRedDetected()) {
+                telemetry.addData("Detected Color:", "Red");
+            } else if (isBlueDetected()) {
+                telemetry.addData("Detected Color:", "Blue");
+            } else {
+                telemetry.addData("Detected Color:", "Not Red or Blue");
+            }
 
-            clawClosed();
-            sleep(600);
-            extend(1,100);
-            sleep(200);
-
-            moveForward_wDistance_wGyro(5,0.2);
-            sleep(500);
-            moveSideways_wCorrection("left",27,0.4);
-            sleep(500);
-
-            moveBackwards_wDistance_wGyro(6,0.3);
-            sleep(500);
-            extend(0.65,400);
-            sleep(1000); // pausing to let pixel drop
-
-            moveBackwards_wDistance_wGyro(1,0.3);
-            sleep(500);
-            moveForward_wDistance_wGyro(1,0.3);
-            sleep(500);
-
-            moveForward_wDistance_wGyro(4,0.4);
-            sleep(500);
-
-            moveSideways_wCorrection("left",25,0.4);
-            sleep(500);
-            retract(1,150);
-            sleep(500);
-
-            turnToZeroAngle();
-            moveBackwards_wDistance_wGyro(75,0.8); // was 90
-            sleep(1000);
-            extend(1,700);
-            sleep(500);
-            moveSideways_wCorrection("right",24,0.4);
-            sleep(500);
-            extend(1,3300);
-            sleep(200);
-
-            bl.setPower(-0.2);
-            fl.setPower(-0.2);
-            fr.setPower(-0.2);
-            br.setPower(-0.2);
-            sleep(1500);
-            bl.setPower(0);
-            fl.setPower(0);
-            fr.setPower(0);
-            br.setPower(0);
-
-            wristBent();
-            clawClosed();
-            sleep(500);
-            wristBent();
-            clawOpen();
-            sleep(500);
-            wristFlat();
-            clawClosed();
-
-            moveForward_wDistance_wGyro(3,0.3);
-            sleep(300);
-            moveSideways_wCorrection("left",24,0.5);
-
-            retract(1,3700);
-            sleep(500000);
+            telemetry.update();
         }
     }
 
+    public void getColor() {
+        redValue = cs.red();
+        greenValue = cs.green();
+        blueValue = cs.blue();
+        alphaValue = cs.alpha();
+    }
 
+    public void colorTelemetry() {
+//        telemetry.addData("Red Value:","%.2f",redValue);
+//        telemetry.addData("Green Value:","%.2f",greenValue);
+//        telemetry.addData("Blue Value:","%.2f",blueValue);
+//        telemetry.addData("Alpha Value:","%.2f",alphaValue);
+//        telemetry.update();
+
+        float[] hsvValues = new float[3];
+        Color.RGBToHSV((int) redValue, (int) greenValue, (int) blueValue, hsvValues);
+
+//        telemetry.addData("Hue:", "%.2f", hsvValues[0]);
+//        telemetry.addData("Saturation:", "%.2f", hsvValues[1]);
+//        telemetry.addData("Value:", "%.2f", hsvValues[2]);
+
+//        telemetry.update();
+    }
+
+    private boolean isRedDetected() {
+        return (hsvValues[0] >= RED_HUE_MIN && hsvValues[0] <= RED_HUE_MAX);
+    }
+
+    private boolean isBlueDetected() {
+        return (hsvValues[0] >= BLUE_HUE_MIN && hsvValues[0] <= BLUE_HUE_MAX);
+    }
 }
-
-
-
-
