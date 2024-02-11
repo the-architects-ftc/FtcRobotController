@@ -50,8 +50,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
  */
 
 
-@Autonomous(name="Auto_BottomRedPI", group="Linear Opmode2")
-public class Auto_BottomRedPI extends CommonUtil {
+@Autonomous(name="Park_BottomRed", group="Linear Opmode2")
+public class Park_BottomRed extends CommonUtil {
 
     Orientation myRobotOrientation;
 
@@ -65,51 +65,24 @@ public class Auto_BottomRedPI extends CommonUtil {
         // Initialize motors
         setMotorOrientation();
         //resetMotorEncoderCounts();
-        setMotorToZeroPower();
         clawOpen();
         wristFlat();
+        setZeroPowerBehavior();
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
         while (opModeIsActive()) {
+            sleep(5000);
             clawClosed();
-            sleep(500);
+            sleep(4000);
             extend(1,150);
             clawClosed();
             moveSideways_wCorrection("right",1,0.35);
             sleep(500);
-            moveBackwards_wDistance_wGyro(77,1);
-            sleep(500);
-            moveSideways_wCorrection("right",21,0.4);
-            sleep(500);
-            moveBackwards_wDistance_wGyro(5,1);
-            realign_FB("backward");
-            extend(1,4500);
-            clawClosed();
-            wristBent();
-            sleep(500);
-            clawOpen();
-            sleep(1200);
-            clawClosed();
-            sleep(500);
-            wristFlat();
-            retract(1,4000);
-            sleep(500);
-            wristFlat();
-            moveForward_wDistance_wGyro(5,1);
-            sleep(500);
-            moveSideways_wCorrection("right",22,0.6);
-            moveBackwards_wDistance_wGyro(10,0.5);
+            moveBackwards_wDistance_wGyro(90,1);
+
             sleep(500000);
-
-
-
-
-
-
-
-
 
         }
     }

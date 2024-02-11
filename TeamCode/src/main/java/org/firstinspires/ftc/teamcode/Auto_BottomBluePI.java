@@ -73,6 +73,7 @@ public class Auto_BottomBluePI extends CommonUtil {
         waitForStart();
 
         while (opModeIsActive()) {
+
             clawClosed();
             sleep(500);
             extend(1,150);
@@ -85,16 +86,16 @@ public class Auto_BottomBluePI extends CommonUtil {
             sleep(500);
             moveBackwards_wDistance_wGyro(5,1);
             realign_FB("backward");
-            extend(1,5500);
+            extend(1,4500);
             clawClosed();
             wristBent();
             sleep(500);
             clawOpen();
-            sleep(200);
+            sleep(1200);
             clawClosed();
-            sleep(100);
+            sleep(500);
             wristFlat();
-            retract(1,4700);
+            retract(1,4000);
             sleep(500);
             wristFlat();
             moveForward_wDistance_wGyro(5,1);

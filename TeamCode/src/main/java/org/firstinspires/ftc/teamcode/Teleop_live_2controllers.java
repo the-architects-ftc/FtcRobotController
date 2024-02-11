@@ -100,6 +100,7 @@ public class Teleop_live_2controllers extends LinearOpMode {
         s1.setPosition(0.2);
         waitForStart();
         while (opModeIsActive()) {
+
             // initiate the left and right variables
             left1Y = gamepad1.left_stick_y * -1;
             left1X = gamepad1.left_stick_x;
@@ -110,6 +111,8 @@ public class Teleop_live_2controllers extends LinearOpMode {
             left2X = gamepad2.left_stick_x;
             right2Y = gamepad2.right_stick_y * -1;
             right2X = gamepad2.right_stick_x;
+
+
 
             // B for gamepad 1 and 2
             if (gamepad1.b) {
