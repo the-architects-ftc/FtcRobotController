@@ -122,7 +122,7 @@ public class ColorSensor extends LinearOpMode {
             // Telemetry output
 
             telemetry.addData("Detected Color", detected);
-            telemetry.addLine("Pattern State");
+
             telemetry.addData("Purple Count", purpleCount);
             telemetry.addData("Green Count", greenCount);
             telemetry.addData("Pattern Count", patternCount);
