@@ -20,18 +20,32 @@ public class ColorSensor extends LinearOpMode {
 
 
         // Get the color sensor named "sensor_color" in your configuration
-        NormalizedColorSensor colorSensor = hardwareMap.get(NormalizedColorSensor.class, "sensor_color");
+        NormalizedColorSensor colorSensor0 = hardwareMap.get(NormalizedColorSensor.class, "colorSensor0");
+        NormalizedColorSensor colorSensor1 = hardwareMap.get(NormalizedColorSensor.class, "colorSensor1");
+        NormalizedColorSensor colorSensor2 = hardwareMap.get(NormalizedColorSensor.class, "colorSensor2");
+        NormalizedColorSensor colorSensor3 = hardwareMap.get(NormalizedColorSensor.class, "colorSensor3");
 
 
         // Optional: turn on LED if available
-        if (colorSensor instanceof SwitchableLight) {
-            ((SwitchableLight) colorSensor).enableLight(true);
+        if (colorSensor0 instanceof SwitchableLight) {
+            ((SwitchableLight) colorSensor0).enableLight(true);
         }
-
+        if (colorSensor1 instanceof SwitchableLight) {
+            ((SwitchableLight) colorSensor1).enableLight(true);
+        }
+        if (colorSensor2 instanceof SwitchableLight) {
+            ((SwitchableLight) colorSensor2).enableLight(true);
+        }
+        if (colorSensor3 instanceof SwitchableLight) {
+            ((SwitchableLight) colorSensor3).enableLight(true);
+        }
 
         // Set a fixed gain to start (you can tweak this)
         float gain = 3.0f;
-        colorSensor.setGain(gain);
+        colorSensor0.setGain(gain);
+        colorSensor1.setGain(gain);
+        colorSensor2.setGain(gain);
+        colorSensor3.setGain(gain);
 
 
         // HSV array: [0] = Hue, [1] = Saturation, [2] = Value
@@ -42,6 +56,8 @@ public class ColorSensor extends LinearOpMode {
         int purpleCount = 0;
         int patternCount = 0;
         String lastCountedColor = "NONE";
+
+
 
 
         telemetry.addLine("Color Test: Green / Purple / Pattern");
@@ -59,22 +75,28 @@ public class ColorSensor extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-
-            // Read normalized color values (0.0–1.0)
-            NormalizedRGBA colors = colorSensor.getNormalizedColors();
-
-
-            // Convert to HSV
-            Color.colorToHSV(colors.toColor(), hsv);
-            float hue = hsv[0];
-            float sat = hsv[1];
-            float val = hsv[2];
-            String detected = classifyColor(hue, sat, val);
-
+            String c0 = detectFromSensor(colorSensor0, hsv);
+            String c1 = detectFromSensor(colorSensor1, hsv);
+            String c2 = detectFromSensor(colorSensor2, hsv);
+            String c3 = detectFromSensor(colorSensor3, hsv);
+            String detected = combineVirtualColor(c0,c1,c2,c3);
 
             boolean isGreen = "GREEN".equals(detected);
             boolean isPurple = "PURPLE".equals(detected);
             boolean isTarget = isGreen || isPurple;
+
+            // Read normalized color values (0.0–1.0)
+            //NormalizedRGBA colors = colorSensor.getNormalizedColors();
+
+
+
+            // Convert to HSV
+
+
+            //String detected = classifyColor(hue, sat, val);
+
+
+
             if (!isTarget){
                 lastCountedColor = "NONE";
 
@@ -121,7 +143,11 @@ public class ColorSensor extends LinearOpMode {
 
             // Telemetry output
 
-            telemetry.addData("Detected Color", detected);
+            telemetry.addData("S0", c0);
+            telemetry.addData("S1", c1);
+            telemetry.addData("S2", c2);
+            telemetry.addData("S3", c3);
+            telemetry.addData("Virtual Detected", detected);
 
             telemetry.addData("Purple Count", purpleCount);
             telemetry.addData("Green Count", greenCount);
@@ -133,8 +159,26 @@ public class ColorSensor extends LinearOpMode {
             sleep(0);
         }
     }
+    private void enableLedIfPossible(NormalizedColorSensor sensor) {
+        if (sensor instanceof SwitchableLight) {
+            ((SwitchableLight) sensor).enableLight(true);
+        }
+    }
+    private String detectFromSensor(NormalizedColorSensor sensor, float[] hsv) {
+        NormalizedRGBA colors = sensor.getNormalizedColors();
+        Color.colorToHSV(colors.toColor(), hsv);
+        return classifyColor(hsv[0], hsv[1], hsv[2]);
+    }
+    private String combineVirtualColor(String c0, String c1, String c2, String c3) {
+        boolean anyPurple =
+                "PURPLE".equals(c0) || "PURPLE".equals(c1) || "PURPLE".equals(c2) || "PURPLE".equals(c3);
+        boolean anyGreen =
+                "GREEN".equals(c0) || "GREEN".equals(c1) || "GREEN".equals(c2) || "GREEN".equals(c3);
 
-
+        if (anyPurple) return "PURPLE";
+        if (anyGreen) return "GREEN";
+        return "UNKNOWN";
+    }
     /**
      * Very simple classification:
      *  - If it's too dark or not colorful enough → UNKNOWN
